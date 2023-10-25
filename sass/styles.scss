@@ -12,7 +12,19 @@
 /* ==========================================================================
 Global Styles
 ========================================================================== */
+
+
+@media screen and (min-width: 769px) {
+  #accordion {
+    .btn {
+      min-width: 600px;
+      margin-bottom: 5px;
+      color:black;
+    }
+  }
+}
 #accordion {
+  
   .btn {
     min-width: 300px;
     margin-bottom: 5px;
