@@ -206,12 +206,14 @@
             <p style="text-align: center; margin-top: 10px;">
                 Unsere Freie Trauung und auch das anschließende Fest finden im Berggasthof Hochpröller statt. So kommst
                 du dorthin:
+                <a style="  border:0.5px inset black; background: aliceblue;"
+                    href='https://maps.app.goo.gl/EhdEktxiCoiPxJeR6'>
+                    <h3 style="text-align: center;"><strong>Link Routenplanung Berggasthof Pröller.</strong></h3>
+                </a>
+
             </p>
-            <div class="maps-gg">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5232.49253671391!2d12.824282!3d49.02492300000001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4775410c9dfad037%3A0x46c0cd927582ad8!2sBerggasthaus%20Hochpr%C3%B6ller!5e0!3m2!1sde!2sde!4v1698224635574!5m2!1sde!2sde"
-                    style="border:0; width: 100%; height:500px;  border: 2px solid black;" allowfullscreen=""
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div id="map-gg" class="maps-gg">
+
             </div>
         </div>
         </div>
@@ -420,8 +422,8 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span>
                         </button>
                         <div class="section-padding">
-                            <h3>Thank you!</h3>
-                            <p>We are glad to see you join us on our big day.</p>
+                            <h3>Danke!</h3>
+                            <p>Wir freuen uns schon sehr auf dich!</p>
                             <div id="add-to-cal"></div>
                         </div>
                     </div>
@@ -502,9 +504,17 @@
     <script src="js/scripts.min.js"></script>
     <script defer src="cookieconsent.js"></script>
     <script defer src="cookieconsent-init.js"></script>
+    <script type="text/plain" data-cookiecategory="targeting">
+        var loadMap = document.getElementById("map-gg");
+        var substack = document.createElement("iframe");
+        substack.src = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5232.49253671391!2d12.824282!3d49.02492300000001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4775410c9dfad037%3A0x46c0cd927582ad8!2sBerggasthaus%20Hochpr%C3%B6ller!5e0!3m2!1sde!2sde!4v1698224635574!5m2!1sde!2sde";
+        substack.height = "500";
+        substack.width ="350";
+        substack.style.border = "2px solid black";
+        loadMap.append(substack);
+        console.log("hat");
+    </script>
 
-    
-    
 </body>
 
 </html>

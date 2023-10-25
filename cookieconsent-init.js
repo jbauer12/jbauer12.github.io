@@ -44,6 +44,7 @@ cc.run({
 
     onAccept: function (cookie) {
         console.log('onAccept fired ...');
+
     },
 
     onChange: function (cookie, changed_preferences) {
