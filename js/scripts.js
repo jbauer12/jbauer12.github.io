@@ -99,7 +99,7 @@ $(document).ready(function () {
                     "top": "26px",
                 });
                 $('header .navicon').css({
-                    "top": "34px",
+                    "top": "40px",
                 });
             } else {
                 $('section.navigation').removeClass('fixed');

@@ -30,14 +30,14 @@
 	border-color: $accent-color;
 }
 .btn-fill {
-	color: $white-color;
+	color: black;
 	border: solid 2px $accent-color;
 	-moz-border-radius: 40px;
 	-webkit-border-radius: 40px;
 	border-radius: 40px;
 	display: inline-block;
 	text-transform: uppercase;
-	background-color: $accent-color;
+	background-color: aliceblue;
 }
 .btn-fill:hover, .btn-fill:focus {
 	color: $white-color;
