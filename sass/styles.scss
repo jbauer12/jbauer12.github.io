@@ -14,23 +14,37 @@ Global Styles
 ========================================================================== */
 
 
+
+
+.maps-gg {
+  width: 350px;
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+
+  @media screen and (min-width: 769px) {
+    width: 600px !important;
+  }
+}
+
+#accordion {
+
+  .btn {
+    min-width: 300px;
+    margin-bottom: 5px;
+    color: black;
+  }
+}
 @media screen and (min-width: 769px) {
   #accordion {
     .btn {
       min-width: 600px;
       margin-bottom: 5px;
-      color:black;
+      color: black;
     }
   }
 }
-#accordion {
-  
-  .btn {
-    min-width: 300px;
-    margin-bottom: 5px;
-    color:black;
-  }
-}
+
 .group:after {
   content: "";
   display: table;
@@ -1186,7 +1200,8 @@ RSVP form
 
       input::-webkit-input-placeholder {
         color: #000;
-        filter: saturate(200%);      }
+        filter: saturate(200%);
+      }
 
       input:-moz-placeholder {
         color: #000;
