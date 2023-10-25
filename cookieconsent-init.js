@@ -102,7 +102,7 @@ cc.run({
                                 col3: '1/2 Jahr',
                                 col4: 'Google Maps Einbindung.',
                                 is_regex: true
-                            }
+                            }]
                     }, {
                         title: 'Weitere Informationen',
                         description: 'Bei Fragen zu meiner Politik in Bezug auf Cookies und Ihre Wahlmöglichkeiten, wenden Sie sich bitte an bauer.ludwik@gmail.com',
