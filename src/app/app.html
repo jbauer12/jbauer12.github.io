@@ -1,173 +1,52 @@
-<div class="page-shell">
-  <div class="page-shell__noise" aria-hidden="true"></div>
-  <div class="page-shell__glow page-shell__glow--one" aria-hidden="true"></div>
-  <div class="page-shell__glow page-shell__glow--two" aria-hidden="true"></div>
-
-  <main class="page">
-    <header class="topbar" id="top">
-      <a class="brand" href="#top" aria-label="Zur Startseite von vaidaisnotdead">
+<div class="site-shell">
+  <header class="site-header">
+    <div class="site-header__frame">
+      <a class="site-brand" routerLink="/">
         <img
-          class="brand__logo"
+          class="site-brand__logo"
           src="/vaidaisnotdead-logo.png"
-          alt="Logo von vaidaisnotdead"
+          alt="Logo von Vaida is not dead e.V."
         />
-        <span class="brand__name">{{ title }}</span>
+        <span class="site-brand__copy">
+          <span class="site-brand__title">{{ title }}</span>
+          <span class="site-brand__meta">Viechtach · Bayerischer Wald</span>
+        </span>
       </a>
 
-      <nav class="nav-links" aria-label="Seitenbereiche">
-        <a href="#konzerte">Konzerte</a>
-        <a href="#ueber-uns">Über uns</a>
-        <a href="#kontakt">Kontakt</a>
-      </nav>
-    </header>
+      <a class="site-header__mail" [href]="'mailto:' + contactEmail">
+        {{ contactEmail }}
+      </a>
+    </div>
 
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero__copy">
-        <p class="eyebrow">DIY Konzerte · Subkultur · Verein</p>
-        <h1 id="hero-title">vaidaisnotdead</h1>
-        <p class="hero__lede">
-          Konzerte ohne Hochglanz. Laut, direkt und mit Platz für alles, was abseits vom
-          Mainstream passiert.
-        </p>
-        <p class="hero__text">
-          Die aktuelle Website ist bewusst reduziert, orientiert sich aber schon am Look des
-          Clubs: schwarz, roh, grell und schnell erfassbar, auch auf dem Handy.
-        </p>
+    <nav class="site-nav" aria-label="Hauptnavigation">
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+  </header>
 
-        <div class="hero__actions">
-          <a class="button button--primary" href="#kontakt">Kontakt aufnehmen</a>
-          <a class="button button--secondary" href="#konzerte">Updates ansehen</a>
-        </div>
+  <router-outlet />
 
-        <div class="quick-notes" aria-label="Schnellinfos">
-          @for (note of quickNotes; track note.label) {
-            <article class="quick-note">
-              <p class="quick-note__label">{{ note.label }}</p>
-              <p class="quick-note__value">{{ note.value }}</p>
-            </article>
-          }
-        </div>
-      </div>
+  <footer class="site-footer">
+    <div>
+      <p class="site-footer__title">Vaida is not dead e.V.</p>
+      <p class="site-footer__text">
+        Jugend- und Subkultur in Viechtach. Direkt, reduziert und auf echte Abende ausgerichtet.
+      </p>
+    </div>
 
-      <div class="hero__visual">
-        <div class="logo-panel">
-          <img
-            class="logo-panel__image"
-            src="/vaidaisnotdead-logo.png"
-            alt="vaidaisnotdead Schriftzug und Smiley-Logo"
-          />
-        </div>
-
-        <div class="status-panel">
-          <p class="status-panel__label">Aktuell</p>
-          <p class="status-panel__text">
-            Neue Website in Arbeit. Bis die finalen Inhalte stehen, gibt es hier schon den Rahmen
-            für Termine, Kontakt und erste Orientierung.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="marquee" aria-label="Schlagworte">
-      <div class="marquee__track">
-        @for (item of tickerItems; track $index) {
-          <span>{{ item }}</span>
-        }
-        @for (item of tickerItems; track $index) {
-          <span>{{ item }}</span>
-        }
-      </div>
-    </section>
-
-    <section class="section-block" id="konzerte" aria-labelledby="updates-title">
-      <div class="section-heading">
-        <p class="eyebrow">Konzert-Update</p>
-        <h2 id="updates-title">Hier sollen die nächsten Abende sichtbar werden.</h2>
-        <p class="section-heading__copy">
-          Noch gibt es keinen ausformulierten Kalender auf dieser Seite, aber die Struktur ist nun
-          auf schnelle Konzertinfos und mobile Lesbarkeit ausgelegt.
-        </p>
-      </div>
-
-      <div class="card-grid">
-        @for (update of updates; track update.title) {
-          <article class="info-card">
-            <p class="info-card__kicker">{{ update.kicker }}</p>
-            <h3>{{ update.title }}</h3>
-            <p>{{ update.text }}</p>
-            <p class="info-card__meta">{{ update.meta }}</p>
-          </article>
-        }
-      </div>
-    </section>
-
-    <section class="section-block section-block--about" id="ueber-uns" aria-labelledby="about-title">
-      <div class="section-heading">
-        <p class="eyebrow">Über uns</p>
-        <h2 id="about-title">Zwischen Kollektiv, Kellergefühl und Gegenpol.</h2>
-      </div>
-
-      <div class="about-layout">
-        <div class="about-copy">
-          <p>
-            vaidaisnotdead kann hier als Ort für Konzertkultur auftreten, die nicht geschniegelt
-            sein will. Die Seite soll nicht wie ein Corporate-Eventportal wirken, sondern wie ein
-            schneller Einstieg in eine lebendige, eigenwillige Szene.
-          </p>
-          <p>
-            Deshalb arbeitet das Layout mit klaren Kontrasten, kurzen Wegen zu Kontakt und Socials
-            und einem Stil, der eher an Poster, Flyer und dunkle Clubräume erinnert als an
-            Hochglanz-Marketing.
-          </p>
-        </div>
-
-        <aside class="quote-panel">
-          <p class="quote-panel__label">Leitlinie</p>
-          <p class="quote-panel__quote">
-            Nicht geschniegelt. Nicht beliebig. Sondern nah dran, laut und gemeinschaftlich.
-          </p>
-        </aside>
-      </div>
-
-      <div class="principle-grid">
-        @for (principle of principles; track principle.title) {
-          <article class="principle-card">
-            <h3>{{ principle.title }}</h3>
-            <p>{{ principle.text }}</p>
-          </article>
-        }
-      </div>
-    </section>
-
-    <section class="section-block section-block--contact" id="kontakt" aria-labelledby="contact-title">
-      <div class="section-heading">
-        <p class="eyebrow">Kontakt</p>
-        <h2 id="contact-title">Für Bands, Fragen, Support oder Mitmachen.</h2>
-        <p class="section-heading__copy">
-          Wer schreiben will, soll nicht suchen müssen. Die wichtigsten Wege stehen deshalb groß und
-          direkt auf der Seite.
-        </p>
-      </div>
-
-      <div class="contact-grid">
-        @for (link of contactLinks; track link.label) {
-          <a
-            class="contact-card"
-            [href]="link.href"
-            [attr.target]="link.external ? '_blank' : null"
-            [attr.rel]="link.external ? 'noreferrer noopener' : null"
-          >
-            <p class="contact-card__label">{{ link.label }}</p>
-            <p class="contact-card__detail">{{ link.detail }}</p>
-            <span class="contact-card__action">Öffnen</span>
-          </a>
-        }
-      </div>
-    </section>
-
-    <footer class="footer">
-      <p>vaidaisnotdead e.V. · DIY Konzerte · Subkultur</p>
-      <a href="#top">Nach oben</a>
-    </footer>
-  </main>
+    <div class="site-footer__links">
+      @for (link of socialLinks; track link.label) {
+        <a [href]="link.href" [attr.target]="link.external ? '_blank' : null" [attr.rel]="link.external ? 'noreferrer noopener' : null">
+          {{ link.label }}
+        </a>
+      }
+    </div>
+  </footer>
 </div>

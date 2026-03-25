@@ -1,0 +1,29 @@
+<main class="page-view">
+  <section class="page-section page-section--hero">
+    <p class="kicker">Galerie</p>
+    <h1 class="display-title display-title--small">Motive, Flyer und erste oeffentliche Eindruecke.</h1>
+    <p class="lead">
+      Noch keine voll ausgebaute Fotochronik, aber bereits eine eigene Seite fuer Bildmaterial,
+      Artwork und visuelle Hinweise auf die Richtung des Clubs.
+    </p>
+    <p class="body-copy">
+      Die Motive hier stammen aus dem bestehenden oeffentlichen Auftritt und koennen spaeter durch
+      echte Eventfotos, Plakate und Archivmaterial ergaenzt werden.
+    </p>
+  </section>
+
+  <section class="page-section">
+    <div class="gallery-grid">
+      @for (item of galleryItems; track item.src; let i = $index) {
+        <figure
+          class="media-tile"
+          [class.media-tile--poster]="i === 0"
+          [class.media-tile--logo]="i === 1"
+        >
+          <img [src]="item.src" [alt]="item.alt" />
+          <figcaption class="media-tile__caption">{{ item.caption }}</figcaption>
+        </figure>
+      }
+    </div>
+  </section>
+</main>

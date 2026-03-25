@@ -1,0 +1,49 @@
+<main class="page-view">
+  <section class="page-section page-section--hero">
+    <p class="kicker">Events</p>
+    <h1 class="display-title display-title--small">Konzerte, Sessions und alles dazwischen.</h1>
+    <p class="lead">
+      Diese Unterseite ist der neue Ort fuer Termine, Formate und schnelle Orientierung rund um die
+      naechsten Abende.
+    </p>
+    <p class="body-copy">
+      Noch sind nicht alle Daten live eingebunden. Die Struktur dafuer steht jetzt aber bereit:
+      direkt, mobilfreundlich und ohne dass wichtige Infos zwischen Postings verschwinden.
+    </p>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Formate</p>
+      <h2 class="section-title">Was hier kuenftig sichtbar sein soll.</h2>
+    </div>
+
+    <div class="card-grid card-grid--three">
+      @for (event of eventFormats; track event.title) {
+        <article class="surface-card">
+          <p class="meta-tag">{{ event.label }}</p>
+          <h3>{{ event.title }}</h3>
+          <p class="body-copy">{{ event.text }}</p>
+          <p class="note-line">{{ event.note }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="split-grid">
+      <figure class="poster-frame">
+        <img
+          src="/facebook-jam-session.jpg"
+          alt="Flyer fuer eine oeffentliche Jam-Session von Vaida is not dead e.V."
+        />
+      </figure>
+
+      <div class="info-strip">
+        Sobald Termine fix sind, sollten hier kompakt Datum, Uhrzeit, Ort, Einlass, beteiligte
+        Bands oder Format-Hinweise stehen. Bis dahin bleiben Instagram und Facebook die schnellsten
+        Kanaele fuer kurzfristige Updates.
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,80 @@
+<main class="page-view">
+  <section class="page-section page-section--hero">
+    <div class="hero-grid">
+      <div>
+        <p class="kicker">Vaida is not dead e.V. · Viechtach</p>
+        <h1 class="display-title">Jugend- und Subkultur, nicht geschniegelt.</h1>
+        <p class="lead">
+          DIY-Konzerte, offene Sessions und Abende zwischen Funk, Punk und allem, was dazwischen
+          lebt.
+        </p>
+        <p class="body-copy">
+          Der neue Auftritt orientiert sich staerker an der vorhandenen Seite: klarer Aufbau,
+          groessere Headlines, weniger Effekte und mehr Platz fuer echte Termine, Bilder und
+          Mitgliedschaft.
+        </p>
+
+        <div class="action-row">
+          <a class="button button--solid" routerLink="/events">Events ansehen</a>
+          <a class="button button--ghost" routerLink="/mitglied-werden">Mitglied werden</a>
+        </div>
+      </div>
+
+      <figure class="poster-frame poster-frame--hero">
+        <img
+          src="/facebook-jam-session.jpg"
+          alt="Oeffentlich sichtbarer Flyer fuer eine Jam-Session von Vaida is not dead e.V."
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Worum es hier geht</p>
+      <h2 class="section-title">Ein Clubauftritt mit Haltung statt ein neutraler Veranstaltungskalender.</h2>
+      <p class="body-copy">
+        Die Seite soll kuenftig das zeigen, was im Verein und rund um die Abende wirklich wichtig
+        ist: Formate, Kontakt, Bilder und Wege zum Mitmachen.
+      </p>
+    </div>
+
+    <div class="card-grid card-grid--three">
+      @for (highlight of highlights; track highlight.title) {
+        <article class="surface-card">
+          <p class="meta-tag">Schwerpunkt</p>
+          <h3>{{ highlight.title }}</h3>
+          <p class="body-copy">{{ highlight.text }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="split-grid">
+      <article class="surface-card">
+        <p class="kicker">Ausrichtung</p>
+        <h2 class="section-title">Von Viechtach aus gedacht, aber nicht provinziell.</h2>
+        <p class="body-copy">
+          Der oeffentliche Facebook-Text nennt Jugend- und Subkultur im Bayerischen Wald ganz klar
+          als Kern. Genau deshalb darf die Seite zugleich lokal verankert und offen fuer alles
+          bleiben, was von ausserhalb dazustoesst.
+        </p>
+        <p class="body-copy">
+          Weniger Hochglanz, mehr Szene. Weniger Scrollsuche, mehr direkte Information. So soll der
+          neue Auftritt arbeiten.
+        </p>
+      </article>
+
+      <figure class="image-frame">
+        <img
+          src="/facebook-page-preview.jpg"
+          alt="Oeffentlich sichtbare Vorschaubild-Kachel der Facebook-Seite"
+        />
+        <figcaption class="media-caption">
+          Kleiner oeffentlicher Einblick in den bisherigen Social-Auftritt von vaidaisnotdead.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+</main>

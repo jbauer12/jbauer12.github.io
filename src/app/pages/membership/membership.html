@@ -1,0 +1,53 @@
+<main class="page-view">
+  <section class="page-section page-section--hero">
+    <p class="kicker">Mitglied werden</p>
+    <h1 class="display-title display-title--small">Mittragen statt nur vorbeischauen.</h1>
+    <p class="lead">
+      Wenn du nicht nur Gast sein willst, sondern Struktur, Abende und Subkultur in Viechtach
+      mitstuetzen moechtest, ist hier dein Einstieg.
+    </p>
+    <div class="action-row">
+      <a class="button button--solid" href="mailto:info@vaidaisnotdead.de">Per Mail melden</a>
+      <a
+        class="button button--ghost"
+        href="https://www.instagram.com/vaidaisnotdead_ev/"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        Instagram
+      </a>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="split-grid">
+      <article class="surface-card">
+        <p class="kicker">Warum</p>
+        <h2 class="section-title">Weshalb Mitgliedschaft hier Sinn macht.</h2>
+        <ul class="bullet-list">
+          @for (reason of membershipReasons; track reason) {
+            <li>{{ reason }}</li>
+          }
+        </ul>
+      </article>
+
+      <article class="surface-card">
+        <p class="kicker">Wie</p>
+        <h2 class="section-title">So kann der Einstieg aussehen.</h2>
+        <ol class="step-list">
+          @for (step of membershipSteps; track step) {
+            <li>{{ step }}</li>
+          }
+        </ol>
+      </article>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="info-strip">
+      Wenn du Bands vermitteln, bei Auf- und Abbau helfen, Awareness unterstuetzen, Technik
+      uebernehmen oder die Vereinsarbeit auf andere Weise mittragen willst, schreib einfach an
+      info@vaidaisnotdead.de.
+    </div>
+  </section>
+</main>
