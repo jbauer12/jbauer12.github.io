@@ -1,0 +1,390 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.page-shell {
+  position: relative;
+  overflow: clip;
+}
+
+.glow {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+.glow-one {
+  top: -8rem;
+  right: -10rem;
+  width: 34rem;
+  height: 34rem;
+  background: rgba(13, 110, 92, 0.18);
+}
+
+.glow-two {
+  left: -10rem;
+  top: 20rem;
+  width: 28rem;
+  height: 28rem;
+  background: rgba(215, 177, 114, 0.2);
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1rem 0 4rem;
+}
+
+.hero {
+  padding: 0.5rem 0 2rem;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 2.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--ink-950);
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.85rem;
+  background: var(--ink-950);
+  color: white;
+  font-weight: 800;
+}
+
+.brand-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.nav-links a,
+.footer a {
+  color: var(--ink-700);
+  text-decoration: none;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.nav-links a:hover,
+.footer a:hover {
+  color: var(--ink-950);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.9fr);
+  gap: 1.5rem;
+  align-items: end;
+}
+
+.eyebrow,
+.summary-label,
+.step-number,
+.contact-label,
+.card-index {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ink-950);
+}
+
+.hero h1 {
+  margin-top: 1rem;
+  font-size: clamp(3rem, 8vw, 6.4rem);
+  line-height: 0.94;
+  max-width: 10ch;
+}
+
+.lede,
+.section-copy,
+.service-card p,
+.step p,
+.contact-copy p,
+.summary-list span {
+  color: var(--ink-700);
+  line-height: 1.7;
+}
+
+.lede {
+  max-width: 38rem;
+  margin-top: 1.3rem;
+  font-size: 1.1rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 2rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.2rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button-primary {
+  background: var(--ink-950);
+  color: white;
+  box-shadow: 0 20px 50px rgba(19, 37, 36, 0.18);
+}
+
+.button-secondary {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: var(--card-border);
+  color: var(--ink-950);
+}
+
+.summary-card,
+.panel {
+  border: 1px solid var(--card-border);
+  border-radius: 1.8rem;
+  background: rgba(255, 252, 247, 0.72);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.summary-card {
+  padding: 1.6rem;
+}
+
+.summary-list,
+.checklist {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.summary-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.summary-list li {
+  display: grid;
+  gap: 0.35rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(20, 41, 40, 0.08);
+}
+
+.summary-list li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.summary-list strong {
+  font-size: 1.05rem;
+  color: var(--ink-950);
+}
+
+.panel {
+  margin-top: 1.5rem;
+  padding: 2rem;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
+}
+
+.section-heading h2,
+.contact-panel h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.02;
+  max-width: 12ch;
+}
+
+.section-copy {
+  max-width: 28rem;
+  margin: 0;
+}
+
+.card-grid,
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.service-card,
+.step,
+.contact-note {
+  border-radius: 1.3rem;
+  border: 1px solid rgba(20, 41, 40, 0.08);
+}
+
+.service-card {
+  padding: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(247, 239, 225, 0.85));
+}
+
+.service-card h3,
+.step h3 {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.service-card p,
+.step p {
+  margin-top: 0.8rem;
+}
+
+.step {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.46);
+}
+
+.contact-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.9fr);
+  gap: 1rem;
+  align-items: center;
+}
+
+.contact-copy p:last-child {
+  max-width: 40rem;
+  margin-top: 1rem;
+}
+
+.contact-note {
+  padding: 1.4rem;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.checklist {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.checklist li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: var(--ink-700);
+  line-height: 1.5;
+}
+
+.checklist li::before {
+  content: '';
+  position: absolute;
+  top: 0.55rem;
+  left: 0;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem 0.2rem 0;
+  color: var(--ink-600);
+}
+
+.footer p {
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .hero-grid,
+  .card-grid,
+  .timeline,
+  .contact-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .section-heading h2,
+  .contact-panel h2 {
+    max-width: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    width: min(100% - 1rem, 1120px);
+  }
+
+  .topbar,
+  .footer {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .hero h1 {
+    max-width: none;
+  }
+
+  .panel,
+  .summary-card {
+    border-radius: 1.4rem;
+  }
+
+  .panel {
+    padding: 1.5rem;
+  }
+}
