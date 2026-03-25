@@ -10,6 +10,18 @@ export type SocialLink = {
   external: boolean;
 };
 
+export type FacebookMirror = {
+  label: string;
+  title: string;
+  date: string;
+  text: string;
+  note: string;
+  href: string;
+  cta: string;
+  imageSrc: string;
+  imageAlt: string;
+};
+
 export const navItems: NavItem[] = [
   { label: 'Start', path: '/', exact: true },
   { label: 'Events', path: '/events' },
@@ -82,6 +94,48 @@ export const eventFormats = [
     text:
       'Die neue Events-Seite ist dafuer da, Termine sauber zu sammeln, statt sie in Storys, Postings und verstreuten Hinweisen verschwinden zu lassen.',
     note: 'Bis dahin bleiben Instagram und Facebook die schnellsten Kanaele fuer kurzfristige Updates.',
+  },
+];
+
+export const facebookMirrors: FacebookMirror[] = [
+  {
+    label: 'Facebook-Post',
+    title: 'Offene Jam-Session',
+    date: '20. Maerz 2026 · ab 17 Uhr',
+    text:
+      'Im oeffentlich sichtbaren Facebook-Auftritt wurde am 14. Maerz 2026 eine offene Jam-Session angekuendigt. Der Ton ist niedrigschwellig, offen und nah an der Szene statt geschniegelt.',
+    note:
+      'Im dazu sichtbaren Hinweis taucht auch die Formulierung "lockerer musikalischer Austausch von Funk bis Punk" auf.',
+    href: 'https://www.facebook.com/vaidaisnotdead/posts/pfbid029zZWrWrdUKfiLfhvnM2xVXuVLp8rX3rPNyhUdtTxW1KkaP68dMLeRShV5AD8uigYl',
+    cta: 'Post ansehen',
+    imageSrc: '/facebook-jam-session.jpg',
+    imageAlt: 'Flyer fuer eine oeffentliche Jam-Session von Vaida is not dead e.V.',
+  },
+  {
+    label: 'Facebook-Seite',
+    title: 'Kurzfristige Hinweise zuerst dort',
+    date: 'Laufend',
+    text:
+      'Wenn neue Flyer, kleine Aenderungen oder spontane Abende auftauchen, landen sie derzeit am schnellsten auf der Facebook-Seite. Diese Website spiegelt die wichtigsten oeffentlichen Hinweise dann in einer lesbaren Form.',
+    note:
+      'So bleibt die Seite nutzbar, auch wenn Facebook-Plugins oder Browser-Einstellungen nicht mitspielen.',
+    href: 'https://www.facebook.com/vaidaisnotdead/',
+    cta: 'Seite oeffnen',
+    imageSrc: '/facebook-page-preview.jpg',
+    imageAlt: 'Oeffentlich sichtbare Vorschau der Facebook-Seite von Vaida is not dead e.V.',
+  },
+  {
+    label: 'Fotos und Flyer',
+    title: 'Mehr Material aus dem Auftritt',
+    date: 'Archiv und Rueckblicke',
+    text:
+      'Neben Terminhinweisen laeuft auf Facebook auch Bildmaterial: Flyer, Detailansichten und kleine Eindruecke aus dem Umfeld des Vereins. Das ist im Moment die sichtbarste externe Spur fuer neue Motive.',
+    note:
+      'Bis es einen eigenen Event-Workflow gibt, ist diese Mischung aus Spiegelung und Direktlink die robustere Loesung.',
+    href: 'https://www.facebook.com/vaidaisnotdead/photos',
+    cta: 'Fotos ansehen',
+    imageSrc: '/gallery-tile-01.jpg',
+    imageAlt: 'Oeffentlich sichtbarer Bildausschnitt aus dem Facebook-Auftritt von Vaida is not dead e.V.',
   },
 ];
 

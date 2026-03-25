@@ -63,3 +63,73 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Event JSON Generator
+
+The repository now includes a small Python generator that turns a list of event source URLs into a normalized JSON file for the website.
+
+Run it with:
+
+```bash
+python3 scripts/generate_event_data.py
+```
+
+By default it reads:
+
+```text
+data/event-sources.json
+```
+
+and writes:
+
+```text
+public/events.generated.json
+```
+
+You can override both paths:
+
+```bash
+python3 scripts/generate_event_data.py --input data/event-sources.json --output public/events.generated.json
+```
+
+### Source format
+
+The smallest supported format is just a list of event URLs. For Facebook event pages, that is enough:
+
+```json
+{
+  "events": [
+    "https://www.facebook.com/events/1663914447906226"
+  ]
+}
+```
+
+If you want more control, you can still use the extended object format:
+
+```json
+{
+  "events": [
+    {
+      "url": "https://www.facebook.com/events/1663914447906226",
+      "slug": "nettis-birthday-bash",
+      "tags": ["concert", "viechtach"],
+      "overrides": {
+        "status": "scheduled"
+      }
+    }
+  ]
+}
+```
+
+The script now has a dedicated parser for public Facebook event pages and tries to extract:
+
+- `title`
+- `startsAt`
+- `venue`
+- `address`
+- `city`
+- `description`
+- `imageUrl`
+- `organizer`
+
+It still falls back to Open Graph, JSON-LD, visible HTML content, and a text-proxy fallback for difficult pages. Explicit values in `overrides` always win.

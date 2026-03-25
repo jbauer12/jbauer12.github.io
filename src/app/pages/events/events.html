@@ -1,49 +1,131 @@
 <main class="page-view">
   <section class="page-section page-section--hero">
     <p class="kicker">Events</p>
-    <h1 class="display-title display-title--small">Konzerte, Sessions und alles dazwischen.</h1>
+    <h1 class="display-title display-title--small">Kommende und vergangene Events.</h1>
     <p class="lead">
-      Diese Unterseite ist der neue Ort fuer Termine, Formate und schnelle Orientierung rund um die
-      naechsten Abende.
+      Diese Seite zeigt nur noch die Daten aus <code>events.generated.json</code>. Dadurch kommt
+      alles aus einer klaren Quelle und laesst sich sauber nach Datum sortieren.
     </p>
     <p class="body-copy">
-      Noch sind nicht alle Daten live eingebunden. Die Struktur dafuer steht jetzt aber bereit:
-      direkt, mobilfreundlich und ohne dass wichtige Infos zwischen Postings verschwinden.
+      Alles, was in der Zukunft liegt, landet unter <strong>Kommende Events</strong>. Alles mit
+      Datum in der Vergangenheit wird automatisch unter <strong>Vergangene Events</strong>
+      einsortiert.
     </p>
   </section>
 
-  <section class="page-section">
-    <div class="section-header">
-      <p class="kicker">Formate</p>
-      <h2 class="section-title">Was hier kuenftig sichtbar sein soll.</h2>
-    </div>
+  @if (errorMessage()) {
+    <section class="page-section">
+      <div class="info-strip">{{ errorMessage() }}</div>
+    </section>
+  }
 
-    <div class="card-grid card-grid--three">
-      @for (event of eventFormats; track event.title) {
-        <article class="surface-card">
-          <p class="meta-tag">{{ event.label }}</p>
-          <h3>{{ event.title }}</h3>
-          <p class="body-copy">{{ event.text }}</p>
-          <p class="note-line">{{ event.note }}</p>
-        </article>
-      }
-    </div>
-  </section>
-
-  <section class="page-section">
-    <div class="split-grid">
-      <figure class="poster-frame">
-        <img
-          src="/facebook-jam-session.jpg"
-          alt="Flyer fuer eine oeffentliche Jam-Session von Vaida is not dead e.V."
-        />
-      </figure>
-
-      <div class="info-strip">
-        Sobald Termine fix sind, sollten hier kompakt Datum, Uhrzeit, Ort, Einlass, beteiligte
-        Bands oder Format-Hinweise stehen. Bis dahin bleiben Instagram und Facebook die schnellsten
-        Kanaele fuer kurzfristige Updates.
+  @if (isLoading()) {
+    <section class="page-section">
+      <div class="info-strip">Events werden aus der generierten Datei geladen.</div>
+    </section>
+  } @else {
+    <section class="page-section">
+      <div class="section-header">
+        <p class="kicker">Kommende Events</p>
+        <h2 class="section-title">Alles, was als Nächstes ansteht.</h2>
       </div>
-    </div>
-  </section>
+
+      @if (upcomingEvents().length) {
+        <div class="event-grid">
+          @for (event of upcomingEvents(); track event.slug) {
+            <article class="event-card">
+              <div class="event-card__media">
+                <img [src]="event.imageUrl" [alt]="'Eventbild zu ' + event.title" />
+              </div>
+
+              <div class="event-card__body">
+                <p class="meta-tag">{{ event.organizer || event.sourceLabel || 'Event' }}</p>
+                <h3>{{ event.title }}</h3>
+                <p class="event-card__date">{{ event.startsAt }}</p>
+
+                @if (event.venue || event.city) {
+                  <p class="event-card__place">
+                    {{ event.venue || 'Ort folgt' }}@if (event.city) { · {{ event.city }} }
+                  </p>
+                }
+
+                <p class="body-copy">{{ event.description }}</p>
+
+                @if (event.address) {
+                  <p class="note-line">{{ event.address }}</p>
+                }
+
+                <div class="action-row">
+                  <a
+                    class="button button--solid"
+                    [href]="event.sourceUrl"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Quelle ansehen
+                  </a>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="info-strip">
+          Aktuell stehen in der generierten Datei keine kommenden Events.
+        </div>
+      }
+    </section>
+
+    <section class="page-section">
+      <div class="section-header">
+        <p class="kicker">Vergangene Events</p>
+        <h2 class="section-title">Was bereits gelaufen ist.</h2>
+      </div>
+
+      @if (pastEvents().length) {
+        <div class="event-grid">
+          @for (event of pastEvents(); track event.slug) {
+            <article class="event-card event-card--past">
+              <div class="event-card__media">
+                <img [src]="event.imageUrl" [alt]="'Eventbild zu ' + event.title" />
+              </div>
+
+              <div class="event-card__body">
+                <p class="meta-tag">{{ event.organizer || event.sourceLabel || 'Event' }}</p>
+                <h3>{{ event.title }}</h3>
+                <p class="event-card__date">{{ event.startsAt }}</p>
+
+                @if (event.venue || event.city) {
+                  <p class="event-card__place">
+                    {{ event.venue || 'Ort folgt' }}@if (event.city) { · {{ event.city }} }
+                  </p>
+                }
+
+                <p class="body-copy">{{ event.description }}</p>
+
+                @if (event.address) {
+                  <p class="note-line">{{ event.address }}</p>
+                }
+
+                <div class="action-row">
+                  <a
+                    class="button button--ghost"
+                    [href]="event.sourceUrl"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Quelle ansehen
+                  </a>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="info-strip">
+          Aktuell stehen in der generierten Datei keine vergangenen Events.
+        </div>
+      }
+    </section>
+  }
 </main>

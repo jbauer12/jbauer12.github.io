@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-03-25T22:19:57.579216+00:00",
+  "sourceFile": "data/event-sources.json",
+  "count": 2,
+  "events": [
+    {
+      "title": "Netti's Birthday Bash",
+      "description": "Am 07. Februar 2026 wollen wir mit euch zusammen Netti's Geburtstag zelebrieren. Nat\u00fcrlich gibt's dazu eine Ladung Livemusik vom Feinsten im KulturCaf\u00e9 Hinkofer:",
+      "imageUrl": "https://scontent-sof1-1.xx.fbcdn.net/v/t39.30808-6/622698614_122126407568996770_5339857742921133285_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=7e0d18&_nc_ohc=eiNdTNVLO74Q7kNvwEOTV2n&_nc_oc=Adrn13n-J9-vpC9M-kaUTv7RyDiCRbLm_GzBV2jAMf0NYfB4-PsnYa5AXRxV03Xyiur2Jw6IOB_e9Zr26UOGafiN&_nc_zt=23&_nc_ht=scontent-sof1-1.xx&_nc_gid=E9o-SjMPNcZ85T5z1phfDw&_nc_ss=7a30f&oh=00_AfwVjUgQGQvxfEdQ-x3p0MrdpP0m9DAJKPF60eIUrgZq2w&oe=69CA2D14",
+      "startsAt": "Saturday, February 7, 2026 at 6:30 PM CET",
+      "venue": "KulturCaf\u00e9 Hinkofer",
+      "address": "KulturCaf\u00e9 Hinkofer Ringstra\u00dfe 7, Viechtach, Germany",
+      "city": "Viechtach",
+      "organizer": "Vaida is not dead e.V.",
+      "sourceLabel": "Facebook",
+      "slug": "netti-s-birthday-bash",
+      "sourceUrl": "https://www.facebook.com/events/1663914447906226",
+      "sourceDomain": "www.facebook.com",
+      "tags": [],
+      "status": "scheduled",
+      "extractionChain": [
+        "proxy"
+      ],
+      "missingFields": [],
+      "fetchErrors": [
+        "direct: HTTP Error 400: Bad Request"
+      ]
+    },
+    {
+      "title": "Vaida is not dead presents: STARTS x DEFIBR\u00dcLLATOR x POGO GADGETTO",
+      "description": "Bald ist es wieder so weit\u2026. P\u00fcnktlich zur Kartoffelernte ist unsere Vereinsgr\u00fcndung durch und zur Feier laden wir zum Tanze: Am 18. Oktober 2025 holen wir euch im KulturCaf\u00e9 Hink\u2026",
+      "imageUrl": "https://scontent-sof1-2.xx.fbcdn.net/v/t39.30808-6/560697579_122112339356996770_3253169339693690754_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=7e0d18&_nc_ohc=e-un9OM1hbgQ7kNvwEpCny9&_nc_oc=AdoB6KkDgR45QdOt-X-2wTgeo_TsS6B8rucyEjs2NtJe_Vy5hOWlgaCpF3JYufcQJeG7mrNPpJTJlTxyCPWLhLk4&_nc_zt=23&_nc_ht=scontent-sof1-2.xx&_nc_gid=7rjIHiLn0CxNsktNS7HYNA&_nc_ss=7a30f&oh=00_Afxjd1e8QVuZdPQwiDLJJjl9AXZVGuvlCtoK8NcxqpPjSw&oe=69CA4CC4",
+      "startsAt": "Oct 18, 2025 at 6:00 PM \u2013 Oct 19, 2025 at 5:00 AM CEST",
+      "venue": "KulturCaf\u00e9 Hinkofer",
+      "address": "KulturCaf\u00e9 Hinkofer Ringstra\u00dfe 7, Viechtach, Germany",
+      "city": "Viechtach",
+      "organizer": "Vaida is not dead e.V.",
+      "sourceLabel": "Facebook",
+      "slug": "vaida-is-not-dead-presents-starts-x-defibruellator-x-pogo-gadgetto",
+      "sourceUrl": "https://www.facebook.com/events/776787775046871",
+      "sourceDomain": "www.facebook.com",
+      "tags": [],
+      "status": "scheduled",
+      "extractionChain": [
+        "proxy"
+      ],
+      "missingFields": [],
+      "fetchErrors": [
+        "direct: HTTP Error 400: Bad Request"
+      ]
+    }
+  ]
+}
