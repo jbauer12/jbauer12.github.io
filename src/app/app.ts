@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { navItems, socialLinks } from './site-data';
@@ -14,4 +14,13 @@ export class App {
   readonly navItems = navItems;
   readonly socialLinks = socialLinks;
   readonly contactEmail = 'info@vaidaisnotdead.de';
+  readonly isMobileMenuOpen = signal(false);
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen.update((isOpen) => !isOpen);
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen.set(false);
+  }
 }

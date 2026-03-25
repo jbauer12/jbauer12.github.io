@@ -4,12 +4,15 @@
 
 .event-grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-content: center;
   gap: 1rem;
 }
 
 .event-card {
   overflow: hidden;
   display: grid;
+  width: min(100%, 34rem);
   border: 1px solid var(--border);
   border-radius: 1rem;
   background: var(--surface-soft);
@@ -58,7 +61,7 @@
 
 @media (min-width: 960px) {
   .event-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 34rem));
   }
 
   .event-card {

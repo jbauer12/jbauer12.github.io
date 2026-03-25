@@ -36,6 +36,13 @@
   border-radius: 1.25rem 1.25rem 0.8rem 0.8rem;
 }
 
+.site-header__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
 .site-brand {
   display: flex;
   align-items: center;
@@ -80,13 +87,43 @@
   text-decoration: none;
 }
 
+.site-menu-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.26rem;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.site-menu-toggle span {
+  width: 1.1rem;
+  height: 1px;
+  background: currentColor;
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
 .site-nav {
-  display: flex;
-  flex-wrap: wrap;
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
   gap: 0.55rem;
   margin-top: 0.45rem;
   padding: 0.75rem;
   border-radius: 0.8rem 0.8rem 1.25rem 1.25rem;
+}
+
+.site-nav--open {
+  display: flex;
 }
 
 .site-nav a,
@@ -96,9 +133,11 @@
 }
 
 .site-nav a {
+  width: 100%;
   padding: 0.65rem 0.9rem;
   border: 1px solid transparent;
   border-radius: 999px;
+  text-align: center;
   transition:
     border-color 160ms ease,
     background-color 160ms ease,
@@ -118,6 +157,12 @@
 .site-nav a:hover,
 .site-nav a:focus-visible,
 .site-nav a.is-active {
+  border-color: rgba(104, 255, 30, 0.28);
+  background: rgba(104, 255, 30, 0.08);
+}
+
+.site-menu-toggle:hover,
+.site-menu-toggle:focus-visible {
   border-color: rgba(104, 255, 30, 0.28);
   background: rgba(104, 255, 30, 0.08);
 }
@@ -152,11 +197,33 @@
   gap: 0.75rem 1rem;
 }
 
+@media (min-width: 768px) {
+  .site-menu-toggle {
+    display: none;
+  }
+
+  .site-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .site-nav a {
+    width: auto;
+  }
+}
+
 @media (min-width: 900px) {
   .site-header__frame {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .site-header__topline {
+    flex: 1 1 auto;
   }
 
   .site-footer {

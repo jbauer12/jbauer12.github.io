@@ -1,29 +1,50 @@
 <div class="site-shell">
   <header class="site-header">
     <div class="site-header__frame">
-      <a class="site-brand" routerLink="/">
-        <img
-          class="site-brand__logo"
-          src="/vaidaisnotdead-logo.png"
-          alt="Logo von Vaida is not dead e.V."
-        />
-        <span class="site-brand__copy">
-          <span class="site-brand__title">{{ title }}</span>
-          <span class="site-brand__meta">Viechtach · Bayerischer Wald</span>
-        </span>
-      </a>
+      <div class="site-header__topline">
+        <a class="site-brand" routerLink="/" (click)="closeMobileMenu()">
+          <img
+            class="site-brand__logo"
+            src="/vaidaisnotdead-logo.png"
+            alt="Logo von Vaida is not dead e.V."
+          />
+          <span class="site-brand__copy">
+            <span class="site-brand__title">{{ title }}</span>
+            <span class="site-brand__meta">Viechtach · Bayerischer Wald</span>
+          </span>
+        </a>
+
+        <button
+          class="site-menu-toggle"
+          type="button"
+          [attr.aria-expanded]="isMobileMenuOpen()"
+          aria-controls="site-nav"
+          aria-label="Navigation umschalten"
+          (click)="toggleMobileMenu()"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
       <a class="site-header__mail" [href]="'mailto:' + contactEmail">
         {{ contactEmail }}
       </a>
     </div>
 
-    <nav class="site-nav" aria-label="Hauptnavigation">
+    <nav
+      id="site-nav"
+      class="site-nav"
+      [class.site-nav--open]="isMobileMenuOpen()"
+      aria-label="Hauptnavigation"
+    >
       @for (item of navItems; track item.path) {
         <a
           [routerLink]="item.path"
           routerLinkActive="is-active"
           [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+          (click)="closeMobileMenu()"
         >
           {{ item.label }}
         </a>
