@@ -28,7 +28,13 @@ ng generate --help
 
 ## Building
 
-To build the project run:
+To build the p
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+roject run:
 
 ```bash
 ng build

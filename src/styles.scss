@@ -1,25 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap');
 
 :root {
-  color-scheme: light;
-  --font-body:
-    'Manrope',
-    'Segoe UI',
-    sans-serif;
-  --font-display:
-    'Fraunces',
-    Georgia,
-    serif;
-  --ink-950: #132524;
-  --ink-700: #4d615f;
-  --ink-600: #667876;
-  --accent: #0d6e5c;
-  --accent-strong: #175f54;
-  --card-border: rgba(19, 37, 36, 0.09);
-  --shadow-soft: 0 26px 80px rgba(19, 37, 36, 0.1);
-  background:
-    radial-gradient(circle at top right, rgba(13, 110, 92, 0.14), transparent 28rem),
-    linear-gradient(180deg, #f7f1e5 0%, #f3ede2 48%, #efe8dc 100%);
+  color-scheme: dark;
+  --font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --font-display: 'Syne', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+  --bg: #060706;
+  --bg-elevated: #0b0d0b;
+  --text-primary: #f4f8ef;
+  --text-secondary: #bcc8b6;
+  --text-muted: #8d9987;
+  --acid: #62ff00;
+  --line: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.42);
 }
 
 *,
@@ -36,8 +29,11 @@ body {
   margin: 0;
   min-width: 320px;
   font-family: var(--font-body);
-  color: var(--ink-950);
-  background: transparent;
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at top, rgba(98, 255, 0, 0.16), transparent 24rem),
+    radial-gradient(circle at 80% 10%, rgba(98, 255, 0, 0.08), transparent 20rem),
+    linear-gradient(180deg, #050605 0%, #090b09 55%, #050605 100%);
 }
 
 a,
@@ -46,4 +42,14 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: rgba(98, 255, 0, 0.3);
+  color: var(--text-primary);
 }

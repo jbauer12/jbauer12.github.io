@@ -1,151 +1,173 @@
 <div class="page-shell">
-  <div class="glow glow-one" aria-hidden="true"></div>
-  <div class="glow glow-two" aria-hidden="true"></div>
+  <div class="page-shell__noise" aria-hidden="true"></div>
+  <div class="page-shell__glow page-shell__glow--one" aria-hidden="true"></div>
+  <div class="page-shell__glow page-shell__glow--two" aria-hidden="true"></div>
 
   <main class="page">
-    <header class="hero" id="top">
-      <nav class="topbar" aria-label="Primary">
-        <a class="brand" href="#top">
-          <span class="brand-mark">N</span>
-          <span class="brand-name">{{ title }}</span>
-        </a>
+    <header class="topbar" id="top">
+      <a class="brand" href="#top" aria-label="Zur Startseite von vaidaisnotdead">
+        <img
+          class="brand__logo"
+          src="/vaidaisnotdead-logo.png"
+          alt="Logo von vaidaisnotdead"
+        />
+        <span class="brand__name">{{ title }}</span>
+      </a>
 
-        <div class="nav-links">
-          <a href="#services">Services</a>
-          <a href="#approach">Approach</a>
-          <a href="#contact">Contact</a>
-        </div>
+      <nav class="nav-links" aria-label="Seitenbereiche">
+        <a href="#konzerte">Konzerte</a>
+        <a href="#ueber-uns">Über uns</a>
+        <a href="#kontakt">Kontakt</a>
       </nav>
-
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Angular starter website</p>
-          <h1>A calm, modern home page you can build on.</h1>
-          <p class="lede">
-            This project starts as a simple landing page with clean structure, responsive
-            sections, and plenty of room to grow into a product site, portfolio, or business
-            homepage.
-          </p>
-
-          <div class="hero-actions">
-            <a class="button button-primary" href="#contact">Start customizing</a>
-            <a class="button button-secondary" href="#services">See the layout</a>
-          </div>
-        </div>
-
-        <aside class="summary-card">
-          <p class="summary-label">Included now</p>
-          <ul class="summary-list">
-            <li>
-              <strong>Landing content</strong>
-              <span>Hero messaging, simple navigation, and clear calls to action.</span>
-            </li>
-            <li>
-              <strong>Flexible sections</strong>
-              <span>Reusable content blocks for services, process, and your next steps.</span>
-            </li>
-            <li>
-              <strong>Responsive styling</strong>
-              <span>A layout that already works across desktop and mobile screens.</span>
-            </li>
-          </ul>
-        </aside>
-      </div>
     </header>
 
-    <section class="panel" id="services">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Services</p>
-          <h2>Three simple sections ready for your real content.</h2>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__copy">
+        <p class="eyebrow">DIY Konzerte · Subkultur · Verein</p>
+        <h1 id="hero-title">vaidaisnotdead</h1>
+        <p class="hero__lede">
+          Konzerte ohne Hochglanz. Laut, direkt und mit Platz für alles, was abseits vom
+          Mainstream passiert.
+        </p>
+        <p class="hero__text">
+          Die aktuelle Website ist bewusst reduziert, orientiert sich aber schon am Look des
+          Clubs: schwarz, roh, grell und schnell erfassbar, auch auf dem Handy.
+        </p>
+
+        <div class="hero__actions">
+          <a class="button button--primary" href="#kontakt">Kontakt aufnehmen</a>
+          <a class="button button--secondary" href="#konzerte">Updates ansehen</a>
         </div>
-        <p class="section-copy">
-          Swap this placeholder copy for your product, team, business, or personal brand.
+
+        <div class="quick-notes" aria-label="Schnellinfos">
+          @for (note of quickNotes; track note.label) {
+            <article class="quick-note">
+              <p class="quick-note__label">{{ note.label }}</p>
+              <p class="quick-note__value">{{ note.value }}</p>
+            </article>
+          }
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="logo-panel">
+          <img
+            class="logo-panel__image"
+            src="/vaidaisnotdead-logo.png"
+            alt="vaidaisnotdead Schriftzug und Smiley-Logo"
+          />
+        </div>
+
+        <div class="status-panel">
+          <p class="status-panel__label">Aktuell</p>
+          <p class="status-panel__text">
+            Neue Website in Arbeit. Bis die finalen Inhalte stehen, gibt es hier schon den Rahmen
+            für Termine, Kontakt und erste Orientierung.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="marquee" aria-label="Schlagworte">
+      <div class="marquee__track">
+        @for (item of tickerItems; track $index) {
+          <span>{{ item }}</span>
+        }
+        @for (item of tickerItems; track $index) {
+          <span>{{ item }}</span>
+        }
+      </div>
+    </section>
+
+    <section class="section-block" id="konzerte" aria-labelledby="updates-title">
+      <div class="section-heading">
+        <p class="eyebrow">Konzert-Update</p>
+        <h2 id="updates-title">Hier sollen die nächsten Abende sichtbar werden.</h2>
+        <p class="section-heading__copy">
+          Noch gibt es keinen ausformulierten Kalender auf dieser Seite, aber die Struktur ist nun
+          auf schnelle Konzertinfos und mobile Lesbarkeit ausgelegt.
         </p>
       </div>
 
       <div class="card-grid">
-        <article class="service-card">
-          <span class="card-index">01</span>
-          <h3>Introduce the idea</h3>
-          <p>
-            Lead with one strong headline and a short explanation of what you do or what you are
-            building.
-          </p>
-        </article>
-
-        <article class="service-card">
-          <span class="card-index">02</span>
-          <h3>Explain the value</h3>
-          <p>
-            Use cards like this to highlight features, services, outcomes, or the reasons someone
-            should keep scrolling.
-          </p>
-        </article>
-
-        <article class="service-card">
-          <span class="card-index">03</span>
-          <h3>Point to action</h3>
-          <p>
-            Finish the page with a clear next step such as a contact form, signup flow, booking
-            link, or product demo.
-          </p>
-        </article>
+        @for (update of updates; track update.title) {
+          <article class="info-card">
+            <p class="info-card__kicker">{{ update.kicker }}</p>
+            <h3>{{ update.title }}</h3>
+            <p>{{ update.text }}</p>
+            <p class="info-card__meta">{{ update.meta }}</p>
+          </article>
+        }
       </div>
     </section>
 
-    <section class="panel" id="approach">
+    <section class="section-block section-block--about" id="ueber-uns" aria-labelledby="about-title">
       <div class="section-heading">
-        <div>
-          <p class="eyebrow">Approach</p>
-          <h2>A starter flow that keeps the site easy to expand.</h2>
-        </div>
+        <p class="eyebrow">Über uns</p>
+        <h2 id="about-title">Zwischen Kollektiv, Kellergefühl und Gegenpol.</h2>
       </div>
 
-      <div class="timeline">
-        <article class="step">
-          <p class="step-number">Step 1</p>
-          <h3>Make the message yours</h3>
-          <p>Update the brand name, headline, and section copy to match your project.</p>
-        </article>
+      <div class="about-layout">
+        <div class="about-copy">
+          <p>
+            vaidaisnotdead kann hier als Ort für Konzertkultur auftreten, die nicht geschniegelt
+            sein will. Die Seite soll nicht wie ein Corporate-Eventportal wirken, sondern wie ein
+            schneller Einstieg in eine lebendige, eigenwillige Szene.
+          </p>
+          <p>
+            Deshalb arbeitet das Layout mit klaren Kontrasten, kurzen Wegen zu Kontakt und Socials
+            und einem Stil, der eher an Poster, Flyer und dunkle Clubräume erinnert als an
+            Hochglanz-Marketing.
+          </p>
+        </div>
 
-        <article class="step">
-          <p class="step-number">Step 2</p>
-          <h3>Add real pages</h3>
-          <p>Use the Angular router later for sections like About, Pricing, Blog, or Contact.</p>
-        </article>
+        <aside class="quote-panel">
+          <p class="quote-panel__label">Leitlinie</p>
+          <p class="quote-panel__quote">
+            Nicht geschniegelt. Nicht beliebig. Sondern nah dran, laut und gemeinschaftlich.
+          </p>
+        </aside>
+      </div>
 
-        <article class="step">
-          <p class="step-number">Step 3</p>
-          <h3>Connect functionality</h3>
-          <p>Wire this up to APIs, forms, CMS content, or your backend whenever you are ready.</p>
-        </article>
+      <div class="principle-grid">
+        @for (principle of principles; track principle.title) {
+          <article class="principle-card">
+            <h3>{{ principle.title }}</h3>
+            <p>{{ principle.text }}</p>
+          </article>
+        }
       </div>
     </section>
 
-    <section class="panel contact-panel" id="contact">
-      <div class="contact-copy">
-        <p class="eyebrow">Next step</p>
-        <h2>Ready to turn the starter into your real site?</h2>
-        <p>
-          This page is intentionally basic, but it is already a solid Angular foundation. From
-          here, you can add routes, components, forms, or data-driven sections at your own pace.
+    <section class="section-block section-block--contact" id="kontakt" aria-labelledby="contact-title">
+      <div class="section-heading">
+        <p class="eyebrow">Kontakt</p>
+        <h2 id="contact-title">Für Bands, Fragen, Support oder Mitmachen.</h2>
+        <p class="section-heading__copy">
+          Wer schreiben will, soll nicht suchen müssen. Die wichtigsten Wege stehen deshalb groß und
+          direkt auf der Seite.
         </p>
       </div>
 
-      <div class="contact-note">
-        <p class="contact-label">Good additions from here</p>
-        <ul class="checklist">
-          <li>Add a dedicated About or Services page.</li>
-          <li>Connect a real contact form.</li>
-          <li>Replace the placeholder branding and copy.</li>
-        </ul>
+      <div class="contact-grid">
+        @for (link of contactLinks; track link.label) {
+          <a
+            class="contact-card"
+            [href]="link.href"
+            [attr.target]="link.external ? '_blank' : null"
+            [attr.rel]="link.external ? 'noreferrer noopener' : null"
+          >
+            <p class="contact-card__label">{{ link.label }}</p>
+            <p class="contact-card__detail">{{ link.detail }}</p>
+            <span class="contact-card__action">Öffnen</span>
+          </a>
+        }
       </div>
     </section>
 
     <footer class="footer">
-      <p>{{ title }} starter site</p>
-      <a href="#top">Back to top</a>
+      <p>vaidaisnotdead e.V. · DIY Konzerte · Subkultur</p>
+      <a href="#top">Nach oben</a>
     </footer>
   </main>
 </div>

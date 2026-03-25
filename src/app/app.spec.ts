@@ -17,15 +17,13 @@ describe('App', () => {
   it('should expose the placeholder brand name', () => {
     const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
-    expect(app.title).toBe('Northline');
+    expect(app.title).toBe('vaidaisnotdead');
   });
 
   it('should render the homepage headline', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'A calm, modern home page you can build on.',
-    );
+    expect(compiled.querySelector('h1')?.textContent).toContain('vaidaisnotdead');
   });
 });
