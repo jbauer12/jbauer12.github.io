@@ -51,6 +51,7 @@
         <app-editable-text
           tag="span"
           [multiline]="false"
+          [showTrigger]="false"
           contentKey="membership.hero.form_cta"
           fallback="Zum Formular"
         />
@@ -59,6 +60,7 @@
         <app-editable-text
           tag="span"
           [multiline]="false"
+          [showTrigger]="false"
           contentKey="membership.hero.mail_cta"
           fallback="Direkt mailen"
         />
@@ -146,6 +148,7 @@
               <app-editable-text
                 tag="span"
                 [multiline]="false"
+                [showTrigger]="false"
                 [contentKey]="'membership.tracks.' + i + '.cta'"
                 [fallback]="track.cta"
               />
@@ -268,6 +271,7 @@
             <app-editable-text
               tag="span"
               [multiline]="false"
+              [showTrigger]="false"
               contentKey="membership.form.submit"
               fallback="Anfrage per Mail vorbereiten"
             />
@@ -276,6 +280,7 @@
             <app-editable-text
               tag="span"
               [multiline]="false"
+              [showTrigger]="false"
               contentKey="membership.form.mail_cta"
               fallback="Ohne Formular schreiben"
             />

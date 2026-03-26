@@ -19,7 +19,7 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
-
+supabase/migrations/20260326232500_add_specific_admin_user.sql
 # Visual Studio Code
 .vscode/*
 !.vscode/settings.json

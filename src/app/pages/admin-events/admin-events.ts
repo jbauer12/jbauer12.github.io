@@ -28,6 +28,7 @@ export class AdminEventsPage {
 
   readonly events = computed(() => this.adminEventsStore.events());
   readonly session = this.adminEventsStore.session;
+  readonly isAdmin = this.adminEventsStore.isAdmin;
   readonly isConfigured = this.adminEventsStore.isConfigured;
   readonly isLoading = this.adminEventsStore.isLoading;
   readonly isSaving = this.adminEventsStore.isSaving;
@@ -38,7 +39,7 @@ export class AdminEventsPage {
   readonly isImporting = signal(false);
   readonly isSeedingContent = signal(false);
   readonly notice = signal(
-    'Nur eingeloggt kannst du neue Events anlegen oder bestehende Eintraege aendern.',
+    'Nur freigeschaltete Admin-Accounts koennen hier Inhalte pflegen.',
   );
   readonly editingEventId = signal<string | null>(null);
 
@@ -56,7 +57,11 @@ export class AdminEventsPage {
     try {
       await this.adminEventsStore.signIn(this.loginDraft.email, this.loginDraft.password);
       this.loginDraft.password = '';
-      this.notice.set('Login erfolgreich. Du kannst jetzt Events in Supabase pflegen.');
+      this.notice.set(
+        this.isAdmin()
+          ? 'Login erfolgreich. Du kannst jetzt Inhalte in Supabase pflegen.'
+          : 'Login erfolgreich, aber dein Account ist noch nicht fuer Admin-Rechte freigeschaltet.',
+      );
     } catch (error) {
       this.notice.set(getErrorMessage(error, 'Login fehlgeschlagen.'));
     }

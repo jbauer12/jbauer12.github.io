@@ -23,6 +23,7 @@ export class EditableTextComponent {
   readonly tag = input<EditableTag>('span');
   readonly className = input('');
   readonly multiline = input(true);
+  readonly showTrigger = input(true);
 
   readonly isEditing = signal(false);
   readonly draftValue = signal('');

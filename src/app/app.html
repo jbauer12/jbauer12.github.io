@@ -13,6 +13,7 @@
               tag="span"
               className="site-brand__title"
               [multiline]="false"
+              [showTrigger]="false"
               contentKey="app.brand.title"
               fallback="Vaida is not dead e.V."
             />
@@ -20,6 +21,7 @@
               tag="span"
               className="site-brand__meta"
               [multiline]="false"
+              [showTrigger]="false"
               contentKey="app.brand.meta"
               fallback="Viechtach · Bayerischer Wald"
             />
@@ -61,6 +63,7 @@
           <app-editable-text
             tag="span"
             [multiline]="false"
+            [showTrigger]="false"
             [contentKey]="'app.nav.' + $index + '.label'"
             [fallback]="item.label"
           />
@@ -94,6 +97,7 @@
           <app-editable-text
             tag="span"
             [multiline]="false"
+            [showTrigger]="false"
             [contentKey]="'app.social.' + $index + '.label'"
             [fallback]="link.label"
           />

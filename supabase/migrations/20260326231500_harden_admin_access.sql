@@ -1,39 +1,3 @@
-create extension if not exists pgcrypto;
-
-create table if not exists public.events (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  description text not null,
-  image_url text not null default '/logo.jpg',
-  starts_at text not null,
-  venue text,
-  address text,
-  city text,
-  organizer text,
-  source_label text default 'Admin gepflegt',
-  slug text not null unique,
-  source_url text,
-  created_at timestamptz not null default timezone('utc', now()),
-  updated_at timestamptz not null default timezone('utc', now())
-);
-
-create or replace function public.set_events_updated_at()
-returns trigger
-language plpgsql
-as $$
-begin
-  new.updated_at = timezone('utc', now());
-  return new;
-end;
-$$;
-
-drop trigger if exists events_set_updated_at on public.events;
-
-create trigger events_set_updated_at
-before update on public.events
-for each row
-execute function public.set_events_updated_at();
-
 create table if not exists public.admin_users (
   user_id uuid primary key references auth.users (id) on delete cascade,
   email text,
@@ -57,15 +21,6 @@ as $$
 $$;
 
 grant execute on function public.is_admin() to anon, authenticated, service_role;
-
-alter table public.events enable row level security;
-
-drop policy if exists "Public can view events" on public.events;
-create policy "Public can view events"
-on public.events
-for select
-to anon, authenticated
-using (true);
 
 drop policy if exists "Authenticated can insert events" on public.events;
 drop policy if exists "Admins can insert events" on public.events;
@@ -92,18 +47,6 @@ for delete
 to authenticated
 using (public.is_admin());
 
-insert into storage.buckets (id, name, public)
-values ('event-images', 'event-images', true)
-on conflict (id) do update
-set public = excluded.public;
-
-drop policy if exists "Public can view event images" on storage.objects;
-create policy "Public can view event images"
-on storage.objects
-for select
-to anon, authenticated
-using (bucket_id = 'event-images');
-
 drop policy if exists "Authenticated can upload event images" on storage.objects;
 drop policy if exists "Admins can upload event images" on storage.objects;
 create policy "Admins can upload event images"
@@ -129,38 +72,6 @@ for delete
 to authenticated
 using (bucket_id = 'event-images' and public.is_admin());
 
-create table if not exists public.site_content (
-  key text primary key,
-  value text not null,
-  updated_at timestamptz not null default timezone('utc', now())
-);
-
-create or replace function public.set_site_content_updated_at()
-returns trigger
-language plpgsql
-as $$
-begin
-  new.updated_at = timezone('utc', now());
-  return new;
-end;
-$$;
-
-drop trigger if exists site_content_set_updated_at on public.site_content;
-
-create trigger site_content_set_updated_at
-before update on public.site_content
-for each row
-execute function public.set_site_content_updated_at();
-
-alter table public.site_content enable row level security;
-
-drop policy if exists "Public can view site content" on public.site_content;
-create policy "Public can view site content"
-on public.site_content
-for select
-to anon, authenticated
-using (true);
-
 drop policy if exists "Authenticated can insert site content" on public.site_content;
 drop policy if exists "Admins can insert site content" on public.site_content;
 create policy "Admins can insert site content"
@@ -184,15 +95,3 @@ on public.site_content
 for delete
 to authenticated
 using (public.is_admin());
-
--- Example:
--- insert into public.admin_users (user_id, email)
--- values ('00000000-0000-0000-0000-000000000000', 'admin@example.com')
--- on conflict (user_id) do update
--- set email = excluded.email;
-
-insert into public.admin_users (user_id)
-select id
-from auth.users
-where id = '76984fbd-edf9-4024-890c-6a43ec164ae6'
-on conflict (user_id) do nothing;

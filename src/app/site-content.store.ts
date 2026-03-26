@@ -24,7 +24,7 @@ export class SiteContentStore {
   readonly isLoading = signal(false);
   readonly isSaving = signal(false);
   readonly syncError = signal<string | null>(null);
-  readonly canEdit = computed(() => Boolean(this.adminEventsStore.session()));
+  readonly canEdit = computed(() => this.adminEventsStore.isAdmin());
 
   constructor() {
     void this.ensureLoaded();
@@ -53,9 +53,7 @@ export class SiteContentStore {
       throw new Error('Supabase ist noch nicht konfiguriert.');
     }
 
-    if (!this.adminEventsStore.session()) {
-      throw new Error('Bitte zuerst im Maschinenraum einloggen.');
-    }
+    assertAdminAccess(this.adminEventsStore.isAdmin());
 
     this.isSaving.set(true);
     this.syncError.set(null);
@@ -96,9 +94,7 @@ export class SiteContentStore {
       throw new Error('Supabase ist noch nicht konfiguriert.');
     }
 
-    if (!this.adminEventsStore.session()) {
-      throw new Error('Bitte zuerst im Maschinenraum einloggen.');
-    }
+    assertAdminAccess(this.adminEventsStore.isAdmin());
 
     await this.ensureLoaded();
 
@@ -192,4 +188,10 @@ function getErrorMessage(error: unknown, fallback: string): string {
   }
 
   return fallback;
+}
+
+function assertAdminAccess(isAdmin: boolean): void {
+  if (!isAdmin) {
+    throw new Error('Bitte mit einem freigeschalteten Admin-Account im Maschinenraum einloggen.');
+  }
 }

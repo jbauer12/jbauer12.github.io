@@ -34,7 +34,7 @@
     }
   }
 
-  @if (canEdit()) {
+  @if (canEdit() && showTrigger()) {
     <button
       class="editable-text__trigger"
       type="button"

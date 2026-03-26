@@ -33,7 +33,7 @@
       <ol class="step-list">
         <li>Fuehre die SQL aus `supabase/events_admin.sql` in deinem Supabase-Projekt aus.</li>
         <li>Trage URL und Publishable Key in `src/environments/environment*.ts` ein.</li>
-        <li>Lege in Supabase Auth einen Admin-User an und deaktiviere offene Sign-ups.</li>
+        <li>Lege in Supabase Auth einen User an, trage dessen ID in `public.admin_users` ein und deaktiviere offene Sign-ups.</li>
       </ol>
     </section>
   } @else if (!authReady()) {
@@ -89,6 +89,37 @@
             <button class="button button--solid" type="submit">Einloggen</button>
           </div>
         </form>
+      </div>
+    </section>
+  } @else if (!isAdmin()) {
+    <section class="page-section login-shell">
+      <div class="surface-card admin-panel login-card">
+        <div class="section-header">
+          <p class="kicker">Zugriff</p>
+          <h2 class="section-title">Account ist eingeloggt, aber nicht freigeschaltet</h2>
+          <p class="body-copy">
+            Dieser Pfad bleibt nur dann schreibbar, wenn dein Supabase-User in `public.admin_users`
+            als Admin hinterlegt wurde.
+          </p>
+        </div>
+
+        <div class="info-strip admin-panel__notice">{{ notice() }}</div>
+
+        @if (syncError()) {
+          <div class="info-strip admin-panel__notice admin-panel__notice--error">
+            {{ syncError() }}
+          </div>
+        }
+
+        <ol class="step-list">
+          <li>Supabase Dashboard oeffnen und unter `Authentication -> Users` die User-ID kopieren.</li>
+          <li>Im SQL Editor ausfuehren: `insert into public.admin_users (user_id) values ('DEINE-USER-ID');`</li>
+          <li>Danach diese Seite neu laden oder erneut einloggen.</li>
+        </ol>
+
+        <div class="action-row admin-form__actions">
+          <button class="button button--ghost" type="button" (click)="signOut()">Abmelden</button>
+        </div>
       </div>
     </section>
   } @else {

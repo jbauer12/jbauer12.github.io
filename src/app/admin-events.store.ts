@@ -35,6 +35,7 @@ export class AdminEventsStore {
 
   readonly events = signal<AdminEvent[]>([]);
   readonly session = signal<Session | null>(null);
+  readonly isAdmin = signal(false);
   readonly isConfigured = signal(isSupabaseConfigured());
   readonly isLoading = signal(false);
   readonly isSaving = signal(false);
@@ -78,7 +79,7 @@ export class AdminEventsStore {
       throw error;
     }
 
-    this.session.set(data.session);
+    await this.updateSession(data.session);
     await this.ensureEventsLoaded();
   }
 
@@ -94,6 +95,7 @@ export class AdminEventsStore {
     }
 
     this.session.set(null);
+    this.isAdmin.set(false);
   }
 
   async saveEvent(value: AdminEventInput, eventId?: string): Promise<AdminEvent> {
@@ -101,9 +103,7 @@ export class AdminEventsStore {
       throw new Error('Supabase ist noch nicht konfiguriert.');
     }
 
-    if (!this.session()) {
-      throw new Error('Bitte zuerst einloggen.');
-    }
+    this.assertAdminAccess();
 
     const currentEvents = this.events();
     const existingEvent = eventId
@@ -144,9 +144,7 @@ export class AdminEventsStore {
       throw new Error('Supabase ist noch nicht konfiguriert.');
     }
 
-    if (!this.session()) {
-      throw new Error('Bitte zuerst einloggen.');
-    }
+    this.assertAdminAccess();
 
     await this.ensureEventsLoaded();
 
@@ -194,12 +192,14 @@ export class AdminEventsStore {
       throw new Error('Supabase ist noch nicht konfiguriert.');
     }
 
-    if (!this.session()) {
-      throw new Error('Bitte zuerst einloggen.');
-    }
+    this.assertAdminAccess();
 
     if (file.type && !file.type.startsWith('image/')) {
       throw new Error('Bitte nur Bilddateien hochladen.');
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error('Bitte nur Bilder bis maximal 5 MB hochladen.');
     }
 
     const fileExtension = getFileExtension(file.name);
@@ -229,9 +229,7 @@ export class AdminEventsStore {
       throw new Error('Supabase ist noch nicht konfiguriert.');
     }
 
-    if (!this.session()) {
-      throw new Error('Bitte zuerst einloggen.');
-    }
+    this.assertAdminAccess();
 
     this.syncError.set(null);
 
@@ -258,7 +256,7 @@ export class AdminEventsStore {
       const {
         data: { session },
       } = await this.supabase.auth.getSession();
-      this.session.set(session);
+      await this.updateSession(session);
     } catch (error) {
       this.syncError.set(getErrorMessage(error, 'Die Session konnte nicht geladen werden.'));
     } finally {
@@ -266,10 +264,50 @@ export class AdminEventsStore {
     }
 
     this.supabase.auth.onAuthStateChange((_event, session) => {
-      this.session.set(session);
+      void this.updateSession(session);
     });
 
     await this.ensureEventsLoaded();
+  }
+
+  private assertAdminAccess(): void {
+    if (!this.session()) {
+      throw new Error('Bitte zuerst einloggen.');
+    }
+
+    if (!this.isAdmin()) {
+      throw new Error('Dein Account hat keine Admin-Rechte fuer den Maschinenraum.');
+    }
+  }
+
+  private async updateSession(session: Session | null): Promise<void> {
+    this.session.set(session);
+
+    if (!session) {
+      this.isAdmin.set(false);
+      return;
+    }
+
+    await this.refreshAdminStatus();
+  }
+
+  private async refreshAdminStatus(): Promise<void> {
+    if (!this.supabase) {
+      this.isAdmin.set(false);
+      return;
+    }
+
+    const { data, error } = await this.supabase.rpc('is_admin');
+
+    if (error) {
+      this.isAdmin.set(false);
+      this.syncError.set(
+        getErrorMessage(error, 'Die Admin-Rechte konnten nicht geprueft werden.'),
+      );
+      return;
+    }
+
+    this.isAdmin.set(Boolean(data));
   }
 
   private async loadEvents(): Promise<void> {
