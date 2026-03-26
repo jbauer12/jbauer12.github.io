@@ -30,6 +30,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/faq/faq').then((m) => m.FaqPage),
   },
   {
+    path: 'impressum',
+    title: 'vaidaisnotdead | Impressum',
+    loadComponent: () => import('./pages/imprint/imprint').then((m) => m.ImprintPage),
+  },
+  {
+    path: 'datenschutz',
+    title: 'vaidaisnotdead | Datenschutz',
+    loadComponent: () => import('./pages/privacy/privacy').then((m) => m.PrivacyPage),
+  },
+  {
     path: 'mitglied-werden',
     title: 'vaidaisnotdead | Mitglied werden',
     loadComponent: () => import('./pages/membership/membership').then((m) => m.MembershipPage),

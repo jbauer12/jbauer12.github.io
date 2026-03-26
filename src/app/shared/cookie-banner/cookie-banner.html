@@ -1,0 +1,15 @@
+@if (isVisible()) {
+  <aside class="cookie-banner" aria-label="Cookie-Hinweis" aria-live="polite">
+    <p class="cookie-banner__text">
+      Diese Website verwendet aktuell keine Analyse- oder Marketing-Cookies. Für den Hinweis selbst
+      und für den geschützten Admin-Login können technisch notwendige Speichertechnologien im
+      Browser genutzt werden.
+    </p>
+
+    <div class="cookie-banner__actions">
+      <a class="button button--ghost" routerLink="/datenschutz">Datenschutz</a>
+      <a class="button button--ghost" routerLink="/impressum">Impressum</a>
+      <button class="button button--solid" type="button" (click)="dismiss()">Verstanden</button>
+    </div>
+  </aside>
+}

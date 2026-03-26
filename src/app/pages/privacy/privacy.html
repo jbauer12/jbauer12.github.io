@@ -1,0 +1,215 @@
+<main class="page-view">
+  <section class="page-section page-section--hero">
+    <p class="kicker">Rechtliches</p>
+    <h1 class="display-title display-title--small">Datenschutzerklärung</h1>
+    <p class="lead">
+      Diese Datenschutzerklärung ist auf die aktuell im Projekt vorhandenen Seiten und Funktionen
+      zugeschnitten: statische Inhalte, dynamische Daten aus Supabase, ein versteckter Adminbereich
+      und eine Mitgliedsanfrage per Mailto-Link.
+    </p>
+  </section>
+
+  <section class="page-section">
+    <div class="info-strip">
+      Kein Rechtsrat: Bitte ergänze vor Veröffentlichung noch die echten Angaben zu Verantwortlichem,
+      Hosting und etwaigen Auftragsverarbeitungsverträgen.
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Verantwortlicher</p>
+      <h2 class="section-title">Wer für die Datenverarbeitung zuständig ist</h2>
+    </div>
+
+    <div class="surface-card">
+      <h3>{{ legalEntity.name }}</h3>
+      <p class="body-copy">
+        {{ legalEntity.street }}<br />
+        {{ legalEntity.postalCodeCity }}<br />
+        {{ legalEntity.country }}
+      </p>
+      <p class="body-copy">
+        E-Mail:
+        <a [href]="'mailto:' + legalEntity.email">{{ legalEntity.email }}</a>
+        <br />
+        Telefon: {{ legalEntity.phone }}
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Hosting</p>
+      <h2 class="section-title">Bereitstellung der Website</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Beim Aufruf der Website verarbeitet der eingesetzte Hosting-Anbieter technisch notwendige
+        Verbindungsdaten, um die Seite auszuliefern und die Stabilität und Sicherheit des Betriebs
+        zu gewährleisten.
+      </p>
+      <ul class="bullet-list">
+        <li>IP-Adresse und Zeitpunkt des Zugriffs</li>
+        <li>angeforderte Seite beziehungsweise Datei</li>
+        <li>Browser- und Geräteinformationen im üblichen technischen Umfang</li>
+        <li>Status- und Fehlerdaten zur sicheren Auslieferung der Website</li>
+      </ul>
+      <p class="body-copy">
+        Eingesetzter Hosting-Anbieter: {{ legalEntity.hostingProvider }}
+      </p>
+      <p class="note-line">
+        {{ legalEntity.hostingDetails }}
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Rechtsgrundlagen</p>
+      <h2 class="section-title">Worauf die Verarbeitung gestützt wird</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Soweit personenbezogene Daten im Zusammenhang mit dem Betrieb dieser Website verarbeitet
+        werden, erfolgt dies in der Regel auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO
+        (berechtigtes Interesse an einem sicheren und funktionsfähigen Webangebot).
+      </p>
+      <p class="body-copy">
+        Soweit Daten im Rahmen konkreter Kommunikation oder administrativer Zugänge verarbeitet
+        werden, kann die Verarbeitung zusätzlich auf Art. 6 Abs. 1 lit. b DSGVO oder auf
+        organisatorischen berechtigten Interessen gestützt sein.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Supabase</p>
+      <h2 class="section-title">Dynamische Inhalte, Admin-Login und Eventbilder</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Die Website lädt Teile ihrer Inhalte dynamisch aus Supabase. Dazu gehören aktuell unter
+        anderem Events, FAQ-Einträge, bearbeitbare Seitentexte und hochgeladene Eventbilder.
+      </p>
+      <ul class="bullet-list">
+        <li>Beim Abruf dynamischer Inhalte wird eine Verbindung zu Supabase hergestellt.</li>
+        <li>Im geschützten Adminbereich werden Login-Daten über Supabase Auth verarbeitet.</li>
+        <li>Von Admins hochgeladene Eventbilder werden in Supabase Storage gespeichert.</li>
+        <li>Änderungen im Maschinenraum werden in der Supabase-Datenbank gespeichert.</li>
+      </ul>
+      <p class="body-copy">
+        Bitte ergänze hier vor Veröffentlichung noch die konkreten Vertrags- und Standortangaben zu
+        eurem Supabase-Setup, falls ihr sie im Datenschutztext einzeln ausweisen möchtet.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Cookies</p>
+      <h2 class="section-title">Technisch notwendige Speichertechnologien</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Diese Website verwendet derzeit keine Analyse-, Marketing- oder Retargeting-Cookies. Es
+        werden jedoch technisch notwendige Speichertechnologien genutzt.
+      </p>
+      <ul class="bullet-list">
+        <li>Der Cookie-Hinweis speichert, ob du den Hinweis bereits gesehen und bestätigt hast.</li>
+        <li>Der geschützte Adminbereich kann Sitzungsinformationen im Browser speichern, damit der Admin-Login erhalten bleibt.</li>
+      </ul>
+      <p class="body-copy">
+        Diese Speichertechnologien dienen ausschließlich der sicheren und funktionsfähigen
+        Bereitstellung der Website beziehungsweise des geschützten Adminbereichs.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Kontakt</p>
+      <h2 class="section-title">E-Mail und Mitgliedsanfrage</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Auf der Seite „Mitglied werden“ werden die eingegebenen Angaben nicht an einen Server dieser
+        Website übertragen. Das Formular erstellt lediglich einen Mailto-Link und öffnet dein
+        lokales Mailprogramm.
+      </p>
+      <ul class="bullet-list">
+        <li>Name, E-Mail, Telefonnummer und Nachricht bleiben zunächst im Browser.</li>
+        <li>Erst wenn du die E-Mail in deinem eigenen Mailprogramm absendest, werden Daten übertragen.</li>
+        <li>Zusätzlich gibt es direkte Mailto-Links zur Kontaktaufnahme.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Externe Dienste</p>
+      <h2 class="section-title">Instagram, Facebook und ausgehende Links</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Auf der Website sind lediglich normale Links zu Instagram und Facebook eingebunden. Es
+        werden keine Social-Media-Plugins, keine eingebetteten Feeds und keine Tracking-Pixel dieser
+        Dienste geladen.
+      </p>
+      <p class="body-copy">
+        Erst wenn du einen solchen Link aktiv anklickst, verlässt du diese Website und es gelten die
+        Datenschutzbestimmungen des jeweiligen Anbieters.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Rechte</p>
+      <h2 class="section-title">Deine Rechte</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Dir stehen im Rahmen der gesetzlichen Voraussetzungen insbesondere folgende Rechte zu:
+        Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und
+        Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen.
+      </p>
+      <p class="body-copy">
+        Wenn du der Ansicht bist, dass die Verarbeitung deiner personenbezogenen Daten gegen
+        Datenschutzrecht verstößt, kannst du dich außerdem bei einer Datenschutz-Aufsichtsbehörde
+        beschweren.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Speicherung</p>
+      <h2 class="section-title">Wie lange Daten typischerweise aufbewahrt werden</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Technische Logdaten werden nur so lange gespeichert, wie dies für den sicheren Betrieb und
+        die Fehleranalyse erforderlich ist. Die konkrete Dauer richtet sich nach dem eingesetzten
+        Hosting.
+      </p>
+      <p class="body-copy">
+        Inhalte im Adminbereich wie Events, FAQ-Einträge, Seitentexte oder hochgeladene Bilder
+        bleiben gespeichert, bis sie geändert oder gelöscht werden. Lokal gespeicherte Hinweise oder
+        Sitzungsinformationen bleiben im Browser, bis sie gelöscht werden oder ihre Gültigkeit endet.
+      </p>
+      <p class="note-line">
+        Stand: {{ legalEntity.lastUpdated }}
+      </p>
+    </div>
+  </section>
+</main>

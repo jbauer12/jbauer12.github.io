@@ -1,3 +1,5 @@
+import { contactEmail } from './legal.data';
+
 export type NavItem = {
   label: string;
   path: string;
@@ -49,7 +51,7 @@ export const socialLinks: SocialLink[] = [
   },
   {
     label: 'E-Mail',
-    href: 'mailto:info@vaidaisnotdead.de',
+    href: `mailto:${contactEmail}`,
     external: false,
   },
 ];

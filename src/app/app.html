@@ -104,5 +104,13 @@
         </a>
       }
     </div>
+
+    <div class="site-footer__legal">
+      @for (link of legalLinks; track link.path) {
+        <a [routerLink]="link.path">{{ link.label }}</a>
+      }
+    </div>
   </footer>
+
+  <app-cookie-banner />
 </div>

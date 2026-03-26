@@ -1,0 +1,72 @@
+<main class="page-view">
+  <section class="page-section page-section--hero">
+    <p class="kicker">Rechtliches</p>
+    <h1 class="display-title display-title--small">Impressum</h1>
+    <p class="lead">
+      Basisangaben für die Anbieterkennzeichnung nach § 5 DDG. Die markierten Platzhalter solltest
+      du vor dem Livegang noch mit den echten Vereinsdaten ergänzen.
+    </p>
+  </section>
+
+  <section class="page-section">
+    <div class="info-strip">
+      Bitte prüfe vor Veröffentlichung besonders Anschrift, vertretungsberechtigte Person,
+      Registerangaben und Hosting-Daten.
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Anbieter</p>
+      <h2 class="section-title">Angaben gemäß § 5 DDG</h2>
+    </div>
+
+    <div class="surface-card">
+      <h3>{{ legalEntity.name }}</h3>
+      <p class="body-copy">
+        {{ legalEntity.street }}<br />
+        {{ legalEntity.postalCodeCity }}<br />
+        {{ legalEntity.country }}
+      </p>
+      <p class="body-copy">
+        E-Mail:
+        <a [href]="'mailto:' + legalEntity.email">{{ legalEntity.email }}</a>
+        <br />
+        Telefon: {{ legalEntity.phone }}
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Vertretung</p>
+      <h2 class="section-title">Verein und Register</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        Vertreten durch: {{ legalEntity.representatives }}
+      </p>
+      <p class="body-copy">
+        Registergericht: {{ legalEntity.registerCourt }}<br />
+        Vereinsregister: {{ legalEntity.registerNumber }}
+      </p>
+      <p class="note-line">
+        {{ legalEntity.vatId }}
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Inhalte</p>
+      <h2 class="section-title">Verantwortlich für redaktionelle Inhalte</h2>
+    </div>
+
+    <div class="surface-card">
+      <p class="body-copy">
+        {{ legalEntity.contentResponsible }}
+      </p>
+    </div>
+  </section>
+</main>

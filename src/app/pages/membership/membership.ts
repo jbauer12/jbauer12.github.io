@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 
+import { contactEmail } from '../../legal.data';
 import { EditableTextComponent } from '../../shared/editable-text/editable-text';
 import { membershipTracks } from '../../site-data';
 
@@ -10,7 +11,7 @@ import { membershipTracks } from '../../site-data';
 })
 export class MembershipPage {
   readonly membershipTracks = membershipTracks;
-  readonly contactEmail = 'info@vaidaisnotdead.de';
+  readonly contactEmail = contactEmail;
   readonly selectedMembershipType = signal('');
 
   setMembershipType(type: string): void {
