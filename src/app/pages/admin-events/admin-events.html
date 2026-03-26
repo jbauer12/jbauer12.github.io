@@ -32,7 +32,7 @@
 
       <ol class="step-list">
         <li>Fuehre die SQL aus `supabase/events_admin.sql` in deinem Supabase-Projekt aus.</li>
-        <li>Trage URL und Anon Key in `src/environments/environment*.ts` ein.</li>
+        <li>Trage URL und Publishable Key in `src/environments/environment*.ts` ein.</li>
         <li>Lege in Supabase Auth einen Admin-User an und deaktiviere offene Sign-ups.</li>
       </ol>
     </section>
@@ -93,6 +93,69 @@
     </section>
   } @else {
     <section class="page-section admin-layout">
+      <div class="surface-card admin-panel">
+        <div class="section-header">
+          <p class="kicker">Import</p>
+          <h2 class="section-title">Facebook und JSON nach Supabase holen</h2>
+          <p class="body-copy">
+            Die vorhandenen Facebook-Events kommen aktuell aus der generierten `events.generated.json`.
+            Diese Datei kannst du hier direkt nach Supabase uebernehmen.
+          </p>
+        </div>
+
+        <div class="admin-import-panel">
+          <div class="info-strip admin-panel__notice">
+            Direktes Facebook-Scraping im Browser ist unzuverlaessig. Der stabile Weg bleibt:
+            Python-Script ausfuehren, JSON erzeugen, dann hier importieren.
+          </div>
+
+          <div class="action-row admin-import-panel__actions">
+            <button
+              class="button button--solid"
+              type="button"
+              [disabled]="isImporting()"
+              (click)="importFromGeneratedJson()"
+            >
+              Aktuelle JSON importieren
+            </button>
+          </div>
+
+          <label class="admin-field admin-field--wide">
+            <span>Oder JSON-Datei auswaehlen</span>
+            <input
+              type="file"
+              accept="application/json"
+              [disabled]="isImporting()"
+              (change)="importFromJsonFile($event)"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div class="surface-card admin-panel">
+        <div class="section-header">
+          <p class="kicker">CMS</p>
+          <h2 class="section-title">Seitentexte nach Supabase schieben</h2>
+          <p class="body-copy">
+            Damit Inline-Bearbeiten auf der normalen Seite sofort fuer alle bestehenden Texte
+            funktioniert, kannst du die aktuellen Standardtexte einmal in `site_content` anlegen.
+          </p>
+        </div>
+
+        <div class="admin-import-panel">
+          <div class="action-row admin-import-panel__actions">
+            <button
+              class="button button--solid"
+              type="button"
+              [disabled]="isSeedingContent()"
+              (click)="seedSiteContent()"
+            >
+              Standardtexte nach Supabase schreiben
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="surface-card admin-panel">
         <div class="section-header">
           <p class="kicker">Formular</p>

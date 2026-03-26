@@ -2,6 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 
 import { AdminEventsStore } from '../../admin-events.store';
 import { AdminEvent, GeneratedEvent, GeneratedEventsPayload } from '../../events.models';
+import { EditableTextComponent } from '../../shared/editable-text/editable-text';
 
 type DisplayEvent = (GeneratedEvent | AdminEvent) & {
   parsedDate: Date | null;
@@ -51,6 +52,7 @@ const WEEKDAY_PREFIX =
   /^(monday|tuesday|wednesday|thursday|friday|saturday|sunday|montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag),?\s+/i;
 
 @Component({
+  imports: [EditableTextComponent],
   templateUrl: './events.html',
   styleUrl: './events.scss',
 })

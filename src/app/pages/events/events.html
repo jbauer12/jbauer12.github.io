@@ -1,13 +1,25 @@
-@let pageTitle = 'Events';
-
 <main class="page-view">
   <section class="page-section page-section--hero">
-    <p class="kicker">{{ pageTitle }}</p>
-    <h1 class="display-title display-title--small">{{ pageTitle }}</h1>
-    <p class="lead">
-      Wir machen Events rund um Punk, Techno und alternative Musik. Von rohen Live-Shows
-      bis zu langen Clubnächten bringen wir laute, unabhängige Sounds und Szenen zusammen.
-    </p>
+    <app-editable-text
+      tag="p"
+      className="kicker"
+      [multiline]="false"
+      contentKey="events.hero.kicker"
+      fallback="Events"
+    />
+    <app-editable-text
+      tag="h1"
+      className="display-title display-title--small"
+      [multiline]="false"
+      contentKey="events.hero.title"
+      fallback="Events"
+    />
+    <app-editable-text
+      tag="p"
+      className="lead"
+      contentKey="events.hero.lead"
+      fallback="Wir machen Events rund um Punk, Techno und alternative Musik. Von rohen Live-Shows bis zu langen Clubnächten bringen wir laute, unabhängige Sounds und Szenen zusammen."
+    />
 
   </section>
 
@@ -24,8 +36,20 @@
   } @else {
     <section class="page-section">
       <div class="section-header">
-        <p class="kicker">Kommende Events</p>
-        <h2 class="section-title">Alles, was als Nächstes ansteht.</h2>
+        <app-editable-text
+          tag="p"
+          className="kicker"
+          [multiline]="false"
+          contentKey="events.upcoming.kicker"
+          fallback="Kommende Events"
+        />
+        <app-editable-text
+          tag="h2"
+          className="section-title"
+          [multiline]="false"
+          contentKey="events.upcoming.title"
+          fallback="Alles, was als Nächstes ansteht."
+        />
       </div>
 
       @if (upcomingEvents().length) {
@@ -71,22 +95,48 @@
         </div>
       } @else {
         <div class="info-strip">
-          Aktuell stehen keine Events an. Schau gerne auf unserer
+          <app-editable-text
+            tag="span"
+            contentKey="events.upcoming.empty_before"
+            fallback="Aktuell stehen keine Events an. Schau gerne auf unserer "
+          />
+          <!-- Keep direct link below for convenience even if text is dynamic. -->
           <a
             href="https://www.facebook.com/vaidaisnotdead/"
             target="_blank"
             rel="noreferrer noopener"
-            >Facebook-Seite</a
+            ><app-editable-text
+              tag="span"
+              [multiline]="false"
+              contentKey="events.upcoming.empty_link"
+              fallback="Facebook-Seite"
+            /></a
           >
-          vorbei, um dich über neue Termine zu informieren.
+          <app-editable-text
+            tag="span"
+            contentKey="events.upcoming.empty_after"
+            fallback=" vorbei, um dich über neue Termine zu informieren."
+          />
         </div>
       }
     </section>
 
     <section class="page-section">
       <div class="section-header">
-        <p class="kicker">Vergangene Events</p>
-        <h2 class="section-title">Was bereits gelaufen ist.</h2>
+        <app-editable-text
+          tag="p"
+          className="kicker"
+          [multiline]="false"
+          contentKey="events.past.kicker"
+          fallback="Vergangene Events"
+        />
+        <app-editable-text
+          tag="h2"
+          className="section-title"
+          [multiline]="false"
+          contentKey="events.past.title"
+          fallback="Was bereits gelaufen ist."
+        />
       </div>
 
       @if (pastEvents().length) {
@@ -132,7 +182,11 @@
         </div>
       } @else {
         <div class="info-strip">
-          Aktuell stehen in der generierten Datei keine vergangenen Events.
+          <app-editable-text
+            tag="span"
+            contentKey="events.past.empty"
+            fallback="Aktuell stehen in der generierten Datei keine vergangenen Events."
+          />
         </div>
       }
     </section>

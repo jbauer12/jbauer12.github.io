@@ -1,34 +1,96 @@
 <main class="page-view">
   <section class="page-section page-section--hero membership-hero">
-    <p class="kicker">Mitglied werden</p>
-    <h1 class="display-title display-title--small">Fördern oder aktiv mittragen.</h1>
-    <p class="lead">
-      Bei vaida is not dead gibt es nicht nur einen Weg rein. Du kannst die Struktur finanziell
-      stärken oder selbst aktiv Teil davon werden.
-    </p>
+    <app-editable-text
+      tag="p"
+      className="kicker"
+      [multiline]="false"
+      contentKey="membership.hero.kicker"
+      fallback="Mitglied werden"
+    />
+    <app-editable-text
+      tag="h1"
+      className="display-title display-title--small"
+      [multiline]="false"
+      contentKey="membership.hero.title"
+      fallback="Fördern oder aktiv mittragen."
+    />
+    <app-editable-text
+      tag="p"
+      className="lead"
+      contentKey="membership.hero.lead"
+      fallback="Bei vaida is not dead gibt es nicht nur einen Weg rein. Du kannst die Struktur finanziell stärken oder selbst aktiv Teil davon werden."
+    />
     <div class="membership-pills">
-      <span>Fördermitgliedschaft</span>
-      <span>Aktive Mitgliedschaft</span>
-      <span>DIY-Struktur in Viechtach</span>
+      <span>
+        <app-editable-text
+          tag="span"
+          [multiline]="false"
+          contentKey="membership.hero.pill.0"
+          fallback="Fördermitgliedschaft"
+        />
+      </span>
+      <span>
+        <app-editable-text
+          tag="span"
+          [multiline]="false"
+          contentKey="membership.hero.pill.1"
+          fallback="Aktive Mitgliedschaft"
+        />
+      </span>
+      <span>
+        <app-editable-text
+          tag="span"
+          [multiline]="false"
+          contentKey="membership.hero.pill.2"
+          fallback="DIY-Struktur in Viechtach"
+        />
+      </span>
     </div>
     <div class="action-row">
-      <a class="button button--solid" href="#mitgliedsanfrage">Zum Formular</a>
-      <a class="button button--ghost" [href]="'mailto:' + contactEmail">Direkt mailen</a>
+      <a class="button button--solid" href="#mitgliedsanfrage">
+        <app-editable-text
+          tag="span"
+          [multiline]="false"
+          contentKey="membership.hero.form_cta"
+          fallback="Zum Formular"
+        />
+      </a>
+      <a class="button button--ghost" [href]="'mailto:' + contactEmail">
+        <app-editable-text
+          tag="span"
+          [multiline]="false"
+          contentKey="membership.hero.mail_cta"
+          fallback="Direkt mailen"
+        />
+      </a>
     </div>
   </section>
 
   <section class="page-section">
     <div class="section-header">
-      <p class="kicker">Mitgliedschaftsarten</p>
-      <h2 class="section-title">Im Grunde gibt es zwei Formen.</h2>
-      <p class="body-copy">
-        Nicht jede Person will auf dieselbe Weise beteiligt sein. Deshalb ist hier nur kurz
-        aufgeschrieben, was mit Fördermitgliedschaft und aktiver Mitgliedschaft jeweils gemeint ist.
-      </p>
+      <app-editable-text
+        tag="p"
+        className="kicker"
+        [multiline]="false"
+        contentKey="membership.types.kicker"
+        fallback="Mitgliedschaftsarten"
+      />
+      <app-editable-text
+        tag="h2"
+        className="section-title"
+        contentKey="membership.types.title"
+        fallback="Im Grunde gibt es zwei Formen."
+      />
+      <app-editable-text
+        tag="p"
+        className="body-copy"
+        contentKey="membership.types.body"
+        fallback="Nicht jede Person will auf dieselbe Weise beteiligt sein. Deshalb ist hier nur kurz aufgeschrieben, was mit Fördermitgliedschaft und aktiver Mitgliedschaft jeweils gemeint ist."
+      />
     </div>
 
     <div class="membership-mode-list">
-      @for (track of membershipTracks; track track.label) {
+      @for (track of membershipTracks; track track.label; let i = $index) {
         <article
           class="membership-mode"
           [class.membership-mode--active]="track.kind === 'aktiv'"
@@ -42,20 +104,51 @@
           </div>
 
           <div class="membership-mode__content">
-            <p class="membership-mode__label">{{ track.label }}</p>
-            <h3>{{ track.title }}</h3>
-            <p class="membership-mode__intro">{{ track.intro }}</p>
+            <app-editable-text
+              tag="p"
+              className="membership-mode__label"
+              [multiline]="false"
+              [contentKey]="'membership.tracks.' + i + '.label'"
+              [fallback]="track.label"
+            />
+            <app-editable-text
+              tag="h3"
+              [contentKey]="'membership.tracks.' + i + '.title'"
+              [fallback]="track.title"
+            />
+            <app-editable-text
+              tag="p"
+              className="membership-mode__intro"
+              [contentKey]="'membership.tracks.' + i + '.intro'"
+              [fallback]="track.intro"
+            />
 
             <ul class="membership-mode__list">
-              @for (detail of track.details; track detail) {
-                <li>{{ detail }}</li>
+              @for (detail of track.details; track detail; let detailIndex = $index) {
+                <li>
+                  <app-editable-text
+                    tag="span"
+                    [contentKey]="'membership.tracks.' + i + '.details.' + detailIndex"
+                    [fallback]="detail"
+                  />
+                </li>
               }
             </ul>
 
-            <p class="note-line">{{ track.note }}</p>
+            <app-editable-text
+              tag="p"
+              className="note-line"
+              [contentKey]="'membership.tracks.' + i + '.note'"
+              [fallback]="track.note"
+            />
 
             <a class="membership-mode__link" href="#mitgliedsanfrage" (click)="setMembershipType(track.label)">
-              {{ track.cta }}
+              <app-editable-text
+                tag="span"
+                [multiline]="false"
+                [contentKey]="'membership.tracks.' + i + '.cta'"
+                [fallback]="track.cta"
+              />
             </a>
           </div>
         </article>
@@ -65,20 +158,37 @@
 
   <section id="mitgliedsanfrage" class="page-section membership-request-section">
     <article class="surface-card membership-form-card">
-      <p class="kicker">Kontaktformular</p>
-      <h2 class="section-title">Wenn du magst, schreib uns einfach.</h2>
-      <p class="body-copy">
-        Das Formular öffnet nur dein Mailprogramm und setzt die wichtigsten Angaben schon in
-        Betreff und Nachricht an <strong>{{ contactEmail }}</strong>. Eine kurze Mail mit ein paar
-        Zeilen reicht völlig.
-      </p>
+      <app-editable-text
+        tag="p"
+        className="kicker"
+        [multiline]="false"
+        contentKey="membership.form.kicker"
+        fallback="Kontaktformular"
+      />
+      <app-editable-text
+        tag="h2"
+        className="section-title"
+        contentKey="membership.form.title"
+        fallback="Wenn du magst, schreib uns einfach."
+      />
+      <app-editable-text
+        tag="p"
+        className="body-copy"
+        contentKey="membership.form.body"
+        fallback="Das Formular öffnet nur dein Mailprogramm und setzt die wichtigsten Angaben schon in Betreff und Nachricht an info@vaidaisnotdead.de. Eine kurze Mail mit ein paar Zeilen reicht völlig."
+      />
 
       <form
         class="membership-form"
         (submit)="$event.preventDefault(); sendMembershipMail(membershipType.value, name.value, email.value, phone.value, focus.value, message.value)"
       >
         <label class="form-field">
-          <span>Mitgliedschaftsart</span>
+          <app-editable-text
+            tag="span"
+            [multiline]="false"
+            contentKey="membership.form.field.type"
+            fallback="Mitgliedschaftsart"
+          />
           <select
             #membershipType
             name="membershipType"
@@ -93,22 +203,42 @@
         </label>
 
         <label class="form-field">
-          <span>Name</span>
+          <app-editable-text
+            tag="span"
+            [multiline]="false"
+            contentKey="membership.form.field.name"
+            fallback="Name"
+          />
           <input #name type="text" name="name" autocomplete="name" required />
         </label>
 
         <label class="form-field">
-          <span>E-Mail</span>
+          <app-editable-text
+            tag="span"
+            [multiline]="false"
+            contentKey="membership.form.field.email"
+            fallback="E-Mail"
+          />
           <input #email type="email" name="email" autocomplete="email" required />
         </label>
 
         <label class="form-field">
-          <span>Telefon / Signal / Insta</span>
+          <app-editable-text
+            tag="span"
+            [multiline]="false"
+            contentKey="membership.form.field.phone"
+            fallback="Telefon / Signal / Insta"
+          />
           <input #phone type="text" name="phone" autocomplete="tel" />
         </label>
 
         <label class="form-field">
-          <span>Wie willst du beitragen?</span>
+          <app-editable-text
+            tag="span"
+            [multiline]="false"
+            contentKey="membership.form.field.focus"
+            fallback="Wie willst du beitragen?"
+          />
           <input
             #focus
             type="text"
@@ -118,7 +248,12 @@
         </label>
 
         <label class="form-field">
-          <span>Nachricht</span>
+          <app-editable-text
+            tag="span"
+            [multiline]="false"
+            contentKey="membership.form.field.message"
+            fallback="Nachricht"
+          />
           <textarea
             #message
             name="message"
@@ -129,9 +264,21 @@
         </label>
 
         <div class="action-row action-row--form">
-          <button class="button button--solid" type="submit">Anfrage per Mail vorbereiten</button>
+          <button class="button button--solid" type="submit">
+            <app-editable-text
+              tag="span"
+              [multiline]="false"
+              contentKey="membership.form.submit"
+              fallback="Anfrage per Mail vorbereiten"
+            />
+          </button>
           <a class="button button--ghost" [href]="'mailto:' + contactEmail">
-            Ohne Formular schreiben
+            <app-editable-text
+              tag="span"
+              [multiline]="false"
+              contentKey="membership.form.mail_cta"
+              fallback="Ohne Formular schreiben"
+            />
           </a>
         </div>
       </form>

@@ -1,0 +1,59 @@
+:host {
+  position: relative;
+  display: block;
+}
+
+:host(.editable-text-host--inline) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.editable-text__trigger {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 1px solid rgba(54, 95, 82, 0.2);
+  border-radius: 999px;
+  background: rgba(249, 245, 238, 0.92);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+:host(.editable-text-host--inline) .editable-text__trigger {
+  position: static;
+  width: 1.55rem;
+  height: 1.55rem;
+}
+
+.editable-text__editor {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: rgba(249, 245, 238, 0.96);
+}
+
+.editable-text__editor textarea,
+.editable-text__editor input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: #fbf7f1;
+  color: var(--text-primary);
+}
+
+.editable-text__editor textarea {
+  resize: vertical;
+  min-height: 7rem;
+}
+
+.editable-text__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}

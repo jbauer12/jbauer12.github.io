@@ -2,15 +2,25 @@
   <section class="page-section page-section--hero">
     <div class="hero-grid">
       <div>
-        <h1 class="display-title">Vaida is not dead e.V.</h1>
-        <p class="lead">
-          DIY-Konzerte, offene Sessions und Abende zwischen Techno, Punk und allem, was dazwischen
-          lebt.
-        </p>
-        <p class="body-copy">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua.
-        </p>
+        <app-editable-text
+          tag="h1"
+          className="display-title"
+          [multiline]="false"
+          contentKey="home.hero.title"
+          fallback="Vaida is not dead e.V."
+        />
+        <app-editable-text
+          tag="p"
+          className="lead"
+          contentKey="home.hero.lead"
+          fallback="DIY-Konzerte, offene Sessions und Abende zwischen Techno, Punk und allem, was dazwischen lebt."
+        />
+        <app-editable-text
+          tag="p"
+          className="body-copy"
+          contentKey="home.hero.body"
+          fallback="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        />
       </div>
 
       <figure class="poster-frame poster-frame--hero">
@@ -21,8 +31,22 @@
       </figure>
     </div>
         <div class="action-row" style="justify-content: center">
-          <a class="button button--solid" routerLink="/events">Events ansehen</a>
-          <a class="button button--ghost" routerLink="/mitglied-werden">Mitglied werden</a>
+          <a class="button button--solid" routerLink="/events">
+            <app-editable-text
+              tag="span"
+              [multiline]="false"
+              contentKey="home.hero.events_cta"
+              fallback="Events ansehen"
+            />
+          </a>
+          <a class="button button--ghost" routerLink="/mitglied-werden">
+            <app-editable-text
+              tag="span"
+              [multiline]="false"
+              contentKey="home.hero.membership_cta"
+              fallback="Mitglied werden"
+            />
+          </a>
         </div>
   </section>
 
@@ -30,23 +54,57 @@
     <div class="split-grid">
       <div>
         <div class="section-header">
-          <p class="kicker">Aktuelles</p>
-          <h2 class="section-title">Bands und Solo-Acts für das Bürgerfest Viechtach 2026 gesucht.</h2>
-          <p class="body-copy">
-            Für das Bürgerfest in Viechtach vom 3. bis 5. Juli 2026 suchen wir Bands,
-            Künstler und Künstlerinnen aus verschiedenen musikalischen Richtungen.
-          </p>
+          <app-editable-text
+            tag="p"
+            className="kicker"
+            [multiline]="false"
+            contentKey="home.current.kicker"
+            fallback="Aktuelles"
+          />
+          <app-editable-text
+            tag="h2"
+            className="section-title"
+            contentKey="home.current.title"
+            fallback="Bands und Solo-Acts für das Bürgerfest Viechtach 2026 gesucht."
+          />
+          <app-editable-text
+            tag="p"
+            className="body-copy"
+            contentKey="home.current.body"
+            fallback="Für das Bürgerfest in Viechtach vom 3. bis 5. Juli 2026 suchen wir Bands, Künstler und Künstlerinnen aus verschiedenen musikalischen Richtungen."
+          />
         </div>
 
         <div class="info-strip">
-          Ob laut, tanzbar, experimentell oder ganz entspannt: willkommen sind Acts mit eigenem
-          Stil und Lust auf ein offenes Stadtfest-Wochenende.
+          <app-editable-text
+            tag="span"
+            contentKey="home.current.info"
+            fallback="Ob laut, tanzbar, experimentell oder ganz entspannt: willkommen sind Acts mit eigenem Stil und Lust auf ein offenes Stadtfest-Wochenende."
+          />
         </div>
 
         <ul class="bullet-list">
-          <li>Gesucht werden Bands, Solo-Künstler und Künstlerinnen für Live-Auftritte.</li>
-          <li>Möglich sind unterschiedliche Genres von Indie, Rock und Punk bis Funk, Pop und Akustik.</li>
-          <li>Der Zeitraum ist Freitag, 3. Juli 2026 bis Sonntag, 5. Juli 2026 in Viechtach.</li>
+          <li>
+            <app-editable-text
+              tag="span"
+              contentKey="home.current.bullet.0"
+              fallback="Gesucht werden Bands, Solo-Künstler und Künstlerinnen für Live-Auftritte."
+            />
+          </li>
+          <li>
+            <app-editable-text
+              tag="span"
+              contentKey="home.current.bullet.1"
+              fallback="Möglich sind unterschiedliche Genres von Indie, Rock und Punk bis Funk, Pop und Akustik."
+            />
+          </li>
+          <li>
+            <app-editable-text
+              tag="span"
+              contentKey="home.current.bullet.2"
+              fallback="Der Zeitraum ist Freitag, 3. Juli 2026 bis Sonntag, 5. Juli 2026 in Viechtach."
+            />
+          </li>
         </ul>
       </div>
 

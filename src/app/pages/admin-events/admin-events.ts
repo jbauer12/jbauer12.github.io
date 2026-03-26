@@ -4,7 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { AdminEventsStore } from '../../admin-events.store';
-import { AdminEvent, AdminEventInput } from '../../events.models';
+import {
+  AdminEvent,
+  AdminEventInput,
+  GeneratedEventsPayload,
+  ImportSummary,
+} from '../../events.models';
+import { SiteContentStore } from '../../site-content.store';
 
 type LoginDraft = {
   email: string;
@@ -18,6 +24,7 @@ type LoginDraft = {
 })
 export class AdminEventsPage {
   private readonly adminEventsStore = inject(AdminEventsStore);
+  private readonly siteContentStore = inject(SiteContentStore);
 
   readonly events = computed(() => this.adminEventsStore.events());
   readonly session = this.adminEventsStore.session;
@@ -28,6 +35,8 @@ export class AdminEventsPage {
   readonly setupMessage = this.adminEventsStore.setupMessage;
   readonly syncError = this.adminEventsStore.syncError;
   readonly isUploadingImage = signal(false);
+  readonly isImporting = signal(false);
+  readonly isSeedingContent = signal(false);
   readonly notice = signal(
     'Nur eingeloggt kannst du neue Events anlegen oder bestehende Eintraege aendern.',
   );
@@ -118,6 +127,74 @@ export class AdminEventsPage {
     this.notice.set('Das Eventbild wurde auf das Standardbild zurueckgesetzt.');
   }
 
+  async importFromGeneratedJson(): Promise<void> {
+    this.isImporting.set(true);
+    this.notice.set('Die generierte Event-Datei wird geladen und nach Supabase importiert.');
+
+    try {
+      const response = await fetch('/events.generated.json', {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Die Datei /events.generated.json konnte nicht geladen werden (HTTP ${response.status}).`);
+      }
+
+      const payload = (await response.json()) as GeneratedEventsPayload;
+      const summary = await this.adminEventsStore.importEvents(payload.events ?? []);
+      this.notice.set(buildImportNotice(summary));
+    } catch (error) {
+      this.notice.set(getErrorMessage(error, 'Import aus der generierten Datei fehlgeschlagen.'));
+    } finally {
+      this.isImporting.set(false);
+    }
+  }
+
+  async importFromJsonFile(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement | null;
+    const file = input?.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    this.isImporting.set(true);
+    this.notice.set(`"${file.name}" wird gelesen und importiert.`);
+
+    try {
+      const rawValue = await file.text();
+      const payload = JSON.parse(rawValue) as GeneratedEventsPayload | { events?: GeneratedEventsPayload['events'] };
+      const summary = await this.adminEventsStore.importEvents(payload.events ?? []);
+      this.notice.set(buildImportNotice(summary));
+    } catch (error) {
+      this.notice.set(getErrorMessage(error, 'JSON-Import fehlgeschlagen.'));
+    } finally {
+      this.isImporting.set(false);
+
+      if (input) {
+        input.value = '';
+      }
+    }
+  }
+
+  async seedSiteContent(): Promise<void> {
+    this.isSeedingContent.set(true);
+    this.notice.set('Standardtexte werden nach Supabase geschrieben.');
+
+    try {
+      const summary = await this.siteContentStore.seedDefaults();
+      this.notice.set(
+        `${summary.created} Seitentexte neu angelegt, ${summary.skipped} bereits vorhanden.`,
+      );
+    } catch (error) {
+      this.notice.set(getErrorMessage(error, 'Seed fuer Seitentexte fehlgeschlagen.'));
+    } finally {
+      this.isSeedingContent.set(false);
+    }
+  }
+
   startEditing(event: AdminEvent): void {
     this.editingEventId.set(event.id);
     this.draft = createDraftFromEvent(event);
@@ -197,4 +274,8 @@ function getErrorMessage(error: unknown, fallback: string): string {
   }
 
   return fallback;
+}
+
+function buildImportNotice(summary: ImportSummary): string {
+  return `${summary.created} neu importiert, ${summary.updated} aktualisiert, ${summary.skipped} uebersprungen.`;
 }

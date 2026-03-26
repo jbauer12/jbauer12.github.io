@@ -1,0 +1,47 @@
+@if (isEditing()) {
+  <div class="editable-text__editor">
+    @if (multiline()) {
+      <textarea [(ngModel)]="draftValue" rows="5"></textarea>
+    } @else {
+      <input [(ngModel)]="draftValue" type="text" />
+    }
+
+    <div class="editable-text__actions">
+      <button class="button button--solid" type="button" [disabled]="isSaving()" (click)="save($event)">
+        Speichern
+      </button>
+      <button class="button button--ghost" type="button" (click)="cancelEditing()">
+        Abbrechen
+      </button>
+    </div>
+  </div>
+} @else {
+  @switch (tag()) {
+    @case ('h1') {
+      <h1 [class]="className()">{{ value() }}</h1>
+    }
+    @case ('h2') {
+      <h2 [class]="className()">{{ value() }}</h2>
+    }
+    @case ('h3') {
+      <h3 [class]="className()">{{ value() }}</h3>
+    }
+    @case ('p') {
+      <p [class]="className()">{{ value() }}</p>
+    }
+    @default {
+      <span [class]="className()">{{ value() }}</span>
+    }
+  }
+
+  @if (canEdit()) {
+    <button
+      class="editable-text__trigger"
+      type="button"
+      aria-label="Text bearbeiten"
+      (click)="startEditing($event)"
+    >
+      ✎
+    </button>
+  }
+}

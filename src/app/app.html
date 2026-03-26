@@ -9,8 +9,20 @@
             alt="Logo von Vaida is not dead e.V."
           />
           <span class="site-brand__copy">
-            <span class="site-brand__title">{{ title }}</span>
-            <span class="site-brand__meta">Viechtach · Bayerischer Wald</span>
+            <app-editable-text
+              tag="span"
+              className="site-brand__title"
+              [multiline]="false"
+              contentKey="app.brand.title"
+              fallback="Vaida is not dead e.V."
+            />
+            <app-editable-text
+              tag="span"
+              className="site-brand__meta"
+              [multiline]="false"
+              contentKey="app.brand.meta"
+              fallback="Viechtach · Bayerischer Wald"
+            />
           </span>
         </a>
 
@@ -46,7 +58,12 @@
           [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
           (click)="closeMobileMenu()"
         >
-          {{ item.label }}
+          <app-editable-text
+            tag="span"
+            [multiline]="false"
+            [contentKey]="'app.nav.' + $index + '.label'"
+            [fallback]="item.label"
+          />
         </a>
       }
     </nav>
@@ -56,16 +73,30 @@
 
   <footer class="site-footer">
     <div>
-      <p class="site-footer__title">Vaida is not dead e.V.</p>
-      <p class="site-footer__text">
-        Jugend- und Subkultur in Viechtach. Direkt, reduziert und auf echte Abende ausgerichtet.
-      </p>
+      <app-editable-text
+        tag="p"
+        className="site-footer__title"
+        [multiline]="false"
+        contentKey="app.footer.title"
+        fallback="Vaida is not dead e.V."
+      />
+      <app-editable-text
+        tag="p"
+        className="site-footer__text"
+        contentKey="app.footer.text"
+        fallback="Jugend- und Subkultur in Viechtach. Direkt, reduziert und auf echte Abende ausgerichtet."
+      />
     </div>
 
     <div class="site-footer__links">
       @for (link of socialLinks; track link.label) {
         <a [href]="link.href" [attr.target]="link.external ? '_blank' : null" [attr.rel]="link.external ? 'noreferrer noopener' : null">
-          {{ link.label }}
+          <app-editable-text
+            tag="span"
+            [multiline]="false"
+            [contentKey]="'app.social.' + $index + '.label'"
+            [fallback]="link.label"
+          />
         </a>
       }
     </div>

@@ -1,7 +1,12 @@
 import { Injectable, signal } from '@angular/core';
 import type { Session } from '@supabase/supabase-js';
 
-import { AdminEvent, AdminEventInput } from './events.models';
+import {
+  AdminEvent,
+  AdminEventInput,
+  GeneratedEvent,
+  ImportSummary,
+} from './events.models';
 import { getSupabaseClient, isSupabaseConfigured } from './supabase.client';
 
 type EventRow = {
@@ -134,6 +139,56 @@ export class AdminEventsStore {
     }
   }
 
+  async importEvents(events: GeneratedEvent[]): Promise<ImportSummary> {
+    if (!this.supabase) {
+      throw new Error('Supabase ist noch nicht konfiguriert.');
+    }
+
+    if (!this.session()) {
+      throw new Error('Bitte zuerst einloggen.');
+    }
+
+    await this.ensureEventsLoaded();
+
+    let created = 0;
+    let updated = 0;
+    let skipped = 0;
+
+    for (const event of events) {
+      if (!event.title?.trim() || !event.description?.trim() || !event.startsAt?.trim()) {
+        skipped += 1;
+        continue;
+      }
+
+      const existingEvent = this.findImportedEventMatch(event);
+
+      await this.saveEvent(
+        {
+          title: event.title,
+          description: event.description,
+          imageUrl: event.imageUrl || '/logo.jpg',
+          startsAt: event.startsAt,
+          venue: event.venue ?? '',
+          address: event.address ?? '',
+          city: event.city ?? '',
+          organizer: event.organizer ?? '',
+          sourceLabel: event.sourceLabel ?? 'Importiert',
+          sourceUrl: event.sourceUrl ?? '',
+          slug: event.slug,
+        },
+        existingEvent?.id,
+      );
+
+      if (existingEvent) {
+        updated += 1;
+      } else {
+        created += 1;
+      }
+    }
+
+    return { created, updated, skipped };
+  }
+
   async uploadEventImage(file: File): Promise<string> {
     if (!this.supabase) {
       throw new Error('Supabase ist noch nicht konfiguriert.');
@@ -246,6 +301,14 @@ export class AdminEventsStore {
       this.isLoading.set(false);
     }
   }
+
+  private findImportedEventMatch(event: GeneratedEvent): AdminEvent | undefined {
+    return this.events().find(
+      (existingEvent) =>
+        (event.sourceUrl && existingEvent.sourceUrl === event.sourceUrl) ||
+        existingEvent.slug === event.slug,
+    );
+  }
 }
 
 function buildEventRow(input: AdminEventInput, existing?: AdminEvent): EventRow {
@@ -264,7 +327,7 @@ function buildEventRow(input: AdminEventInput, existing?: AdminEvent): EventRow 
     city: toOptionalString(input.city) ?? null,
     organizer: toOptionalString(input.organizer) ?? null,
     source_label: toOptionalString(input.sourceLabel) ?? 'Admin gepflegt',
-    slug: existing?.slug ?? `${slugify(title)}-${id.slice(0, 8)}`,
+    slug: existing?.slug ?? input.slug?.trim() ?? `${slugify(title)}-${id.slice(0, 8)}`,
     source_url: toOptionalString(input.sourceUrl) ?? null,
     created_at: existing?.createdAt ?? now,
     updated_at: now,

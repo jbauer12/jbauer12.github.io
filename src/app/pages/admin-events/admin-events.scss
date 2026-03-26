@@ -7,6 +7,15 @@
   gap: 1rem;
 }
 
+.admin-import-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-import-panel__actions {
+  margin-top: 0;
+}
+
 .login-shell {
   display: grid;
 }
@@ -161,7 +170,7 @@
 
 @media (min-width: 920px) {
   .admin-layout {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
   }
 

@@ -1,15 +1,30 @@
 <main class="page-view">
   <section class="page-section page-section--hero">
-    <p class="kicker">Galerie</p>
-    <h1 class="display-title display-title--small">Motive, Flyer und erste öffentliche Eindrücke.</h1>
-    <p class="lead">
-      Noch keine voll ausgebaute Fotochronik, aber bereits eine eigene Seite für Bildmaterial,
-      Artwork und visuelle Hinweise auf die Richtung des Clubs.
-    </p>
-    <p class="body-copy">
-      Die Motive hier stammen aus dem bestehenden öffentlichen Auftritt und können später durch
-      echte Eventfotos, Plakate und Archivmaterial ergänzt werden.
-    </p>
+    <app-editable-text
+      tag="p"
+      className="kicker"
+      [multiline]="false"
+      contentKey="gallery.hero.kicker"
+      fallback="Galerie"
+    />
+    <app-editable-text
+      tag="h1"
+      className="display-title display-title--small"
+      contentKey="gallery.hero.title"
+      fallback="Motive, Flyer und erste öffentliche Eindrücke."
+    />
+    <app-editable-text
+      tag="p"
+      className="lead"
+      contentKey="gallery.hero.lead"
+      fallback="Noch keine voll ausgebaute Fotochronik, aber bereits eine eigene Seite für Bildmaterial, Artwork und visuelle Hinweise auf die Richtung des Clubs."
+    />
+    <app-editable-text
+      tag="p"
+      className="body-copy"
+      contentKey="gallery.hero.body"
+      fallback="Die Motive hier stammen aus dem bestehenden öffentlichen Auftritt und können später durch echte Eventfotos, Plakate und Archivmaterial ergänzt werden."
+    />
   </section>
 
   <section class="page-section">
@@ -21,7 +36,13 @@
           [class.media-tile--logo]="i === 1"
         >
           <img [src]="item.src" [alt]="item.alt" />
-          <figcaption class="media-tile__caption">{{ item.caption }}</figcaption>
+          <figcaption class="media-tile__caption">
+            <app-editable-text
+              tag="span"
+              [contentKey]="'gallery.items.' + i + '.caption'"
+              [fallback]="item.caption"
+            />
+          </figcaption>
         </figure>
       }
     </div>

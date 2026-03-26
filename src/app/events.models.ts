@@ -35,4 +35,11 @@ export type AdminEventInput = {
   organizer: string;
   sourceLabel: string;
   sourceUrl: string;
+  slug?: string;
+};
+
+export type ImportSummary = {
+  created: number;
+  updated: number;
+  skipped: number;
 };

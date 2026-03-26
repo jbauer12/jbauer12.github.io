@@ -1,16 +1,39 @@
 <main class="page-view">
   <section class="page-section page-section--hero">
-    <p class="kicker">FAQ</p>
+    <app-editable-text
+      tag="p"
+      className="kicker"
+      [multiline]="false"
+      contentKey="faq.hero.kicker"
+      fallback="FAQ"
+    />
 
-    <h1 class="display-title display-title--small">Häufig gestellte Fragen</h1>
+    <app-editable-text
+      tag="h1"
+      className="display-title display-title--small"
+      [multiline]="false"
+      contentKey="faq.hero.title"
+      fallback="Häufig gestellte Fragen"
+    />
   </section>
 
   <section class="page-section">
     <div class="faq-list">
-      @for (item of faqItems; track item.question) {
+      @for (item of faqItems; track item.question; let i = $index) {
         <details class="faq-item">
-          <summary>{{ item.question }}</summary>
-          <p>{{ item.answer }}</p>
+          <summary>
+            <app-editable-text
+              tag="span"
+              [multiline]="false"
+              [contentKey]="'faq.items.' + i + '.question'"
+              [fallback]="item.question"
+            />
+          </summary>
+          <app-editable-text
+            tag="p"
+            [contentKey]="'faq.items.' + i + '.answer'"
+            [fallback]="item.answer"
+          />
         </details>
       }
     </div>

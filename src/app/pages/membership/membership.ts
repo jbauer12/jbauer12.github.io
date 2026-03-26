@@ -1,8 +1,10 @@
 import { Component, signal } from '@angular/core';
 
+import { EditableTextComponent } from '../../shared/editable-text/editable-text';
 import { membershipTracks } from '../../site-data';
 
 @Component({
+  imports: [EditableTextComponent],
   templateUrl: './membership.html',
   styleUrl: './membership.scss',
 })
