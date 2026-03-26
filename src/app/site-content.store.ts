@@ -2,6 +2,8 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 
 import { AdminEventsStore } from './admin-events.store';
 import { getSupabaseClient } from './supabase.client';
+import { assertAdminAccess } from './shared/utils/admin-access';
+import { getErrorMessage } from './shared/utils/error-message';
 
 type SiteContentRow = {
   key: string;
@@ -174,24 +176,5 @@ export class SiteContentStore {
     } finally {
       this.isLoading.set(false);
     }
-  }
-}
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  if (
-    error &&
-    typeof error === 'object' &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
-    return error.message;
-  }
-
-  return fallback;
-}
-
-function assertAdminAccess(isAdmin: boolean): void {
-  if (!isAdmin) {
-    throw new Error('Bitte mit einem freigeschalteten Admin-Account im Maschinenraum einloggen.');
   }
 }

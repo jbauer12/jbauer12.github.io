@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { AdminEventsStore } from '../../admin-events.store';
+import { FaqEntry, FaqEntryInput } from '../../faq.models';
+import { FaqStore } from '../../faq.store';
 import {
   AdminEvent,
   AdminEventInput,
@@ -11,6 +13,7 @@ import {
   ScrapeImportSummary,
 } from '../../events.models';
 import { SiteContentStore } from '../../site-content.store';
+import { getErrorMessage } from '../../shared/utils/error-message';
 
 type LoginDraft = {
   email: string;
@@ -25,26 +28,36 @@ type LoginDraft = {
 export class AdminEventsPage {
   private readonly adminEventsStore = inject(AdminEventsStore);
   private readonly siteContentStore = inject(SiteContentStore);
+  private readonly faqStore = inject(FaqStore);
 
   readonly events = computed(() => this.adminEventsStore.events());
+  readonly faqItems = computed(() => this.faqStore.items());
   readonly session = this.adminEventsStore.session;
   readonly isAdmin = this.adminEventsStore.isAdmin;
   readonly isConfigured = this.adminEventsStore.isConfigured;
   readonly isLoading = this.adminEventsStore.isLoading;
+  readonly isFaqLoading = this.faqStore.isLoading;
+  readonly isFaqSaving = this.faqStore.isSaving;
   readonly isSaving = this.adminEventsStore.isSaving;
   readonly authReady = this.adminEventsStore.authReady;
   readonly setupMessage = this.adminEventsStore.setupMessage;
   readonly syncError = this.adminEventsStore.syncError;
   readonly loadError = this.adminEventsStore.loadError;
+  readonly faqSyncError = this.faqStore.syncError;
+  readonly faqLoadError = this.faqStore.loadError;
+  readonly faqUsingFallback = this.faqStore.usingFallback;
   readonly isUploadingImage = signal(false);
   readonly isImporting = signal(false);
   readonly isSeedingContent = signal(false);
+  readonly isSeedingFaq = signal(false);
   readonly notice = signal(
     'Nur freigeschaltete Admin-Accounts koennen hier Inhalte pflegen.',
   );
   readonly editingEventId = signal<string | null>(null);
+  readonly editingFaqId = signal<string | null>(null);
 
   draft: AdminEventInput = createEmptyDraft();
+  faqDraft: FaqEntryInput = createEmptyFaqDraft();
   loginDraft: LoginDraft = {
     email: '',
     password: '',
@@ -53,6 +66,7 @@ export class AdminEventsPage {
 
   constructor() {
     void this.adminEventsStore.ensureEventsLoaded();
+    void this.faqStore.ensureLoaded();
   }
 
   async signIn(): Promise<void> {
@@ -73,6 +87,7 @@ export class AdminEventsPage {
     try {
       await this.adminEventsStore.signOut();
       this.resetForm();
+      this.resetFaqForm();
       this.notice.set('Du wurdest abgemeldet.');
     } catch (error) {
       this.notice.set(getErrorMessage(error, 'Abmelden fehlgeschlagen.'));
@@ -170,6 +185,67 @@ export class AdminEventsPage {
     }
   }
 
+  async saveFaq(): Promise<void> {
+    if (!this.isFaqDraftValid()) {
+      this.notice.set('Bitte FAQ-Frage und Antwort ausfuellen.');
+      return;
+    }
+
+    const isEditing = this.isEditingFaq();
+
+    try {
+      const savedEntry = await this.faqStore.saveFaqEntry(
+        this.faqDraft,
+        this.editingFaqId() ?? undefined,
+      );
+      this.resetFaqForm();
+      this.notice.set(
+        isEditing
+          ? `FAQ "${savedEntry.question}" wurde aktualisiert.`
+          : `FAQ "${savedEntry.question}" wurde angelegt.`,
+      );
+    } catch (error) {
+      this.notice.set(getErrorMessage(error, 'FAQ speichern fehlgeschlagen.'));
+    }
+  }
+
+  async seedFaqDefaults(): Promise<void> {
+    this.isSeedingFaq.set(true);
+    this.notice.set('FAQ-Standardfragen werden nach Supabase geschrieben.');
+
+    try {
+      const summary = await this.faqStore.seedDefaults();
+      this.notice.set(
+        `${summary.created} FAQ neu angelegt, ${summary.skipped} bereits vorhanden.`,
+      );
+    } catch (error) {
+      this.notice.set(getErrorMessage(error, 'FAQ-Seed fehlgeschlagen.'));
+    } finally {
+      this.isSeedingFaq.set(false);
+    }
+  }
+
+  startEditingFaq(item: FaqEntry): void {
+    this.editingFaqId.set(item.id);
+    this.faqDraft = {
+      question: item.question,
+      answer: item.answer,
+    };
+    this.notice.set(`FAQ "${item.question}" ist jetzt im Formular geladen.`);
+  }
+
+  async deleteFaq(item: FaqEntry): Promise<void> {
+    try {
+      await this.faqStore.deleteFaqEntry(item.id);
+      if (this.editingFaqId() === item.id) {
+        this.resetFaqForm();
+      }
+      this.notice.set(`FAQ "${item.question}" wurde entfernt.`);
+    } catch (error) {
+      this.notice.set(getErrorMessage(error, 'FAQ loeschen fehlgeschlagen.'));
+    }
+  }
+
   startEditing(event: AdminEvent): void {
     this.editingEventId.set(event.id);
     this.draft = createDraftFromEvent(event);
@@ -199,12 +275,25 @@ export class AdminEventsPage {
     return this.editingEventId() !== null;
   }
 
+  resetFaqForm(): void {
+    this.editingFaqId.set(null);
+    this.faqDraft = createEmptyFaqDraft();
+  }
+
+  isEditingFaq(): boolean {
+    return this.editingFaqId() !== null;
+  }
+
   private isDraftValid(): boolean {
     return Boolean(
       this.draft.title.trim() &&
         this.draft.startsAt.trim() &&
         this.draft.description.trim(),
     );
+  }
+
+  private isFaqDraftValid(): boolean {
+    return Boolean(this.faqDraft.question.trim() && this.faqDraft.answer.trim());
   }
 }
 
@@ -238,17 +327,11 @@ function createDraftFromEvent(event: AdminEvent): AdminEventInput {
   };
 }
 
-function getErrorMessage(error: unknown, fallback: string): string {
-  if (
-    error &&
-    typeof error === 'object' &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
-    return error.message;
-  }
-
-  return fallback;
+function createEmptyFaqDraft(): FaqEntryInput {
+  return {
+    question: '',
+    answer: '',
+  };
 }
 
 function buildImportNotice(summary: ImportSummary): string {

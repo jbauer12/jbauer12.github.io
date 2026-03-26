@@ -18,23 +18,21 @@
   </section>
 
   <section class="page-section">
+    @if (errorMessage()) {
+      <div class="info-strip">{{ errorMessage() }}</div>
+    }
+
+    @if (isLoading()) {
+      <div class="info-strip">FAQ werden geladen.</div>
+    }
+
     <div class="faq-list">
-      @for (item of faqItems; track item.question; let i = $index) {
+      @for (item of faqItems(); track item.id) {
         <details class="faq-item">
           <summary>
-            <app-editable-text
-              tag="span"
-              [multiline]="false"
-              [showTrigger]="false"
-              [contentKey]="'faq.items.' + i + '.question'"
-              [fallback]="item.question"
-            />
+            <span>{{ item.question }}</span>
           </summary>
-          <app-editable-text
-            tag="p"
-            [contentKey]="'faq.items.' + i + '.answer'"
-            [fallback]="item.answer"
-          />
+          <p>{{ item.answer }}</p>
         </details>
       }
     </div>

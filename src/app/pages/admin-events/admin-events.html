@@ -189,6 +189,117 @@
 
       <div class="surface-card admin-panel">
         <div class="section-header">
+          <p class="kicker">FAQ</p>
+          <h2 class="section-title">Fragen und Antworten pflegen</h2>
+          <p class="body-copy">
+            Hier kannst du FAQ-Fragen anlegen, bearbeiten oder loeschen. Die FAQ-Seite zieht diese
+            Eintraege direkt aus Supabase.
+          </p>
+        </div>
+
+        @if (faqSyncError() || faqLoadError()) {
+          <div class="info-strip admin-panel__notice admin-panel__notice--error">
+            {{ faqSyncError() || faqLoadError() }}
+          </div>
+        }
+
+        @if (faqUsingFallback() || !faqItems().length) {
+          <div class="info-strip admin-panel__notice">
+            @if (faqUsingFallback()) {
+              Es laufen gerade noch die eingebauten Standardfragen. Mit dem Button unten kannst du sie
+              einmal nach Supabase uebernehmen und danach frei weiterpflegen.
+            } @else {
+              Aktuell sind keine FAQ in Supabase gespeichert. Mit dem Button unten kannst du die
+              Standardfragen wiederherstellen.
+            }
+          </div>
+
+          <div class="action-row admin-import-panel__actions">
+            <button
+              class="button button--solid"
+              type="button"
+              [disabled]="isSeedingFaq()"
+              (click)="seedFaqDefaults()"
+            >
+              FAQ-Standardfragen uebernehmen
+            </button>
+          </div>
+        }
+
+        @if (!faqUsingFallback()) {
+          <form class="admin-form" (ngSubmit)="saveFaq()">
+            <div class="admin-form__grid">
+              <label class="admin-field admin-field--wide">
+                <span>Frage</span>
+                <input
+                  [(ngModel)]="faqDraft.question"
+                  name="faqQuestion"
+                  type="text"
+                  placeholder="Was soll hier fuer Veranstaltungen auftauchen?"
+                  required
+                />
+              </label>
+
+              <label class="admin-field admin-field--wide">
+                <span>Antwort</span>
+                <textarea
+                  [(ngModel)]="faqDraft.answer"
+                  name="faqAnswer"
+                  rows="5"
+                  placeholder="Kurz und klar beantworten"
+                  required
+                ></textarea>
+              </label>
+            </div>
+
+            <div class="action-row admin-form__actions">
+              <button class="button button--solid" type="submit" [disabled]="isFaqSaving()">
+                {{ isEditingFaq() ? 'FAQ speichern' : 'FAQ anlegen' }}
+              </button>
+              <button class="button button--ghost" type="button" (click)="resetFaqForm()">
+                Zuruecksetzen
+              </button>
+            </div>
+          </form>
+
+          @if (isFaqLoading()) {
+            <div class="info-strip">FAQ werden gerade aus Supabase geladen.</div>
+          } @else if (faqItems().length) {
+            <div class="admin-event-list">
+              @for (item of faqItems(); track item.id) {
+                <article class="admin-event-card">
+                  <div class="admin-event-card__head">
+                    <div>
+                      <p class="meta-tag">FAQ</p>
+                      <h3>{{ item.question }}</h3>
+                    </div>
+                  </div>
+
+                  <p class="body-copy">{{ item.answer }}</p>
+
+                  <div class="action-row">
+                    <button class="button button--solid" type="button" (click)="startEditingFaq(item)">
+                      Bearbeiten
+                    </button>
+                    <button
+                      class="button button--ghost admin-action--danger"
+                      type="button"
+                      (click)="deleteFaq(item)"
+                    >
+                      Loeschen
+                    </button>
+                  </div>
+                </article>
+              }
+            </div>
+          } @else {
+            <div class="info-strip">Noch keine FAQ vorhanden.</div>
+          }
+        }
+      </div>
+
+      <div class="surface-card admin-panel">
+        <div class="section-header">
           <p class="kicker">Formular</p>
           <h2 class="section-title">Neues Event oder Update</h2>
           <p class="body-copy">

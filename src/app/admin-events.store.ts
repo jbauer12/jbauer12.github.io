@@ -10,6 +10,8 @@ import {
   ScrapeImportSummary,
 } from './events.models';
 import { getSupabaseClient, isSupabaseConfigured } from './supabase.client';
+import { createId } from './shared/utils/id';
+import { getErrorMessage } from './shared/utils/error-message';
 
 type EventRow = {
   id: string;
@@ -438,14 +440,6 @@ function sortEvents(events: AdminEvent[]): AdminEvent[] {
   );
 }
 
-function createId(): string {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return crypto.randomUUID();
-  }
-
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
 function slugify(value: string): string {
   const normalizedValue = value
     .toLowerCase()
@@ -460,19 +454,6 @@ function slugify(value: string): string {
 function toOptionalString(value: string | undefined): string | undefined {
   const normalizedValue = value?.trim();
   return normalizedValue ? normalizedValue : undefined;
-}
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  if (
-    error &&
-    typeof error === 'object' &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
-    return error.message;
-  }
-
-  return fallback;
 }
 
 function getFileExtension(fileName: string): string {

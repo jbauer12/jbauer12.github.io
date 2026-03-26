@@ -28,7 +28,6 @@ type FetchMethod = 'direct' | 'proxy';
 
 type FetchResult = {
   method: FetchMethod;
-  requestUrl: string;
   finalUrl: string;
   body: string;
   contentType: string;
@@ -172,10 +171,11 @@ async function scrapeSource(config: SourceConfig): Promise<ScrapeSourceResult> {
 }
 
 async function fetchDocument(url: string, method: FetchMethod): Promise<FetchResult> {
-  const requestUrl =
+  const targetUrl =
     method === 'direct' ? url : `${TEXT_PROXY_PREFIX}${url.replace(/^https?:\/\//i, '')}`;
 
-  const response = await fetch(requestUrl, {
+  const response = await fetch(targetUrl, {
+    signal: AbortSignal.timeout(15000),
     headers: {
       Accept: 'text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.8',
       'User-Agent': USER_AGENT,
@@ -188,7 +188,6 @@ async function fetchDocument(url: string, method: FetchMethod): Promise<FetchRes
 
   return {
     method,
-    requestUrl,
     finalUrl: response.url,
     body: await response.text(),
     contentType: normalizeContentType(response.headers.get('content-type')),

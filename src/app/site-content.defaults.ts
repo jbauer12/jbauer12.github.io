@@ -1,4 +1,4 @@
-import { faqItems, galleryItems, membershipTracks, navItems, socialLinks } from './site-data';
+import { galleryItems, membershipTracks, navItems, socialLinks } from './site-data';
 
 export type SiteContentDefault = {
   key: string;
@@ -109,16 +109,6 @@ export const siteContentDefaults: SiteContentDefault[] = [
   })),
   { key: 'faq.hero.kicker', value: 'FAQ' },
   { key: 'faq.hero.title', value: 'Häufig gestellte Fragen' },
-  ...faqItems.flatMap((item, index) => [
-    {
-      key: `faq.items.${index}.question`,
-      value: item.question,
-    },
-    {
-      key: `faq.items.${index}.answer`,
-      value: item.answer,
-    },
-  ]),
   { key: 'membership.hero.kicker', value: 'Mitglied werden' },
   { key: 'membership.hero.title', value: 'Fördern oder aktiv mittragen.' },
   {

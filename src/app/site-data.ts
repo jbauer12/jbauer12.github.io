@@ -10,18 +10,6 @@ export type SocialLink = {
   external: boolean;
 };
 
-export type FacebookMirror = {
-  label: string;
-  title: string;
-  date: string;
-  text: string;
-  note: string;
-  href: string;
-  cta: string;
-  imageSrc: string;
-  imageAlt: string;
-};
-
 export type MembershipTrack = {
   kind: 'foerder' | 'aktiv';
   label: string;
@@ -33,6 +21,11 @@ export type MembershipTrack = {
   imageSrc: string;
   imageAlt: string;
   symbol: string;
+};
+
+export type FaqItem = {
+  question: string;
+  answer: string;
 };
 
 export const navItems: NavItem[] = [
@@ -58,97 +51,6 @@ export const socialLinks: SocialLink[] = [
     label: 'E-Mail',
     href: 'mailto:info@vaidaisnotdead.de',
     external: false,
-  },
-];
-
-export const homeHighlights = [
-  {
-    title: 'Konzerte und Sessions',
-    text:
-      'Nicht nur gebuchte Konzertabende, sondern auch offene musikalische Formate mit Platz für Austausch, Impro und spontane Begegnung.',
-  },
-  {
-    title: 'Viechtach als Ausgangspunkt',
-    text:
-      'Die öffentliche Beschreibung nennt klar Jugend- und Subkultur im Bayerischen Wald. Genau das soll auch der neue Auftritt zeigen.',
-  },
-  {
-    title: 'Mobil zuerst gedacht',
-    text:
-      'Die Seiten bleiben knapp, kontrastreich und schnell scanbar, damit Termine, Kontakt und Haltung auch auf kleinen Displays sofort funktionieren.',
-  },
-];
-
-export const eventFormats = [
-  {
-    label: 'Format 01',
-    title: 'Offene Jam-Session',
-    text:
-      'Ein lockerer musikalischer Austausch von Funk bis Punk. Offen für Leute mit Instrumenten, Ideen und Lust auf einen Abend ohne starre Bühnenkante.',
-    note: 'So ein Format taucht bereits im öffentlichen Facebook-Auftritt auf und soll hier später direkt mit Termin, Uhrzeit und Ort erscheinen.',
-  },
-  {
-    label: 'Format 02',
-    title: 'DIY-Konzertabend',
-    text:
-      'Gebuchte Bands, rohe Energie, kurzer Weg zwischen Publikum und Bühne. Kein Eventglanz, sondern ein Abend, der nah dran bleibt.',
-    note: 'Wenn Termine fix sind, sollen sie hier kompakt mit Einlass, Running Order und Links landen.',
-  },
-  {
-    label: 'Format 03',
-    title: 'Szenetreff und Soli-Abend',
-    text:
-      'Nicht jeder Abend muss nur aus einem Line-up bestehen. Auch Support, Planung, Austausch und gemeinsames Tragen haben hier einen Platz.',
-    note: 'Gut geeignet für Formate, bei denen Szene, Verein und Unterstützung ineinandergreifen.',
-  },
-  {
-    label: 'Format 04',
-    title: 'Ankündigungen ohne Scrollsuche',
-    text:
-      'Die neue Events-Seite ist dafür da, Termine sauber zu sammeln, statt sie in Storys, Postings und verstreuten Hinweisen verschwinden zu lassen.',
-    note: 'Bis dahin bleiben Instagram und Facebook die schnellsten Kanäle für kurzfristige Updates.',
-  },
-];
-
-export const facebookMirrors: FacebookMirror[] = [
-  {
-    label: 'Facebook-Post',
-    title: 'Offene Jam-Session',
-    date: '20. März 2026 · ab 17 Uhr',
-    text:
-      'Im öffentlich sichtbaren Facebook-Auftritt wurde am 14. März 2026 eine offene Jam-Session angekündigt. Der Ton ist niedrigschwellig, offen und nah an der Szene statt geschniegelt.',
-    note:
-      'Im dazu sichtbaren Hinweis taucht auch die Formulierung "lockerer musikalischer Austausch von Funk bis Punk" auf.',
-    href: 'https://www.facebook.com/vaidaisnotdead/posts/pfbid029zZWrWrdUKfiLfhvnM2xVXuVLp8rX3rPNyhUdtTxW1KkaP68dMLeRShV5AD8uigYl',
-    cta: 'Post ansehen',
-    imageSrc: '/facebook-jam-session.jpg',
-    imageAlt: 'Flyer für eine öffentliche Jam-Session von Vaida is not dead e.V.',
-  },
-  {
-    label: 'Facebook-Seite',
-    title: 'Kurzfristige Hinweise zuerst dort',
-    date: 'Laufend',
-    text:
-      'Wenn neue Flyer, kleine Änderungen oder spontane Abende auftauchen, landen sie derzeit am schnellsten auf der Facebook-Seite. Diese Website spiegelt die wichtigsten öffentlichen Hinweise dann in einer lesbaren Form.',
-    note:
-      'So bleibt die Seite nutzbar, auch wenn Facebook-Plugins oder Browser-Einstellungen nicht mitspielen.',
-    href: 'https://www.facebook.com/vaidaisnotdead/',
-    cta: 'Seite öffnen',
-    imageSrc: '/facebook-page-preview.jpg',
-    imageAlt: 'Öffentlich sichtbare Vorschau der Facebook-Seite von Vaida is not dead e.V.',
-  },
-  {
-    label: 'Fotos und Flyer',
-    title: 'Mehr Material aus dem Auftritt',
-    date: 'Archiv und Rückblicke',
-    text:
-      'Neben Terminhinweisen läuft auf Facebook auch Bildmaterial: Flyer, Detailansichten und kleine Eindrücke aus dem Umfeld des Vereins. Das ist im Moment die sichtbarste externe Spur für neue Motive.',
-    note:
-      'Bis es einen eigenen Event-Workflow gibt, ist diese Mischung aus Spiegelung und Direktlink die robustere Lösung.',
-    href: 'https://www.facebook.com/vaidaisnotdead/photos',
-    cta: 'Fotos ansehen',
-    imageSrc: '/gallery-tile-01.jpg',
-    imageAlt: 'Öffentlich sichtbarer Bildausschnitt aus dem Facebook-Auftritt von Vaida is not dead e.V.',
   },
 ];
 
@@ -185,7 +87,7 @@ export const galleryItems = [
   },
 ];
 
-export const faqItems = [
+export const faqItems: FaqItem[] = [
   {
     question: 'Was soll hier für Veranstaltungen auftauchen?',
     answer:
