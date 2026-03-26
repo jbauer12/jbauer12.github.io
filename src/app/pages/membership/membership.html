@@ -1,53 +1,140 @@
 <main class="page-view">
-  <section class="page-section page-section--hero">
+  <section class="page-section page-section--hero membership-hero">
     <p class="kicker">Mitglied werden</p>
-    <h1 class="display-title display-title--small">Mittragen statt nur vorbeischauen.</h1>
+    <h1 class="display-title display-title--small">Foerdern oder aktiv mittragen.</h1>
     <p class="lead">
-      Wenn du nicht nur Gast sein willst, sondern Struktur, Abende und Subkultur in Viechtach
-      mitstuetzen moechtest, ist hier dein Einstieg.
+      Bei vaida is not dead gibt es nicht nur einen Weg rein. Du kannst die Struktur finanziell
+      staerken oder selbst aktiv Teil davon werden.
     </p>
+    <div class="membership-pills">
+      <span>Foerdermitgliedschaft</span>
+      <span>Aktive Mitgliedschaft</span>
+      <span>DIY-Struktur in Viechtach</span>
+    </div>
     <div class="action-row">
-      <a class="button button--solid" href="mailto:info@vaidaisnotdead.de">Per Mail melden</a>
-      <a
-        class="button button--ghost"
-        href="https://www.instagram.com/vaidaisnotdead_ev/"
-        target="_blank"
-        rel="noreferrer noopener"
+      <a class="button button--solid" href="#mitgliedsanfrage">Zum Formular</a>
+      <a class="button button--ghost" [href]="'mailto:' + contactEmail">Direkt mailen</a>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="section-header">
+      <p class="kicker">Mitgliedschaftsarten</p>
+      <h2 class="section-title">Im Grunde gibt es zwei Formen.</h2>
+      <p class="body-copy">
+        Nicht jede Person will auf dieselbe Weise beteiligt sein. Deshalb ist hier nur kurz
+        aufgeschrieben, was mit Foerdermitgliedschaft und aktiver Mitgliedschaft jeweils gemeint ist.
+      </p>
+    </div>
+
+    <div class="membership-mode-list">
+      @for (track of membershipTracks; track track.label) {
+        <article
+          class="membership-mode"
+          [class.membership-mode--active]="track.kind === 'aktiv'"
+          [class.membership-mode--foerder]="track.kind === 'foerder'"
+        >
+          <div class="membership-mode__media">
+            <div class="membership-mode__media-inner">
+              <img [src]="track.imageSrc" [alt]="track.imageAlt" />
+              <span class="membership-mode__symbol">{{ track.symbol }}</span>
+            </div>
+          </div>
+
+          <div class="membership-mode__content">
+            <p class="membership-mode__label">{{ track.label }}</p>
+            <h3>{{ track.title }}</h3>
+            <p class="membership-mode__intro">{{ track.intro }}</p>
+
+            <ul class="membership-mode__list">
+              @for (detail of track.details; track detail) {
+                <li>{{ detail }}</li>
+              }
+            </ul>
+
+            <p class="note-line">{{ track.note }}</p>
+
+            <a class="membership-mode__link" href="#mitgliedsanfrage" (click)="setMembershipType(track.label)">
+              {{ track.cta }}
+            </a>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section id="mitgliedsanfrage" class="page-section membership-request-section">
+    <article class="surface-card membership-form-card">
+      <p class="kicker">Kontaktformular</p>
+      <h2 class="section-title">Wenn du magst, schreib uns einfach.</h2>
+      <p class="body-copy">
+        Das Formular oeffnet nur dein Mailprogramm und setzt die wichtigsten Angaben schon in
+        Betreff und Nachricht an <strong>{{ contactEmail }}</strong>. Eine kurze Mail mit ein paar
+        Zeilen reicht voellig.
+      </p>
+
+      <form
+        class="membership-form"
+        (submit)="$event.preventDefault(); sendMembershipMail(membershipType.value, name.value, email.value, phone.value, focus.value, message.value)"
       >
-        Instagram
-      </a>
-    </div>
-  </section>
+        <label class="form-field">
+          <span>Mitgliedschaftsart</span>
+          <select
+            #membershipType
+            name="membershipType"
+            required
+            [value]="selectedMembershipType()"
+            (change)="setMembershipType(membershipType.value)"
+          >
+            <option value="">Bitte auswaehlen</option>
+            <option value="Foerdermitgliedschaft">Foerdermitgliedschaft</option>
+            <option value="Aktive Mitgliedschaft">Aktive Mitgliedschaft</option>
+          </select>
+        </label>
 
-  <section class="page-section">
-    <div class="split-grid">
-      <article class="surface-card">
-        <p class="kicker">Warum</p>
-        <h2 class="section-title">Weshalb Mitgliedschaft hier Sinn macht.</h2>
-        <ul class="bullet-list">
-          @for (reason of membershipReasons; track reason) {
-            <li>{{ reason }}</li>
-          }
-        </ul>
-      </article>
+        <label class="form-field">
+          <span>Name</span>
+          <input #name type="text" name="name" autocomplete="name" required />
+        </label>
 
-      <article class="surface-card">
-        <p class="kicker">Wie</p>
-        <h2 class="section-title">So kann der Einstieg aussehen.</h2>
-        <ol class="step-list">
-          @for (step of membershipSteps; track step) {
-            <li>{{ step }}</li>
-          }
-        </ol>
-      </article>
-    </div>
-  </section>
+        <label class="form-field">
+          <span>E-Mail</span>
+          <input #email type="email" name="email" autocomplete="email" required />
+        </label>
 
-  <section class="page-section">
-    <div class="info-strip">
-      Wenn du Bands vermitteln, bei Auf- und Abbau helfen, Awareness unterstuetzen, Technik
-      uebernehmen oder die Vereinsarbeit auf andere Weise mittragen willst, schreib einfach an
-      info@vaidaisnotdead.de.
-    </div>
+        <label class="form-field">
+          <span>Telefon / Signal / Insta</span>
+          <input #phone type="text" name="phone" autocomplete="tel" />
+        </label>
+
+        <label class="form-field">
+          <span>Wie willst du beitragen?</span>
+          <input
+            #focus
+            type="text"
+            name="focus"
+            placeholder="z. B. finanziell unterstuetzen, Theke, Technik, Awareness, Booking"
+          />
+        </label>
+
+        <label class="form-field">
+          <span>Nachricht</span>
+          <textarea
+            #message
+            name="message"
+            rows="6"
+            placeholder="Erzaehl kurz, was du suchst oder wie du dich einbringen willst."
+            required
+          ></textarea>
+        </label>
+
+        <div class="action-row action-row--form">
+          <button class="button button--solid" type="submit">Anfrage per Mail vorbereiten</button>
+          <a class="button button--ghost" [href]="'mailto:' + contactEmail">
+            Ohne Formular schreiben
+          </a>
+        </div>
+      </form>
+    </article>
   </section>
 </main>

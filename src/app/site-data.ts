@@ -22,6 +22,19 @@ export type FacebookMirror = {
   imageAlt: string;
 };
 
+export type MembershipTrack = {
+  kind: 'foerder' | 'aktiv';
+  label: string;
+  title: string;
+  intro: string;
+  details: string[];
+  note: string;
+  cta: string;
+  imageSrc: string;
+  imageAlt: string;
+  symbol: string;
+};
+
 export const navItems: NavItem[] = [
   { label: 'Start', path: '/', exact: true },
   { label: 'Events', path: '/events' },
@@ -200,15 +213,41 @@ export const faqItems = [
   },
 ];
 
-export const membershipReasons = [
-  'weil Jugend- und Subkultur auf dem Land tragende Leute braucht und nicht nur Publikum',
-  'weil Konzerte, Sessions und offene Formate einfacher werden, wenn Verantwortung geteilt wird',
-  'weil aus einer losen Szene durch Mitmachen langsam eine belastbare Struktur wird',
-  'weil Unterstützung auch heisst, Raum fuer zukuenftige Abende, Bands und Ideen zu sichern',
-];
-
-export const membershipSteps = [
-  'kurz per Mail melden und sagen, dass du mitmachen oder mehr zur Mitgliedschaft wissen willst',
-  'in Kontakt kommen, Fragen klaeren und herausfinden, wie du dich am liebsten einbringen moechtest',
-  'bei Abenden, Planung oder laufender Vereinsarbeit Schritt fuer Schritt Teil der Struktur werden',
+export const membershipTracks: MembershipTrack[] = [
+  {
+    kind: 'foerder',
+    label: 'Foerdermitgliedschaft',
+    title: 'Fuer Leute, die den Verein regelmaessig unterstuetzen wollen, ohne im Alltag jedes Mal aktiv eingebunden zu sein.',
+    intro:
+      'Diese Form passt, wenn du Konzerte, Sessions und laufende Vereinsarbeit mittragen willst, aber eher ueber kontinuierliche Unterstuetzung als ueber feste Aufgaben vor Ort.',
+    details: [
+      'hilft dabei, Miete, Technik, Material, Infrastruktur und laufende Kosten stabiler zu tragen',
+      'passt, wenn du die Szene staerken willst, aber nicht regelmaessig bei Aufbau, Theke oder Orga eingebunden sein kannst',
+      'bleibt nah dran am Verein, ohne dass daraus automatisch eine praktische Rolle bei jedem Abend wird',
+    ],
+    note:
+      'Foerdermitgliedschaft bedeutet: Rueckhalt geben, damit Dinge ueberhaupt stattfinden koennen.',
+    cta: 'Im Formular als Foerdermitgliedschaft angeben',
+    imageSrc: '/logo.png',
+    imageAlt: 'Logo von vaida is not dead e.V. als visuelle Marke fuer die Foerdermitgliedschaft',
+    symbol: 'FM',
+  },
+  {
+    kind: 'aktiv',
+    label: 'Aktive Mitgliedschaft',
+    title: 'Fuer Leute, die bei Abenden, Planung und Vereinsarbeit praktisch mitziehen wollen.',
+    intro:
+      'Hier geht es nicht nur um Unterstuetzung im Hintergrund, sondern um Mitarbeit in echten Situationen: Aufbau, Theke, Technik, Awareness, Booking oder laufende Orga.',
+    details: [
+      'nah dran an Planung, Umsetzung und den realen Abenden vor Ort',
+      'passt, wenn du Zeit, Ideen, Skills oder regelmaessige Energie einbringen willst',
+      'macht aus losem Umfeld eine belastbare DIY-Struktur im Bayerischen Wald',
+    ],
+    note:
+      'Aktive Mitgliedschaft bedeutet: nicht nur kommen, sondern mitverantworten.',
+    cta: 'Im Formular als aktive Mitgliedschaft angeben',
+    imageSrc: '/gallery-tile-01.jpg',
+    imageAlt: 'Raue Fotoflaeche aus dem Umfeld von vaida is not dead als Motiv fuer aktive Mitarbeit',
+    symbol: 'AK',
+  },
 ];
