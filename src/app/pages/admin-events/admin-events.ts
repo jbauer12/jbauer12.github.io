@@ -7,8 +7,8 @@ import { AdminEventsStore } from '../../admin-events.store';
 import {
   AdminEvent,
   AdminEventInput,
-  GeneratedEventsPayload,
   ImportSummary,
+  ScrapeImportSummary,
 } from '../../events.models';
 import { SiteContentStore } from '../../site-content.store';
 
@@ -35,6 +35,7 @@ export class AdminEventsPage {
   readonly authReady = this.adminEventsStore.authReady;
   readonly setupMessage = this.adminEventsStore.setupMessage;
   readonly syncError = this.adminEventsStore.syncError;
+  readonly loadError = this.adminEventsStore.loadError;
   readonly isUploadingImage = signal(false);
   readonly isImporting = signal(false);
   readonly isSeedingContent = signal(false);
@@ -48,6 +49,7 @@ export class AdminEventsPage {
     email: '',
     password: '',
   };
+  sourceUrlsDraft = '';
 
   constructor() {
     void this.adminEventsStore.ensureEventsLoaded();
@@ -132,55 +134,23 @@ export class AdminEventsPage {
     this.notice.set('Das Eventbild wurde auf das Standardbild zurueckgesetzt.');
   }
 
-  async importFromGeneratedJson(): Promise<void> {
-    this.isImporting.set(true);
-    this.notice.set('Die generierte Event-Datei wird geladen und nach Supabase importiert.');
-
-    try {
-      const response = await fetch('/events.generated.json', {
-        headers: {
-          Accept: 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Die Datei /events.generated.json konnte nicht geladen werden (HTTP ${response.status}).`);
-      }
-
-      const payload = (await response.json()) as GeneratedEventsPayload;
-      const summary = await this.adminEventsStore.importEvents(payload.events ?? []);
-      this.notice.set(buildImportNotice(summary));
-    } catch (error) {
-      this.notice.set(getErrorMessage(error, 'Import aus der generierten Datei fehlgeschlagen.'));
-    } finally {
-      this.isImporting.set(false);
-    }
-  }
-
-  async importFromJsonFile(event: Event): Promise<void> {
-    const input = event.target as HTMLInputElement | null;
-    const file = input?.files?.[0];
-
-    if (!file) {
+  async importFromSourceUrls(): Promise<void> {
+    const urls = parseSourceUrls(this.sourceUrlsDraft);
+    if (!urls.length) {
+      this.notice.set('Bitte mindestens eine Event-URL eintragen, jeweils eine pro Zeile.');
       return;
     }
 
     this.isImporting.set(true);
-    this.notice.set(`"${file.name}" wird gelesen und importiert.`);
+    this.notice.set('Die Event-Quellen werden serverseitig geladen und danach nach Supabase uebernommen.');
 
     try {
-      const rawValue = await file.text();
-      const payload = JSON.parse(rawValue) as GeneratedEventsPayload | { events?: GeneratedEventsPayload['events'] };
-      const summary = await this.adminEventsStore.importEvents(payload.events ?? []);
-      this.notice.set(buildImportNotice(summary));
+      const summary = await this.adminEventsStore.scrapeAndImportEvents(urls);
+      this.notice.set(buildScrapeImportNotice(summary));
     } catch (error) {
-      this.notice.set(getErrorMessage(error, 'JSON-Import fehlgeschlagen.'));
+      this.notice.set(getErrorMessage(error, 'Import aus den Event-Quellen fehlgeschlagen.'));
     } finally {
       this.isImporting.set(false);
-
-      if (input) {
-        input.value = '';
-      }
     }
   }
 
@@ -283,4 +253,23 @@ function getErrorMessage(error: unknown, fallback: string): string {
 
 function buildImportNotice(summary: ImportSummary): string {
   return `${summary.created} neu importiert, ${summary.updated} aktualisiert, ${summary.skipped} uebersprungen.`;
+}
+
+function buildScrapeImportNotice(summary: ScrapeImportSummary): string {
+  const baseNotice = `${summary.processed} URLs verarbeitet, ${summary.failed} ohne brauchbares Event. ${buildImportNotice(summary)}`;
+  const failedUrls = summary.results
+    .filter((result) => !result.event)
+    .slice(0, 2)
+    .map((result) => result.url);
+
+  return failedUrls.length
+    ? `${baseNotice} Problematisch: ${failedUrls.join(', ')}.`
+    : baseNotice;
+}
+
+function parseSourceUrls(value: string): string[] {
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => /^https?:\/\//i.test(line));
 }

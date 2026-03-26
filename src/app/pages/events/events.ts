@@ -1,10 +1,10 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 
 import { AdminEventsStore } from '../../admin-events.store';
-import { AdminEvent, GeneratedEvent, GeneratedEventsPayload } from '../../events.models';
+import { AdminEvent } from '../../events.models';
 import { EditableTextComponent } from '../../shared/editable-text/editable-text';
 
-type DisplayEvent = (GeneratedEvent | AdminEvent) & {
+type DisplayEvent = AdminEvent & {
   parsedDate: Date | null;
   displayKey: string;
 };
@@ -59,53 +59,21 @@ const WEEKDAY_PREFIX =
 export class EventsPage implements OnInit {
   private readonly adminEventsStore = inject(AdminEventsStore);
 
-  readonly isLoading = signal(true);
-  readonly errorMessage = signal<string | null>(null);
-  readonly generatedEvents = signal<GeneratedEvent[]>([]);
-  readonly combinedEvents = computed<DisplayEvent[]>(() => [
-    ...this.generatedEvents().map((event) =>
-      toDisplayEvent(event, `generated-${event.slug}`),
-    ),
-    ...this.adminEventsStore
-      .events()
-      .map((event) => toDisplayEvent(event, `admin-${event.id}`)),
-  ]);
+  readonly isLoading = this.adminEventsStore.isLoading;
+  readonly errorMessage = this.adminEventsStore.loadError;
+  readonly combinedEvents = computed<DisplayEvent[]>(() =>
+    this.adminEventsStore.events().map((event) => toDisplayEvent(event, `admin-${event.id}`)),
+  );
   readonly upcomingEvents = computed(() => getUpcomingEvents(this.combinedEvents()));
   readonly pastEvents = computed(() => getPastEvents(this.combinedEvents()));
 
   async ngOnInit(): Promise<void> {
-    this.isLoading.set(true);
-    await Promise.all([this.loadEvents(), this.adminEventsStore.ensureEventsLoaded()]);
-    this.isLoading.set(false);
-  }
-
-  private async loadEvents(): Promise<void> {
-    this.errorMessage.set(null);
-
-    try {
-      const response = await fetch('/events.generated.json', {
-        headers: {
-          Accept: 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const payload = (await response.json()) as GeneratedEventsPayload;
-      this.generatedEvents.set(payload.events ?? []);
-    } catch (_error) {
-      this.errorMessage.set(
-        'Die generierte Event-Datei konnte gerade nicht geladen werden. Manuell gepflegte Events bleiben sichtbar.',
-      );
-      this.generatedEvents.set([]);
-    }
+    await this.adminEventsStore.ensureEventsLoaded();
   }
 }
 
 function toDisplayEvent(
-  event: GeneratedEvent | AdminEvent,
+  event: AdminEvent,
   displayKey: string,
 ): DisplayEvent {
   return {

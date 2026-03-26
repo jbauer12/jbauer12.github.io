@@ -127,39 +127,39 @@
       <div class="surface-card admin-panel">
         <div class="section-header">
           <p class="kicker">Import</p>
-          <h2 class="section-title">Facebook und JSON nach Supabase holen</h2>
+          <h2 class="section-title">Event-URLs serverseitig holen</h2>
           <p class="body-copy">
-            Die vorhandenen Facebook-Events kommen aktuell aus der generierten `events.generated.json`.
-            Diese Datei kannst du hier direkt nach Supabase uebernehmen.
+            Fuege hier Event-Links ein. Der Abruf laeuft serverseitig ueber Supabase in TypeScript
+            und die Ergebnisse werden danach direkt in die `events`-Tabelle uebernommen.
           </p>
         </div>
 
         <div class="admin-import-panel">
           <div class="info-strip admin-panel__notice">
-            Direktes Facebook-Scraping im Browser ist unzuverlaessig. Der stabile Weg bleibt:
-            Python-Script ausfuehren, JSON erzeugen, dann hier importieren.
+            Eine URL pro Zeile. Das ersetzt den alten JSON-Workflow komplett und funktioniert auch
+            dann, wenn auf der Website keine lokale Event-Datei mehr liegt.
           </div>
+
+          <label class="admin-field admin-field--wide">
+            <span>Event-URLs</span>
+            <textarea
+              [(ngModel)]="sourceUrlsDraft"
+              name="sourceUrls"
+              rows="5"
+              placeholder="https://www.facebook.com/events/1663914447906226&#10;https://www.facebook.com/events/776787775046871"
+            ></textarea>
+          </label>
 
           <div class="action-row admin-import-panel__actions">
             <button
               class="button button--solid"
               type="button"
               [disabled]="isImporting()"
-              (click)="importFromGeneratedJson()"
+              (click)="importFromSourceUrls()"
             >
-              Aktuelle JSON importieren
+              URLs abrufen und importieren
             </button>
           </div>
-
-          <label class="admin-field admin-field--wide">
-            <span>Oder JSON-Datei auswaehlen</span>
-            <input
-              type="file"
-              accept="application/json"
-              [disabled]="isImporting()"
-              (change)="importFromJsonFile($event)"
-            />
-          </label>
         </div>
       </div>
 
@@ -203,9 +203,9 @@
 
         <div class="info-strip admin-panel__notice">{{ notice() }}</div>
 
-        @if (syncError()) {
+        @if (syncError() || loadError()) {
           <div class="info-strip admin-panel__notice admin-panel__notice--error">
-            {{ syncError() }}
+            {{ syncError() || loadError() }}
           </div>
         }
 

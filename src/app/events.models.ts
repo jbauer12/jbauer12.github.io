@@ -12,11 +12,7 @@ export type EventItem = {
   sourceUrl?: string;
 };
 
-export type GeneratedEvent = EventItem;
-
-export type GeneratedEventsPayload = {
-  events?: GeneratedEvent[];
-};
+export type ScrapedEvent = EventItem;
 
 export type AdminEvent = EventItem & {
   id: string;
@@ -42,4 +38,22 @@ export type ImportSummary = {
   created: number;
   updated: number;
   skipped: number;
+};
+
+export type ScrapeSourceResult = {
+  url: string;
+  event?: ScrapedEvent;
+  errors: string[];
+  extractionChain: string[];
+};
+
+export type ScrapeEventsResponse = {
+  events: ScrapedEvent[];
+  results: ScrapeSourceResult[];
+};
+
+export type ScrapeImportSummary = ImportSummary & {
+  processed: number;
+  failed: number;
+  results: ScrapeSourceResult[];
 };

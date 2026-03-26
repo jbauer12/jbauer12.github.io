@@ -76,7 +76,7 @@ export const siteContentDefaults: SiteContentDefault[] = [
   },
   {
     key: 'events.upcoming.empty_link',
-    value: 'Facebook-Seite',
+    value: ' Facebook-Seite ',
   },
   {
     key: 'events.upcoming.empty_after',
@@ -86,7 +86,7 @@ export const siteContentDefaults: SiteContentDefault[] = [
   { key: 'events.past.title', value: 'Was bereits gelaufen ist.' },
   {
     key: 'events.past.empty',
-    value: 'Aktuell stehen in der generierten Datei keine vergangenen Events.',
+    value: 'Aktuell stehen keine vergangenen Events im Archiv.',
   },
   { key: 'gallery.hero.kicker', value: 'Galerie' },
   {

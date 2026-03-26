@@ -31,7 +31,7 @@
 
   @if (isLoading()) {
     <section class="page-section">
-      <div class="info-strip">Events werden aus der generierten Datei geladen.</div>
+      <div class="info-strip">Events werden aus Supabase geladen.</div>
     </section>
   } @else {
     <section class="page-section">
@@ -98,7 +98,7 @@
           <app-editable-text
             tag="span"
             contentKey="events.upcoming.empty_before"
-            fallback="Aktuell stehen keine Events an. Schau gerne auf unserer "
+            fallback="Aktuell stehen keine Events an. Schau gerne auf unserer  "
           />
           <!-- Keep direct link below for convenience even if text is dynamic. -->
           <a
@@ -116,7 +116,7 @@
           <app-editable-text
             tag="span"
             contentKey="events.upcoming.empty_after"
-            fallback=" vorbei, um dich über neue Termine zu informieren."
+            fallback="  vorbei, um dich über neue Termine zu informieren."
           />
         </div>
       }
@@ -186,7 +186,7 @@
           <app-editable-text
             tag="span"
             contentKey="events.past.empty"
-            fallback="Aktuell stehen in der generierten Datei keine vergangenen Events."
+            fallback="Aktuell stehen keine vergangenen Events im Archiv."
           />
         </div>
       }

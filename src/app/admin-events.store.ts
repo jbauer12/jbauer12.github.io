@@ -4,8 +4,10 @@ import type { Session } from '@supabase/supabase-js';
 import {
   AdminEvent,
   AdminEventInput,
-  GeneratedEvent,
   ImportSummary,
+  ScrapedEvent,
+  ScrapeEventsResponse,
+  ScrapeImportSummary,
 } from './events.models';
 import { getSupabaseClient, isSupabaseConfigured } from './supabase.client';
 
@@ -40,6 +42,7 @@ export class AdminEventsStore {
   readonly isLoading = signal(false);
   readonly isSaving = signal(false);
   readonly authReady = signal(!this.supabase);
+  readonly loadError = signal<string | null>(null);
   readonly setupMessage = signal<string | null>(
     this.supabase
       ? null
@@ -139,7 +142,7 @@ export class AdminEventsStore {
     }
   }
 
-  async importEvents(events: GeneratedEvent[]): Promise<ImportSummary> {
+  async importEvents(events: ScrapedEvent[]): Promise<ImportSummary> {
     if (!this.supabase) {
       throw new Error('Supabase ist noch nicht konfiguriert.');
     }
@@ -185,6 +188,44 @@ export class AdminEventsStore {
     }
 
     return { created, updated, skipped };
+  }
+
+  async scrapeAndImportEvents(urls: string[]): Promise<ScrapeImportSummary> {
+    if (!this.supabase) {
+      throw new Error('Supabase ist noch nicht konfiguriert.');
+    }
+
+    this.assertAdminAccess();
+
+    const normalizedUrls = uniqueUrls(urls);
+    if (!normalizedUrls.length) {
+      throw new Error('Bitte mindestens eine gueltige URL angeben.');
+    }
+
+    this.syncError.set(null);
+
+    const { data, error } = await this.supabase.functions.invoke('scrape-events', {
+      body: {
+        urls: normalizedUrls,
+      },
+    });
+
+    if (error || !data) {
+      this.syncError.set(
+        getErrorMessage(error, 'Die Event-Quellen konnten nicht serverseitig geladen werden.'),
+      );
+      throw error ?? new Error('Die Event-Quellen konnten nicht geladen werden.');
+    }
+
+    const payload = data as ScrapeEventsResponse;
+    const importSummary = await this.importEvents(payload.events ?? []);
+
+    return {
+      ...importSummary,
+      processed: payload.results.length,
+      failed: payload.results.filter((result) => !result.event).length,
+      results: payload.results,
+    };
   }
 
   async uploadEventImage(file: File): Promise<string> {
@@ -317,7 +358,7 @@ export class AdminEventsStore {
     }
 
     this.isLoading.set(true);
-    this.syncError.set(null);
+    this.loadError.set(null);
 
     try {
       const { data, error } = await this.supabase
@@ -333,14 +374,14 @@ export class AdminEventsStore {
         sortEvents((data ?? []).map((row) => mapRowToAdminEvent(row as EventRow))),
       );
     } catch (error) {
-      this.syncError.set(getErrorMessage(error, 'Die Events konnten nicht geladen werden.'));
+      this.loadError.set(getErrorMessage(error, 'Die Events konnten nicht geladen werden.'));
       this.events.set([]);
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  private findImportedEventMatch(event: GeneratedEvent): AdminEvent | undefined {
+  private findImportedEventMatch(event: ScrapedEvent): AdminEvent | undefined {
     return this.events().find(
       (existingEvent) =>
         (event.sourceUrl && existingEvent.sourceUrl === event.sourceUrl) ||
@@ -443,4 +484,21 @@ function getFileExtension(fileName: string): string {
   }
 
   return extension.replace(/[^a-z0-9]/g, '');
+}
+
+function uniqueUrls(urls: string[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+
+  for (const value of urls) {
+    const normalizedValue = value.trim();
+    if (!normalizedValue || seen.has(normalizedValue)) {
+      continue;
+    }
+
+    seen.add(normalizedValue);
+    result.push(normalizedValue);
+  }
+
+  return result;
 }
