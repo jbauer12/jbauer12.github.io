@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -9,6 +9,8 @@ import { FaqStore } from '../../faq.store';
 import {
   AdminEvent,
   AdminEventInput,
+  DEFAULT_EVENT_IMAGE_URL,
+  DEFAULT_EVENT_SOURCE_LABEL,
   ImportSummary,
   ScrapeImportSummary,
 } from '../../events.models';
@@ -30,8 +32,8 @@ export class AdminEventsPage {
   private readonly siteContentStore = inject(SiteContentStore);
   private readonly faqStore = inject(FaqStore);
 
-  readonly events = computed(() => this.adminEventsStore.events());
-  readonly faqItems = computed(() => this.faqStore.items());
+  readonly events = this.adminEventsStore.events;
+  readonly faqItems = this.faqStore.items;
   readonly session = this.adminEventsStore.session;
   readonly isAdmin = this.adminEventsStore.isAdmin;
   readonly isConfigured = this.adminEventsStore.isConfigured;
@@ -46,6 +48,8 @@ export class AdminEventsPage {
   readonly faqSyncError = this.faqStore.syncError;
   readonly faqLoadError = this.faqStore.loadError;
   readonly faqUsingFallback = this.faqStore.usingFallback;
+  readonly defaultEventImageUrl = DEFAULT_EVENT_IMAGE_URL;
+  readonly defaultEventSourceLabel = DEFAULT_EVENT_SOURCE_LABEL;
   readonly isUploadingImage = signal(false);
   readonly isImporting = signal(false);
   readonly isSeedingContent = signal(false);
@@ -145,7 +149,7 @@ export class AdminEventsPage {
   }
 
   clearImage(): void {
-    this.draft.imageUrl = '/logo.jpg';
+    this.draft.imageUrl = DEFAULT_EVENT_IMAGE_URL;
     this.notice.set('Das Eventbild wurde auf das Standardbild zurueckgesetzt.');
   }
 
@@ -301,13 +305,13 @@ function createEmptyDraft(): AdminEventInput {
   return {
     title: '',
     description: '',
-    imageUrl: '/logo.jpg',
+    imageUrl: DEFAULT_EVENT_IMAGE_URL,
     startsAt: '',
     venue: '',
     address: '',
     city: '',
     organizer: '',
-    sourceLabel: 'Admin gepflegt',
+    sourceLabel: DEFAULT_EVENT_SOURCE_LABEL,
     sourceUrl: '',
   };
 }
@@ -322,7 +326,7 @@ function createDraftFromEvent(event: AdminEvent): AdminEventInput {
     address: event.address ?? '',
     city: event.city ?? '',
     organizer: event.organizer ?? '',
-    sourceLabel: event.sourceLabel ?? 'Admin gepflegt',
+    sourceLabel: event.sourceLabel ?? DEFAULT_EVENT_SOURCE_LABEL,
     sourceUrl: event.sourceUrl ?? '',
   };
 }

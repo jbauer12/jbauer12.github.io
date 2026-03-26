@@ -1,3 +1,6 @@
+export const DEFAULT_EVENT_IMAGE_URL = '/logo.jpg';
+export const DEFAULT_EVENT_SOURCE_LABEL = 'Admin gepflegt';
+
 export type EventItem = {
   title: string;
   description: string;

@@ -1,4 +1,4 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 
 import { AdminEventsStore } from './admin-events.store';
 import { getSupabaseClient } from './supabase.client';
@@ -26,7 +26,7 @@ export class SiteContentStore {
   readonly isLoading = signal(false);
   readonly isSaving = signal(false);
   readonly syncError = signal<string | null>(null);
-  readonly canEdit = computed(() => this.adminEventsStore.isAdmin());
+  readonly canEdit = this.adminEventsStore.isAdmin;
 
   constructor() {
     void this.ensureLoaded();

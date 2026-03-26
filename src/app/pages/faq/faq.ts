@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { EditableTextComponent } from '../../shared/editable-text/editable-text';
 import { FaqStore } from '../../faq.store';
@@ -10,7 +10,7 @@ import { FaqStore } from '../../faq.store';
 export class FaqPage {
   private readonly faqStore = inject(FaqStore);
 
-  readonly faqItems = computed(() => this.faqStore.items());
+  readonly faqItems = this.faqStore.items;
   readonly isLoading = this.faqStore.isLoading;
   readonly errorMessage = this.faqStore.loadError;
 }

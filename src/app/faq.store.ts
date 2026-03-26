@@ -6,7 +6,6 @@ import { faqItems } from './site-data';
 import { getSupabaseClient } from './supabase.client';
 import { assertAdminAccess } from './shared/utils/admin-access';
 import { getErrorMessage } from './shared/utils/error-message';
-import { createId } from './shared/utils/id';
 
 type FaqEntryRow = {
   id: string;
@@ -28,18 +27,13 @@ export class FaqStore {
   private readonly adminEventsStore = inject(AdminEventsStore);
   private loadPromise: Promise<void> | null = null;
 
-  readonly remoteItems = signal<FaqEntry[]>([]);
+  readonly remoteItems = signal<FaqEntry[] | null>(null);
   readonly isLoading = signal(false);
   readonly isSaving = signal(false);
   readonly loadError = signal<string | null>(null);
   readonly syncError = signal<string | null>(null);
-  readonly hasLoadedRemote = signal(false);
-  readonly usingFallback = computed(
-    () => !this.hasLoadedRemote() || (!this.remoteItems().length && Boolean(this.loadError())),
-  );
-  readonly items = computed(() =>
-    this.usingFallback() ? defaultFaqEntries : this.remoteItems(),
-  );
+  readonly usingFallback = computed(() => this.remoteItems() === null);
+  readonly items = computed(() => this.remoteItems() ?? defaultFaqEntries);
 
   constructor() {
     void this.ensureLoaded();
@@ -74,16 +68,12 @@ export class FaqStore {
     }
 
     const existingEntry = faqId
-      ? this.remoteItems().find((item) => item.id === faqId)
+      ? (this.remoteItems() ?? []).find((item) => item.id === faqId)
       : undefined;
-    const now = new Date().toISOString();
     const row = {
-      id: existingEntry?.id ?? createId(),
       question,
       answer,
       sort_order: existingEntry?.sortOrder ?? getNextSortOrder(this.remoteItems()),
-      created_at: existingEntry?.createdAt ?? now,
-      updated_at: now,
     };
 
     this.isSaving.set(true);
@@ -101,11 +91,12 @@ export class FaqStore {
 
       const savedEntry = mapRowToFaqEntry(data as FaqEntryRow);
       const nextItems = existingEntry
-        ? this.remoteItems().map((item) => (item.id === existingEntry.id ? savedEntry : item))
-        : [...this.remoteItems(), savedEntry];
+        ? (this.remoteItems() ?? []).map((item) =>
+            item.id === existingEntry.id ? savedEntry : item,
+          )
+        : [...(this.remoteItems() ?? []), savedEntry];
 
       this.remoteItems.set(sortFaqEntries(nextItems));
-      this.hasLoadedRemote.set(true);
       return savedEntry;
     } catch (error) {
       this.syncError.set(getErrorMessage(error, 'Der FAQ-Eintrag konnte nicht gespeichert werden.'));
@@ -131,8 +122,7 @@ export class FaqStore {
         throw error;
       }
 
-      this.remoteItems.update((items) => items.filter((item) => item.id !== faqId));
-      this.hasLoadedRemote.set(true);
+      this.remoteItems.update((items) => (items ?? []).filter((item) => item.id !== faqId));
     } catch (error) {
       this.syncError.set(getErrorMessage(error, 'Der FAQ-Eintrag konnte nicht geloescht werden.'));
       throw error;
@@ -149,7 +139,7 @@ export class FaqStore {
     assertAdminAccess(this.adminEventsStore.isAdmin());
     await this.ensureLoaded();
 
-    if (this.remoteItems().length) {
+    if ((this.remoteItems() ?? []).length) {
       return { created: 0, skipped: defaultFaqEntries.length };
     }
 
@@ -161,12 +151,9 @@ export class FaqStore {
         .from('faq_items')
         .insert(
           defaultFaqEntries.map((item, index) => ({
-            id: createId(),
             question: item.question,
             answer: item.answer,
             sort_order: index,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
           })),
         )
         .select('*');
@@ -176,7 +163,6 @@ export class FaqStore {
       }
 
       this.remoteItems.set(sortFaqEntries((data ?? []).map((row) => mapRowToFaqEntry(row as FaqEntryRow))));
-      this.hasLoadedRemote.set(true);
 
       return {
         created: defaultFaqEntries.length,
@@ -210,11 +196,9 @@ export class FaqStore {
       }
 
       this.remoteItems.set(sortFaqEntries((data ?? []).map((row) => mapRowToFaqEntry(row as FaqEntryRow))));
-      this.hasLoadedRemote.set(true);
     } catch (error) {
       this.loadError.set(getErrorMessage(error, 'Die FAQ konnten nicht geladen werden.'));
-      this.remoteItems.set([]);
-      this.hasLoadedRemote.set(false);
+      this.remoteItems.set(null);
     } finally {
       this.isLoading.set(false);
     }
@@ -250,6 +234,10 @@ function sortFaqEntries(items: FaqEntry[]): FaqEntry[] {
   });
 }
 
-function getNextSortOrder(items: FaqEntry[]): number {
-  return items.length ? Math.max(...items.map((item) => item.sortOrder)) + 1 : 0;
+function getNextSortOrder(items: FaqEntry[] | null): number {
+  if (!items?.length) {
+    return 0;
+  }
+
+  return Math.max(...items.map((item) => item.sortOrder)) + 1;
 }

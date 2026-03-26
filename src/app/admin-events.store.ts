@@ -4,12 +4,15 @@ import type { Session } from '@supabase/supabase-js';
 import {
   AdminEvent,
   AdminEventInput,
+  DEFAULT_EVENT_IMAGE_URL,
+  DEFAULT_EVENT_SOURCE_LABEL,
   ImportSummary,
   ScrapedEvent,
   ScrapeEventsResponse,
   ScrapeImportSummary,
 } from './events.models';
 import { getSupabaseClient, isSupabaseConfigured } from './supabase.client';
+import { assertAdminAccess as assertAdmin } from './shared/utils/admin-access';
 import { createId } from './shared/utils/id';
 import { getErrorMessage } from './shared/utils/error-message';
 
@@ -28,6 +31,20 @@ type EventRow = {
   source_url: string | null;
   created_at: string;
   updated_at: string;
+};
+
+type EventMutationRow = {
+  title: string;
+  description: string;
+  image_url: string;
+  starts_at: string;
+  venue: string | null;
+  address: string | null;
+  city: string | null;
+  organizer: string | null;
+  source_label: string;
+  slug: string;
+  source_url: string | null;
 };
 
 const EVENT_IMAGES_BUCKET = 'event-images';
@@ -114,7 +131,7 @@ export class AdminEventsStore {
     const existingEvent = eventId
       ? currentEvents.find((event) => event.id === eventId)
       : undefined;
-    const row = buildEventRow(value, existingEvent);
+    const row = buildEventMutation(value, existingEvent);
 
     this.isSaving.set(true);
     this.syncError.set(null);
@@ -169,7 +186,7 @@ export class AdminEventsStore {
         {
           title: event.title,
           description: event.description,
-          imageUrl: event.imageUrl || '/logo.jpg',
+          imageUrl: event.imageUrl || DEFAULT_EVENT_IMAGE_URL,
           startsAt: event.startsAt,
           venue: event.venue ?? '',
           address: event.address ?? '',
@@ -220,13 +237,14 @@ export class AdminEventsStore {
     }
 
     const payload = data as ScrapeEventsResponse;
+    const results = payload.results ?? [];
     const importSummary = await this.importEvents(payload.events ?? []);
 
     return {
       ...importSummary,
-      processed: payload.results.length,
-      failed: payload.results.filter((result) => !result.event).length,
-      results: payload.results,
+      processed: results.length,
+      failed: results.filter((result) => !result.event).length,
+      results,
     };
   }
 
@@ -318,9 +336,7 @@ export class AdminEventsStore {
       throw new Error('Bitte zuerst einloggen.');
     }
 
-    if (!this.isAdmin()) {
-      throw new Error('Dein Account hat keine Admin-Rechte fuer den Maschinenraum.');
-    }
+    assertAdmin(this.isAdmin());
   }
 
   private async updateSession(session: Session | null): Promise<void> {
@@ -392,26 +408,21 @@ export class AdminEventsStore {
   }
 }
 
-function buildEventRow(input: AdminEventInput, existing?: AdminEvent): EventRow {
+function buildEventMutation(input: AdminEventInput, existing?: AdminEvent): EventMutationRow {
   const title = input.title.trim();
-  const id = existing?.id ?? createId();
-  const now = new Date().toISOString();
 
   return {
-    id,
     title,
     description: input.description.trim(),
-    image_url: input.imageUrl.trim() || '/logo.jpg',
+    image_url: normalizeEventImageUrl(input.imageUrl),
     starts_at: input.startsAt.trim(),
     venue: toOptionalString(input.venue) ?? null,
     address: toOptionalString(input.address) ?? null,
     city: toOptionalString(input.city) ?? null,
     organizer: toOptionalString(input.organizer) ?? null,
-    source_label: toOptionalString(input.sourceLabel) ?? 'Admin gepflegt',
-    slug: existing?.slug ?? input.slug?.trim() ?? `${slugify(title)}-${id.slice(0, 8)}`,
-    source_url: toOptionalString(input.sourceUrl) ?? null,
-    created_at: existing?.createdAt ?? now,
-    updated_at: now,
+    source_label: toOptionalString(input.sourceLabel) ?? DEFAULT_EVENT_SOURCE_LABEL,
+    slug: existing?.slug ?? toOptionalString(input.slug) ?? `${slugify(title)}-${createId().slice(0, 8)}`,
+    source_url: normalizeOptionalHttpUrl(input.sourceUrl) ?? null,
   };
 }
 
@@ -454,6 +465,48 @@ function slugify(value: string): string {
 function toOptionalString(value: string | undefined): string | undefined {
   const normalizedValue = value?.trim();
   return normalizedValue ? normalizedValue : undefined;
+}
+
+function normalizeEventImageUrl(value: string): string {
+  const normalizedValue = value.trim();
+
+  if (!normalizedValue) {
+    return DEFAULT_EVENT_IMAGE_URL;
+  }
+
+  if (normalizedValue.startsWith('/')) {
+    return normalizedValue;
+  }
+
+  return normalizeRequiredHttpUrl(normalizedValue, 'Bitte eine gueltige Bild-URL angeben.');
+}
+
+function normalizeOptionalHttpUrl(value: string | undefined): string | undefined {
+  const normalizedValue = toOptionalString(value);
+  if (!normalizedValue) {
+    return undefined;
+  }
+
+  return normalizeRequiredHttpUrl(
+    normalizedValue,
+    'Bitte eine gueltige http- oder https-URL angeben.',
+  );
+}
+
+function normalizeRequiredHttpUrl(value: string, errorMessage: string): string {
+  let url: URL;
+
+  try {
+    url = new URL(value);
+  } catch {
+    throw new Error(errorMessage);
+  }
+
+  if (!['http:', 'https:'].includes(url.protocol)) {
+    throw new Error(errorMessage);
+  }
+
+  return url.toString();
 }
 
 function getFileExtension(fileName: string): string {

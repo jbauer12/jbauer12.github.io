@@ -418,7 +418,7 @@
                 [(ngModel)]="draft.imageUrl"
                 name="imageUrl"
                 type="text"
-                placeholder="/logo.jpg"
+                [placeholder]="defaultEventImageUrl"
               />
             </label>
 
@@ -438,14 +438,14 @@
                 [(ngModel)]="draft.sourceLabel"
                 name="sourceLabel"
                 type="text"
-                placeholder="Admin gepflegt"
+                [placeholder]="defaultEventSourceLabel"
               />
             </label>
 
             <div class="admin-field admin-field--wide">
               <span>Vorschau</span>
               <div class="admin-image-preview">
-                <img [src]="draft.imageUrl || '/logo.jpg'" alt="Vorschau fuer das Eventbild" />
+                <img [src]="draft.imageUrl || defaultEventImageUrl" alt="Vorschau fuer das Eventbild" />
               </div>
               <div class="action-row admin-upload__actions">
                 <button
@@ -488,7 +488,7 @@
               <article class="admin-event-card">
                 <div class="admin-event-card__head">
                   <div>
-                    <p class="meta-tag">{{ event.sourceLabel || 'Admin gepflegt' }}</p>
+                    <p class="meta-tag">{{ event.sourceLabel || defaultEventSourceLabel }}</p>
                     <h3>{{ event.title }}</h3>
                   </div>
                   <p class="note-line">
