@@ -1,0 +1,321 @@
+<main class="page-view">
+  <section class="page-section page-section--hero">
+    <p class="kicker">Intern</p>
+    <h1 class="display-title display-title--small">Maschinenraum</h1>
+    <p class="lead">
+      Versteckter Bereich fuer die Eventpflege. Die Daten werden in Supabase gespeichert und ueber
+      die Eventseite oeffentlich ausgespielt.
+    </p>
+
+    <div class="info-strip">
+      Dieser Bereich ist nicht in der Navigation verlinkt. Wirklich abgesichert wird er ueber
+      Supabase Auth und Row Level Security.
+    </div>
+
+    <div class="action-row">
+      <a class="button button--solid" routerLink="/events">Eventseite ansehen</a>
+    </div>
+  </section>
+
+  @if (!isConfigured()) {
+    <section class="page-section">
+      <div class="section-header">
+        <p class="kicker">Setup</p>
+        <h2 class="section-title">Supabase verbinden</h2>
+        <p class="body-copy">
+          Sobald URL und Anon Key hinterlegt sind, kannst du dich hier einloggen und Events zentral
+          pflegen.
+        </p>
+      </div>
+
+      <div class="info-strip">{{ setupMessage() }}</div>
+
+      <ol class="step-list">
+        <li>Fuehre die SQL aus `supabase/events_admin.sql` in deinem Supabase-Projekt aus.</li>
+        <li>Trage URL und Anon Key in `src/environments/environment*.ts` ein.</li>
+        <li>Lege in Supabase Auth einen Admin-User an und deaktiviere offene Sign-ups.</li>
+      </ol>
+    </section>
+  } @else if (!authReady()) {
+    <section class="page-section">
+      <div class="info-strip">Supabase-Session wird geladen.</div>
+    </section>
+  } @else if (!session()) {
+    <section class="page-section login-shell">
+      <div class="surface-card admin-panel login-card">
+        <div class="section-header">
+          <p class="kicker">Login</p>
+          <h2 class="section-title">Adminzugang</h2>
+          <p class="body-copy">
+            Melde dich mit deinem Supabase-Account an, um Events anzulegen, zu aendern oder zu
+            loeschen.
+          </p>
+        </div>
+
+        <div class="info-strip admin-panel__notice">{{ notice() }}</div>
+
+        @if (syncError()) {
+          <div class="info-strip admin-panel__notice admin-panel__notice--error">
+            {{ syncError() }}
+          </div>
+        }
+
+        <form class="admin-form" (ngSubmit)="signIn()">
+          <div class="admin-form__grid">
+            <label class="admin-field admin-field--wide">
+              <span>E-Mail</span>
+              <input
+                [(ngModel)]="loginDraft.email"
+                name="email"
+                type="email"
+                placeholder="admin@vaidaisnotdead.de"
+                required
+              />
+            </label>
+
+            <label class="admin-field admin-field--wide">
+              <span>Passwort</span>
+              <input
+                [(ngModel)]="loginDraft.password"
+                name="password"
+                type="password"
+                placeholder="Passwort"
+                required
+              />
+            </label>
+          </div>
+
+          <div class="action-row admin-form__actions">
+            <button class="button button--solid" type="submit">Einloggen</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  } @else {
+    <section class="page-section admin-layout">
+      <div class="surface-card admin-panel">
+        <div class="section-header">
+          <p class="kicker">Formular</p>
+          <h2 class="section-title">Neues Event oder Update</h2>
+          <p class="body-copy">
+            Titel, Termin und Beschreibung reichen aus. Alle weiteren Angaben kannst du bei Bedarf
+            ergaenzen.
+          </p>
+        </div>
+
+        <div class="action-row admin-panel__toolbar">
+          <button class="button button--ghost" type="button" (click)="signOut()">Abmelden</button>
+        </div>
+
+        <div class="info-strip admin-panel__notice">{{ notice() }}</div>
+
+        @if (syncError()) {
+          <div class="info-strip admin-panel__notice admin-panel__notice--error">
+            {{ syncError() }}
+          </div>
+        }
+
+        <form class="admin-form" (ngSubmit)="saveEvent()">
+          <div class="admin-form__grid">
+            <label class="admin-field admin-field--wide">
+              <span>Titel</span>
+              <input
+                [(ngModel)]="draft.title"
+                name="title"
+                type="text"
+                placeholder="DIY Konzertabend im Jugendzentrum"
+                required
+              />
+            </label>
+
+            <label class="admin-field">
+              <span>Termin</span>
+              <input
+                [(ngModel)]="draft.startsAt"
+                name="startsAt"
+                type="text"
+                placeholder="03.07.2026 20:00"
+                required
+              />
+            </label>
+
+            <label class="admin-field">
+              <span>Veranstalter</span>
+              <input
+                [(ngModel)]="draft.organizer"
+                name="organizer"
+                type="text"
+                placeholder="Vaida is not dead e.V."
+              />
+            </label>
+
+            <label class="admin-field">
+              <span>Venue</span>
+              <input
+                [(ngModel)]="draft.venue"
+                name="venue"
+                type="text"
+                placeholder="Jugendzentrum"
+              />
+            </label>
+
+            <label class="admin-field">
+              <span>Stadt</span>
+              <input
+                [(ngModel)]="draft.city"
+                name="city"
+                type="text"
+                placeholder="Viechtach"
+              />
+            </label>
+
+            <label class="admin-field admin-field--wide">
+              <span>Adresse</span>
+              <input
+                [(ngModel)]="draft.address"
+                name="address"
+                type="text"
+                placeholder="Musterstrasse 1, 94234 Viechtach"
+              />
+            </label>
+
+            <label class="admin-field admin-field--wide">
+              <span>Beschreibung</span>
+              <textarea
+                [(ngModel)]="draft.description"
+                name="description"
+                rows="5"
+                placeholder="Kurztext fuer die Eventseite"
+                required
+              ></textarea>
+            </label>
+
+            <div class="admin-field admin-field--wide">
+              <span>Bilddatei hochladen</span>
+              <div class="admin-upload">
+                <input
+                  class="admin-upload__input"
+                  type="file"
+                  accept="image/*"
+                  [disabled]="isUploadingImage()"
+                  (change)="uploadImage($event)"
+                />
+                <p class="note-line">
+                  JPG, PNG, WebP und andere Bilddateien koennen direkt nach Supabase Storage
+                  hochgeladen werden.
+                </p>
+              </div>
+            </div>
+
+            <label class="admin-field">
+              <span>Bild-URL</span>
+              <input
+                [(ngModel)]="draft.imageUrl"
+                name="imageUrl"
+                type="text"
+                placeholder="/logo.jpg"
+              />
+            </label>
+
+            <label class="admin-field">
+              <span>Quelle</span>
+              <input
+                [(ngModel)]="draft.sourceUrl"
+                name="sourceUrl"
+                type="url"
+                placeholder="https://..."
+              />
+            </label>
+
+            <label class="admin-field admin-field--wide">
+              <span>Label</span>
+              <input
+                [(ngModel)]="draft.sourceLabel"
+                name="sourceLabel"
+                type="text"
+                placeholder="Admin gepflegt"
+              />
+            </label>
+
+            <div class="admin-field admin-field--wide">
+              <span>Vorschau</span>
+              <div class="admin-image-preview">
+                <img [src]="draft.imageUrl || '/logo.jpg'" alt="Vorschau fuer das Eventbild" />
+              </div>
+              <div class="action-row admin-upload__actions">
+                <button
+                  class="button button--ghost"
+                  type="button"
+                  [disabled]="isUploadingImage()"
+                  (click)="clearImage()"
+                >
+                  Standardbild nutzen
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-row admin-form__actions">
+            <button class="button button--solid" type="submit" [disabled]="isSaving()">
+              {{ isEditing() ? 'Event speichern' : 'Event anlegen' }}
+            </button>
+            <button class="button button--ghost" type="button" (click)="resetForm()">
+              Zuruecksetzen
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="surface-card admin-panel">
+        <div class="section-header">
+          <p class="kicker">Gespeichert</p>
+          <h2 class="section-title">Supabase Events</h2>
+          <p class="body-copy">
+            Diese Eintraege werden zentral gespeichert und auf der Eventseite mit angezeigt.
+          </p>
+        </div>
+
+        @if (isLoading()) {
+          <div class="info-strip">Events werden gerade aus Supabase geladen.</div>
+        } @else if (events().length) {
+          <div class="admin-event-list">
+            @for (event of events(); track event.id) {
+              <article class="admin-event-card">
+                <div class="admin-event-card__head">
+                  <div>
+                    <p class="meta-tag">{{ event.sourceLabel || 'Admin gepflegt' }}</p>
+                    <h3>{{ event.title }}</h3>
+                  </div>
+                  <p class="note-line">
+                    Zuletzt bearbeitet {{ event.updatedAt | date: 'dd.MM.yyyy, HH:mm' }}
+                  </p>
+                </div>
+
+                <p class="admin-event-card__meta">
+                  {{ event.startsAt }}@if (event.venue || event.city) { ·
+                  {{ event.venue || 'Ort folgt' }}@if (event.city) {, {{ event.city }} } }
+                </p>
+                <p class="body-copy">{{ event.description }}</p>
+
+                <div class="action-row">
+                  <button class="button button--solid" type="button" (click)="startEditing(event)">
+                    Bearbeiten
+                  </button>
+                  <button
+                    class="button button--ghost admin-action--danger"
+                    type="button"
+                    (click)="deleteEvent(event)"
+                  >
+                    Loeschen
+                  </button>
+                </div>
+              </article>
+            }
+          </div>
+        } @else {
+          <div class="info-strip">Noch keine Supabase-Events vorhanden.</div>
+        }
+      </div>
+    </section>
+  }
+</main>

@@ -30,7 +30,7 @@
 
       @if (upcomingEvents().length) {
         <div class="event-grid">
-          @for (event of upcomingEvents(); track event.slug) {
+          @for (event of upcomingEvents(); track event.displayKey) {
             <article class="event-card">
               <div class="event-card__media">
                 <img [src]="event.imageUrl" [alt]="'Eventbild zu ' + event.title" />
@@ -53,16 +53,18 @@
                   <p class="note-line">{{ event.address }}</p>
                 }
 
-                <div class="action-row">
-                  <a
-                    class="button button--solid"
-                    [href]="event.sourceUrl"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Quelle ansehen
-                  </a>
-                </div>
+                @if (event.sourceUrl) {
+                  <div class="action-row">
+                    <a
+                      class="button button--solid"
+                      [href]="event.sourceUrl"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      Quelle ansehen
+                    </a>
+                  </div>
+                }
               </div>
             </article>
           }
@@ -89,7 +91,7 @@
 
       @if (pastEvents().length) {
         <div class="event-grid">
-          @for (event of pastEvents(); track event.slug) {
+          @for (event of pastEvents(); track event.displayKey) {
             <article class="event-card event-card--past">
               <div class="event-card__media">
                 <img [src]="event.imageUrl" [alt]="'Eventbild zu ' + event.title" />
@@ -112,16 +114,18 @@
                   <p class="note-line">{{ event.address }}</p>
                 }
 
-                <div class="action-row">
-                  <a
-                    class="button button--ghost"
-                    [href]="event.sourceUrl"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    Quelle ansehen
-                  </a>
-                </div>
+                @if (event.sourceUrl) {
+                  <div class="action-row">
+                    <a
+                      class="button button--ghost"
+                      [href]="event.sourceUrl"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      Quelle ansehen
+                    </a>
+                  </div>
+                }
               </div>
             </article>
           }

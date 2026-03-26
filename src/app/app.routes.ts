@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { adminPortalPath } from './admin-portal';
+
 export const routes: Routes = [
   {
     path: '',
@@ -10,6 +12,12 @@ export const routes: Routes = [
     path: 'events',
     title: 'vaidaisnotdead | Events',
     loadComponent: () => import('./pages/events/events').then((m) => m.EventsPage),
+  },
+  {
+    path: adminPortalPath,
+    title: 'vaidaisnotdead | Maschinenraum',
+    loadComponent: () =>
+      import('./pages/admin-events/admin-events').then((m) => m.AdminEventsPage),
   },
   {
     path: 'gallery',
