@@ -34,12 +34,12 @@ export class MembershipPage {
       ? `${trimmedMembershipType}: Anfrage von ${trimmedName}`
       : trimmedName
         ? `Mitgliedsanfrage von ${trimmedName}`
-      : 'Mitgliedsanfrage ueber die Website';
+      : 'Mitgliedsanfrage über die Website';
 
     const bodyLines = [
       'Servus vaida is not dead,',
       '',
-      'ich moechte mich fuer eine Mitgliedschaft bzw. Mitarbeit melden.',
+      'ich möchte mich für eine Mitgliedschaft bzw. Mitarbeit melden.',
       '',
       `Mitgliedschaftsart: ${trimmedMembershipType || '-'}`,
       `Name: ${trimmedName || '-'}`,
@@ -50,7 +50,7 @@ export class MembershipPage {
       'Nachricht:',
       trimmedMessage || '-',
       '',
-      'Viele Gruesse',
+      'Viele Grüße',
       trimmedName || '',
     ];
 

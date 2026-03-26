@@ -1,22 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap');
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --font-body: 'Space Grotesk', 'Segoe UI', sans-serif;
   --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
   --page-width: 74rem;
-  --bg: #040504;
-  --bg-elevated: #0a0c0a;
-  --surface: rgba(10, 12, 10, 0.88);
-  --surface-soft: rgba(255, 255, 255, 0.03);
-  --text-primary: #f5f7f1;
-  --text-secondary: #c4c9c0;
-  --text-muted: #8d9488;
-  --border: rgba(255, 255, 255, 0.12);
-  --accent: #68ff1e;
-  --accent-soft: rgba(104, 255, 30, 0.12);
-  --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.34);
+  --bg: #dde4d7;
+  --bg-elevated: #f1ece0;
+  --surface: rgba(246, 241, 232, 0.78);
+  --surface-soft: rgba(249, 244, 235, 0.58);
+  --text-primary: #20281c;
+  --text-secondary: #495247;
+  --text-muted: #677060;
+  --border: rgba(32, 40, 28, 0.14);
+  --accent: #365f52;
+  --accent-soft: rgba(54, 95, 82, 0.14);
+  --accent-warm: #bb7a56;
+  --accent-warm-soft: rgba(187, 122, 86, 0.14);
+  --shadow-soft: 0 24px 60px rgba(66, 74, 58, 0.16);
 }
 
 *,
@@ -34,9 +36,11 @@ body {
   min-width: 320px;
   font-family: var(--font-body);
   color: var(--text-primary);
+  background-color: var(--bg);
   background:
-    radial-gradient(circle at top left, rgba(104, 255, 30, 0.08), transparent 24rem),
-    linear-gradient(180deg, #030403 0%, #080908 52%, #030403 100%);
+    radial-gradient(circle at top left, rgba(54, 95, 82, 0.24), transparent 26rem),
+    radial-gradient(circle at top right, rgba(187, 122, 86, 0.18), transparent 24rem),
+    linear-gradient(180deg, #e7eadf 0%, #d8dfd3 48%, #e4dccf 100%);
 }
 
 a,
@@ -53,7 +57,7 @@ img {
 }
 
 ::selection {
-  background: rgba(98, 255, 0, 0.3);
+  background: rgba(187, 122, 86, 0.22);
   color: var(--text-primary);
 }
 
@@ -75,7 +79,7 @@ p {
   padding: 1rem;
   border: 1px solid var(--border);
   border-radius: 1.35rem;
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(247, 243, 235, 0.82), rgba(239, 233, 223, 0.76));
   box-shadow: var(--shadow-soft);
 }
 
@@ -153,9 +157,9 @@ p {
 }
 
 .button--solid {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #071006;
+  border-color: rgba(54, 95, 82, 0.2);
+  background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+  color: #f9f5ef;
 }
 
 .button--ghost {
@@ -165,12 +169,12 @@ p {
 
 .button:hover,
 .button:focus-visible {
-  border-color: var(--accent);
+  border-color: var(--accent-warm);
 }
 
 .button--ghost:hover,
 .button--ghost:focus-visible {
-  background: var(--accent-soft);
+  background: linear-gradient(135deg, var(--accent-soft), var(--accent-warm-soft));
 }
 
 .section-header {
@@ -201,7 +205,7 @@ p {
   padding: 1rem;
   border: 1px solid var(--border);
   border-radius: 1rem;
-  background: var(--surface-soft);
+  background: linear-gradient(180deg, rgba(249, 245, 238, 0.68), rgba(241, 236, 227, 0.58));
 }
 
 .surface-card h3,
@@ -231,7 +235,7 @@ p {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 1rem;
-  background: #090909;
+  background: #d8e0d6;
 }
 
 .poster-frame img,
@@ -254,9 +258,9 @@ p {
 
 .info-strip {
   padding: 1rem;
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--accent-warm);
   color: var(--text-secondary);
-  background: var(--accent-soft);
+  background: linear-gradient(135deg, var(--accent-soft), var(--accent-warm-soft));
   line-height: 1.7;
 }
 

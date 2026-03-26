@@ -1,16 +1,14 @@
+@let pageTitle = 'Events';
+
 <main class="page-view">
   <section class="page-section page-section--hero">
-    <p class="kicker">Events</p>
-    <h1 class="display-title display-title--small">Kommende und vergangene Events.</h1>
+    <p class="kicker">{{ pageTitle }}</p>
+    <h1 class="display-title display-title--small">{{ pageTitle }}</h1>
     <p class="lead">
-      Diese Seite zeigt nur noch die Daten aus <code>events.generated.json</code>. Dadurch kommt
-      alles aus einer klaren Quelle und laesst sich sauber nach Datum sortieren.
+      Wir machen Events rund um Punk, Techno und alternative Musik. Von rohen Live-Shows
+      bis zu langen Clubnächten bringen wir laute, unabhängige Sounds und Szenen zusammen.
     </p>
-    <p class="body-copy">
-      Alles, was in der Zukunft liegt, landet unter <strong>Kommende Events</strong>. Alles mit
-      Datum in der Vergangenheit wird automatisch unter <strong>Vergangene Events</strong>
-      einsortiert.
-    </p>
+
   </section>
 
   @if (errorMessage()) {
@@ -71,7 +69,14 @@
         </div>
       } @else {
         <div class="info-strip">
-          Aktuell stehen in der generierten Datei keine kommenden Events.
+          Aktuell stehen keine Events an. Schau gerne auf unserer
+          <a
+            href="https://www.facebook.com/vaidaisnotdead/"
+            target="_blank"
+            rel="noreferrer noopener"
+            >Facebook-Seite</a
+          >
+          vorbei, um dich über neue Termine zu informieren.
         </div>
       }
     </section>

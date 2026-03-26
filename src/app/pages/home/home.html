@@ -8,15 +8,10 @@
           lebt.
         </p>
         <p class="body-copy">
-          Der neue Auftritt orientiert sich staerker an der vorhandenen Seite: klarer Aufbau,
-          groessere Headlines, weniger Effekte und mehr Platz fuer echte Termine, Bilder und
+          Der neue Auftritt orientiert sich stärker an der vorhandenen Seite: klarer Aufbau,
+          größere Headlines, weniger Effekte und mehr Platz für echte Termine, Bilder und
           Mitgliedschaft.
         </p>
-
-        <div class="action-row">
-          <a class="button button--solid" routerLink="/events">Events ansehen</a>
-          <a class="button button--ghost" routerLink="/mitglied-werden">Mitglied werden</a>
-        </div>
       </div>
 
       <figure class="poster-frame poster-frame--hero">
@@ -26,54 +21,43 @@
         />
       </figure>
     </div>
-  </section>
-
-  <section class="page-section">
-    <div class="section-header">
-      <p class="kicker">Worum es hier geht</p>
-      <h2 class="section-title">Ein Clubauftritt mit Haltung statt ein neutraler Veranstaltungskalender.</h2>
-      <p class="body-copy">
-        Die Seite soll kuenftig das zeigen, was im Verein und rund um die Abende wirklich wichtig
-        ist: Formate, Kontakt, Bilder und Wege zum Mitmachen.
-      </p>
-    </div>
-
-    <div class="card-grid card-grid--three">
-      @for (highlight of highlights; track highlight.title) {
-        <article class="surface-card">
-          <p class="meta-tag">Schwerpunkt</p>
-          <h3>{{ highlight.title }}</h3>
-          <p class="body-copy">{{ highlight.text }}</p>
-        </article>
-      }
-    </div>
+        <div class="action-row" style="justify-content: center">
+          <a class="button button--solid" routerLink="/events">Events ansehen</a>
+          <a class="button button--ghost" routerLink="/mitglied-werden">Mitglied werden</a>
+        </div>
   </section>
 
   <section class="page-section">
     <div class="split-grid">
-      <article class="surface-card">
-        <p class="kicker">Ausrichtung</p>
-        <h2 class="section-title">Von Viechtach aus gedacht, aber nicht provinziell.</h2>
-        <p class="body-copy">
-          Der oeffentliche Facebook-Text nennt Jugend- und Subkultur im Bayerischen Wald ganz klar
-          als Kern. Genau deshalb darf die Seite zugleich lokal verankert und offen fuer alles
-          bleiben, was von ausserhalb dazustoesst.
-        </p>
-        <p class="body-copy">
-          Weniger Hochglanz, mehr Szene. Weniger Scrollsuche, mehr direkte Information. So soll der
-          neue Auftritt arbeiten.
-        </p>
-      </article>
+      <div>
+        <div class="section-header">
+          <p class="kicker">Aktuelles</p>
+          <h2 class="section-title">Bands und Solo-Acts für das Bürgerfest Viechtach 2026 gesucht.</h2>
+          <p class="body-copy">
+            Für das Bürgerfest in Viechtach vom 3. bis 5. Juli 2026 suchen wir Bands,
+            Künstler und Künstlerinnen aus verschiedenen musikalischen Richtungen.
+          </p>
+        </div>
 
-      <figure class="image-frame">
+        <div class="info-strip">
+          Ob laut, tanzbar, experimentell oder ganz entspannt: willkommen sind Acts mit eigenem
+          Stil und Lust auf ein offenes Stadtfest-Wochenende.
+        </div>
+
+        <ul class="bullet-list">
+          <li>Gesucht werden Bands, Solo-Künstler und Künstlerinnen für Live-Auftritte.</li>
+          <li>Möglich sind unterschiedliche Genres von Indie, Rock und Punk bis Funk, Pop und Akustik.</li>
+          <li>Der Zeitraum ist Freitag, 3. Juli 2026 bis Sonntag, 5. Juli 2026 in Viechtach.</li>
+        </ul>
+      </div>
+
+      <figure class="poster-frame">
         <img
-          src="/facebook-page-preview.jpg"
-          alt="Oeffentlich sichtbare Vorschaubild-Kachel der Facebook-Seite"
+          src="/buergerfest.png"
+          alt="Ankündigung für das Bürgerfest in Viechtach vom 3. bis 5. Juli 2026"
         />
-        <figcaption class="media-caption">
-          Kleiner oeffentlicher Einblick in den bisherigen Social-Auftritt von vaidaisnotdead.
-        </figcaption>
       </figure>
     </div>
   </section>
+
 </main>

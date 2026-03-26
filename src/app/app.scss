@@ -23,7 +23,7 @@
 .site-header__frame,
 .site-nav {
   border: 1px solid var(--border);
-  background: rgba(8, 10, 8, 0.92);
+  background: linear-gradient(180deg, rgba(247, 243, 235, 0.9), rgba(238, 231, 221, 0.84));
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(16px);
 }
@@ -157,14 +157,14 @@
 .site-nav a:hover,
 .site-nav a:focus-visible,
 .site-nav a.is-active {
-  border-color: rgba(104, 255, 30, 0.28);
-  background: rgba(104, 255, 30, 0.08);
+  border-color: rgba(54, 95, 82, 0.24);
+  background: linear-gradient(135deg, rgba(54, 95, 82, 0.12), rgba(187, 122, 86, 0.1));
 }
 
 .site-menu-toggle:hover,
 .site-menu-toggle:focus-visible {
-  border-color: rgba(104, 255, 30, 0.28);
-  background: rgba(104, 255, 30, 0.08);
+  border-color: rgba(54, 95, 82, 0.24);
+  background: linear-gradient(135deg, rgba(54, 95, 82, 0.12), rgba(187, 122, 86, 0.1));
 }
 
 .site-footer {
