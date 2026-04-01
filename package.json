@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:pages": "npm run build && node scripts/sync-pages-output.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

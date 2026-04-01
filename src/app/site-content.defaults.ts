@@ -91,17 +91,12 @@ export const siteContentDefaults: SiteContentDefault[] = [
   { key: 'gallery.hero.kicker', value: 'Galerie' },
   {
     key: 'gallery.hero.title',
-    value: 'Motive, Flyer und erste öffentliche Eindrücke.',
+    value: 'Fotos und Eindrücke von vergangenen Veranstaltungen.',
   },
   {
     key: 'gallery.hero.lead',
     value:
-      'Noch keine voll ausgebaute Fotochronik, aber bereits eine eigene Seite für Bildmaterial, Artwork und visuelle Hinweise auf die Richtung des Clubs.',
-  },
-  {
-    key: 'gallery.hero.body',
-    value:
-      'Die Motive hier stammen aus dem bestehenden öffentlichen Auftritt und können später durch echte Eventfotos, Plakate und Archivmaterial ergänzt werden.',
+      'Hier sammeln wir Fotos, Artwork und Eindrücke vergangener Abende und halten fest, was bei den Veranstaltungen visuell und atmosphärisch in Erinnerung bleibt.',
   },
   ...galleryItems.map((item, index) => ({
     key: `gallery.items.${index}.caption`,

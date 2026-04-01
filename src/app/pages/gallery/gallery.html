@@ -11,40 +11,159 @@
       tag="h1"
       className="display-title display-title--small"
       contentKey="gallery.hero.title"
-      fallback="Motive, Flyer und erste öffentliche Eindrücke."
+      fallback="Fotos und Eindrücke von vergangenen Veranstaltungen."
     />
     <app-editable-text
       tag="p"
       className="lead"
       contentKey="gallery.hero.lead"
-      fallback="Noch keine voll ausgebaute Fotochronik, aber bereits eine eigene Seite für Bildmaterial, Artwork und visuelle Hinweise auf die Richtung des Clubs."
-    />
-    <app-editable-text
-      tag="p"
-      className="body-copy"
-      contentKey="gallery.hero.body"
-      fallback="Die Motive hier stammen aus dem bestehenden öffentlichen Auftritt und können später durch echte Eventfotos, Plakate und Archivmaterial ergänzt werden."
+      fallback="Hier sammeln wir Fotos, Artwork und Eindrücke vergangener Abende und halten fest, was bei den Veranstaltungen visuell und atmosphärisch in Erinnerung bleibt."
     />
   </section>
 
-  <section class="page-section">
-    <div class="gallery-grid">
-      @for (item of galleryItems; track item.src; let i = $index) {
-        <figure
-          class="media-tile"
-          [class.media-tile--poster]="i === 0"
-          [class.media-tile--logo]="i === 1"
-        >
-          <img [src]="item.src" [alt]="item.alt" />
-          <figcaption class="media-tile__caption">
-            <app-editable-text
-              tag="span"
-              [contentKey]="'gallery.items.' + i + '.caption'"
-              [fallback]="item.caption"
-            />
-          </figcaption>
-        </figure>
-      }
-    </div>
-  </section>
+  @if (errorMessage()) {
+    <section class="page-section">
+      <div class="info-strip">{{ errorMessage() }}</div>
+    </section>
+  }
+
+  @if (isLoading()) {
+    <section class="page-section">
+      <div class="info-strip">Galerie wird aus den Eventdaten aufgebaut.</div>
+    </section>
+  }
+
+  @if (galleryEvents().length) {
+    @if (selectedEvent(); as event) {
+      <section class="page-section gallery-shell">
+        <div class="gallery-toolbar">
+          <label class="gallery-select">
+            <span class="gallery-select__label">Event wählen</span>
+            <select [value]="event.id" (change)="onEventSelect($event)">
+              @if (upcomingEvents().length) {
+                <optgroup label="Kommend">
+                  @for (entry of upcomingEvents(); track entry.id) {
+                    <option [value]="entry.id">{{ entry.optionLabel }}</option>
+                  }
+                </optgroup>
+              }
+
+              @if (archivedEvents().length) {
+                <optgroup label="Archiv">
+                  @for (entry of archivedEvents(); track entry.id) {
+                    <option [value]="entry.id">{{ entry.optionLabel }}</option>
+                  }
+                </optgroup>
+              }
+            </select>
+          </label>
+
+          <div class="gallery-toolbar__meta">
+            <p class="kicker">{{ event.phaseLabel }}</p>
+            <h2>{{ event.title }}</h2>
+            <p class="gallery-toolbar__details">{{ event.shortDate }} · {{ event.locationLabel }}</p>
+
+            <div class="gallery-toolbar__actions">
+              @if (event.sourceUrl) {
+                <a
+                  class="button button--solid"
+                  [href]="event.sourceUrl"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Event öffnen
+                </a>
+              }
+
+              <a class="button button--ghost" routerLink="/events">Zur Eventseite</a>
+            </div>
+          </div>
+        </div>
+
+        @if (selectedImage(); as image) {
+          <figure class="gallery-stage">
+            <div class="gallery-stage__frame">
+              <img [src]="image.src" [alt]="image.alt" />
+            </div>
+
+            <div class="gallery-stage__overlay">
+              <span class="meta-tag">{{ event.organizer || event.sourceLabel || 'Event' }}</span>
+              @if (selectedImages().length > 1) {
+                <span class="gallery-stage__counter">{{ selectedImageCounter() }}</span>
+              }
+            </div>
+
+            @if (selectedImages().length > 1) {
+              <button
+                type="button"
+                class="gallery-stage__nav gallery-stage__nav--prev"
+                aria-label="Vorheriges Bild"
+                (click)="shiftImage(-1)"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                class="gallery-stage__nav gallery-stage__nav--next"
+                aria-label="Nächstes Bild"
+                (click)="shiftImage(1)"
+              >
+                ›
+              </button>
+            }
+          </figure>
+        }
+
+        @if (selectedImages().length > 1) {
+          <div class="gallery-thumbs" aria-label="Bilder zum ausgewählten Event">
+            @for (image of selectedImages(); track image.src; let i = $index) {
+              <button
+                type="button"
+                class="gallery-thumb"
+                [class.gallery-thumb--active]="activeImageIndex() === i"
+                [attr.aria-pressed]="activeImageIndex() === i"
+                (click)="selectImage(i)"
+              >
+                <img [src]="image.src" [alt]="image.alt" />
+              </button>
+            }
+          </div>
+        }
+
+        <div class="gallery-event-list" aria-label="Andere Events">
+          @for (entry of galleryEvents(); track entry.id) {
+            <button
+              type="button"
+              class="gallery-event-list__item"
+              [class.gallery-event-list__item--active]="event.id === entry.id"
+              [attr.aria-pressed]="event.id === entry.id"
+              (click)="selectEvent(entry.id)"
+            >
+              <span class="gallery-event-list__thumb">
+                <img
+                  [src]="entry.galleryCover?.src ?? entry.imageUrl"
+                  [alt]="entry.galleryCover?.alt ?? ('Vorschau zu ' + entry.title)"
+                />
+              </span>
+
+              <span class="gallery-event-list__body">
+                <span class="gallery-event-list__kicker">{{ entry.phaseLabel }}</span>
+                <span class="gallery-event-list__title">{{ entry.title }}</span>
+                <span class="gallery-event-list__meta">
+                  {{ entry.shortDate }} · {{ entry.locationLabel }}
+                </span>
+              </span>
+            </button>
+          }
+        </div>
+      </section>
+    }
+  } @else {
+    <section class="page-section">
+      <div class="info-strip">
+        Noch keine Galerie zugeordnet. Sobald Events Bilder bekommen, erscheint hier automatisch
+        die Event-Auswahl mit dem passenden Bildset.
+      </div>
+    </section>
+  }
 </main>
